@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BF11C046-1BB0-4BCB-8463-CD0AAC117A01}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>KoWebDLL</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>$(ProjectName)_D</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;KOWEBDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;KOWEBDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;KOWEBDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;KOWEBDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="Functions.h" />
+    <ClInclude Include="Inspector.h" />
+    <ClInclude Include="Inspect\Inspect.h" />
+    <ClInclude Include="Inspect\InspectCOS1.h" />
+    <ClInclude Include="Inspect\InspectCOS2.h" />
+    <ClInclude Include="Inspect\InspectCOS3.h" />
+    <ClInclude Include="Inspect\InspectCOS4.h" />
+    <ClInclude Include="Inspect\InspectCOS5.h" />
+    <ClInclude Include="Inspect\InspectCOS6.h" />
+    <ClInclude Include="Inspect\InspectCOS7.h" />
+    <ClInclude Include="Inspect\InspectCOS8.h" />
+    <ClInclude Include="Inspect\InspectCOS9.h" />
+    <ClInclude Include="Inspect\InspectCOSA.h" />
+    <ClInclude Include="Inspect\InspectCOSB.h" />
+    <ClInclude Include="Inspect\InspectCOSBCR.h" />
+    <ClInclude Include="Inspect\InspectCOSC.h" />
+    <ClInclude Include="Inspect\InspectCOSD.h" />
+    <ClInclude Include="Inspect\InspectCOSE.h" />
+    <ClInclude Include="KoWebDLL.h" />
+    <ClInclude Include="Param\Cos1Param.h" />
+    <ClInclude Include="Param\Cos2Param.h" />
+    <ClInclude Include="Param\Cos3Param.h" />
+    <ClInclude Include="Param\Cos4Param.h" />
+    <ClInclude Include="Param\Cos5Param.h" />
+    <ClInclude Include="Param\Cos6Param.h" />
+    <ClInclude Include="Param\Cos7Param.h" />
+    <ClInclude Include="Param\Cos8Param.h" />
+    <ClInclude Include="Param\Cos9Param.h" />
+    <ClInclude Include="Param\CosAParam.h" />
+    <ClInclude Include="Param\CosBCRParam.h" />
+    <ClInclude Include="Param\CosBParam.h" />
+    <ClInclude Include="Param\CosCParam.h" />
+    <ClInclude Include="Param\CosDParam.h" />
+    <ClInclude Include="Param\CosEParam.h" />
+    <ClInclude Include="Param\enumParam.h" />
+    <ClInclude Include="Param\InspParam.h" />
+    <ClInclude Include="Param\Param.h" />
+    <ClInclude Include="Param\SystemParam.h" />
+    <ClInclude Include="Param\TempParam.h" />
+    <ClInclude Include="PreProcess\FindEdge.h" />
+    <ClInclude Include="PreProcess\FlatImage.h" />
+    <ClInclude Include="PreProcess\PreProc.h" />
+    <ClInclude Include="PreProcess\Profile.h" />
+    <ClInclude Include="PreProcess\PyramidImage.h" />
+    <ClInclude Include="PyramidImage.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="Inspector.cpp" />
+    <ClCompile Include="Inspect\Inspect.cpp" />
+    <ClCompile Include="Inspect\InspectCOS1.cpp" />
+    <ClCompile Include="Inspect\InspectCOS2.cpp" />
+    <ClCompile Include="Inspect\InspectCOS3.cpp" />
+    <ClCompile Include="Inspect\InspectCOS4.cpp" />
+    <ClCompile Include="Inspect\InspectCOS5.cpp" />
+    <ClCompile Include="Inspect\InspectCOS6.cpp" />
+    <ClCompile Include="Inspect\InspectCOS7.cpp" />
+    <ClCompile Include="Inspect\InspectCOS8.cpp" />
+    <ClCompile Include="Inspect\InspectCOS9.cpp" />
+    <ClCompile Include="Inspect\InspectCOSA.cpp" />
+    <ClCompile Include="Inspect\InspectCOSB.cpp" />
+    <ClCompile Include="Inspect\InspectCOSBCR.cpp" />
+    <ClCompile Include="Inspect\InspectCOSC.cpp" />
+    <ClCompile Include="Inspect\InspectCOSD.cpp" />
+    <ClCompile Include="Inspect\InspectCOSE.cpp" />
+    <ClCompile Include="KoWebDLL.cpp" />
+    <ClCompile Include="Param\Cos1Param.cpp" />
+    <ClCompile Include="Param\Cos2Param.cpp" />
+    <ClCompile Include="Param\Cos3Param.cpp" />
+    <ClCompile Include="Param\Cos4Param.cpp" />
+    <ClCompile Include="Param\Cos5Param.cpp" />
+    <ClCompile Include="Param\Cos6Param.cpp" />
+    <ClCompile Include="Param\Cos7Param.cpp" />
+    <ClCompile Include="Param\Cos8Param.cpp" />
+    <ClCompile Include="Param\Cos9Param.cpp" />
+    <ClCompile Include="Param\CosAParam.cpp" />
+    <ClCompile Include="Param\CosBCRParam.cpp" />
+    <ClCompile Include="Param\CosBParam.cpp" />
+    <ClCompile Include="Param\CosCParam.cpp" />
+    <ClCompile Include="Param\CosDParam.cpp" />
+    <ClCompile Include="Param\CosEParam.cpp" />
+    <ClCompile Include="Param\Param.cpp" />
+    <ClCompile Include="Param\SystemParam.cpp" />
+    <ClCompile Include="PreProcess\FindEdge.cpp" />
+    <ClCompile Include="PreProcess\FlatImage.cpp" />
+    <ClCompile Include="PreProcess\Profile.cpp" />
+    <ClCompile Include="PreProcess\PyramidImage.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

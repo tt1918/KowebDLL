@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Inspection">
+      <UniqueIdentifier>{0209e19d-ff0b-4865-9f36-dfaa880b5a44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Param">
+      <UniqueIdentifier>{b81f4bf5-a41d-4f98-a6bb-45baada0e1b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{90705c21-1a22-4d67-83c5-3a5a16ff8028}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PreProcess">
+      <UniqueIdentifier>{e7badc78-36bf-4649-8af7-ebf375c395d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{a9fd1b8f-c911-4670-b9a7-e234d38bca64}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KoWebDLL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\enumParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\InspParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Param.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\TempParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos1Param.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos2Param.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos3Param.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos4Param.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos5Param.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos6Param.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos7Param.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos8Param.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos9Param.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosAParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosBCRParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosBParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosCParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosDParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosEParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\Inspect.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="PreProcess\FlatImage.h">
+      <Filter>PreProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="PreProcess\Profile.h">
+      <Filter>PreProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Functions.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="PreProcess\FindEdge.h">
+      <Filter>PreProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="PreProcess\PreProc.h">
+      <Filter>PreProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOS1.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOS2.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOS3.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOS4.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOS5.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOS6.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOS7.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOS8.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOS9.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOSA.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOSB.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOSBCR.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOSC.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOSD.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCOSE.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\SystemParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="PyramidImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PreProcess\PyramidImage.h">
+      <Filter>PreProcess</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="KoWebDLL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Param.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos1Param.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos2Param.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos3Param.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos4Param.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos5Param.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos6Param.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos7Param.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos8Param.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos9Param.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosAParam.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosBCRParam.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosBParam.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosCParam.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosDParam.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosEParam.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\Inspect.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="PreProcess\FlatImage.cpp">
+      <Filter>PreProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="PreProcess\Profile.cpp">
+      <Filter>PreProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="Functions.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="PreProcess\FindEdge.cpp">
+      <Filter>PreProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOS1.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOS2.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOS3.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOS4.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOS5.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOS6.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOS7.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOS8.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOS9.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOSA.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOSB.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOSBCR.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOSC.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOSD.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectCOSE.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\SystemParam.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="PreProcess\PyramidImage.cpp">
+      <Filter>PreProcess</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
