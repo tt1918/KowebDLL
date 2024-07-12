@@ -2,8 +2,13 @@
 #include "math.h"
 #include <ppl.h>
 
-PyramidImage::PyramidImage()
+PyramidImage::PyramidImage(int maxLv)
 {
+	if (maxLv > COMP_LEVEL)
+		maxLv = COMP_LEVEL;
+
+	_MaxLv = maxLv;
+
 	for (int i = 0; i < COMP_LEVEL; i++)
 	{
 		_Image[i] = nullptr;
@@ -38,7 +43,7 @@ bool PyramidImage::MakeImage(unsigned char* buf, int width, int height)
 
 	memcpy(_Image[0], buf, sizeof(unsigned char) * width * height);
 
-	for (int k = 1; k < COMP_LEVEL; k++)
+	for (int k = 1; k < _MaxLv; k++)
 	{
 		fmS = _Image[k - 1];
 		pitchS = _Width[k];
@@ -86,7 +91,7 @@ void PyramidImage::CreateBuf()
 
 	_Image[0] = new unsigned char(_Width[0] * _Height[0]);
 
-	for (int i = 1; i < COMP_LEVEL; i++)
+	for (int i = 1; i < _MaxLv; i++)
 	{
 		_Width[i] = _Width[i-1]/2;
 		_Height[i] = _Height[i-1]/2;

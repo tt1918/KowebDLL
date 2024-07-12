@@ -177,9 +177,6 @@
     <ClInclude Include="Param\SystemParam.h">
       <Filter>Param</Filter>
     </ClInclude>
-    <ClInclude Include="PyramidImage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PreProcess\PyramidImage.h">
       <Filter>PreProcess</Filter>
     </ClInclude>

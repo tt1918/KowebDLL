@@ -52,7 +52,7 @@ void Inspect::Create(int width, int height)
 	_pProfile = new Profile();
 	_pEdgeFinder = new FindEdge();
 	_pPyramid = new PyramidImage();
-	_pPyramidSc = new PyramidImage();
+	_pPyramidSc = new PyramidImage(2);	// 2배 축소한 이미지만 필요함. 
 	_pPyramid->SetImageInfo(width, height);
 
 	// 갯수는 임의 할당.. 나중에 보고 처리해야함.

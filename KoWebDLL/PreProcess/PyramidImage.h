@@ -11,10 +11,12 @@ private:
 	int				_RefW;
 	int				_RefH;
 
+	int				_MaxLv;
+
 public:
 	
 public:
-	PyramidImage();
+	PyramidImage(int maxLv = COMP_LEVEL);
 	~PyramidImage();
 
 	void SetImageInfo(int width, int height);
