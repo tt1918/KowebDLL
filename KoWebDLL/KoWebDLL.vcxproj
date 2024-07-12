@@ -150,7 +150,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Defect\DefectData.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="Fchain.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Inspector.h" />
     <ClInclude Include="Inspect\Inspect.h" />
@@ -185,8 +187,10 @@
     <ClInclude Include="Param\CosCParam.h" />
     <ClInclude Include="Param\CosDParam.h" />
     <ClInclude Include="Param\CosEParam.h" />
+    <ClInclude Include="Param\DefectType.h" />
     <ClInclude Include="Param\enumParam.h" />
     <ClInclude Include="Param\InspParam.h" />
+    <ClInclude Include="Param\MarkParam.h" />
     <ClInclude Include="Param\Param.h" />
     <ClInclude Include="Param\SystemParam.h" />
     <ClInclude Include="Param\TempParam.h" />
@@ -214,6 +218,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Fchain.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="Inspector.cpp" />
     <ClCompile Include="Inspect\Inspect.cpp" />
@@ -232,6 +237,7 @@
     <ClCompile Include="Inspect\InspectCOSC.cpp" />
     <ClCompile Include="Inspect\InspectCOSD.cpp" />
     <ClCompile Include="Inspect\InspectCOSE.cpp" />
+    <ClCompile Include="Inspect\InspectSub.cpp" />
     <ClCompile Include="KoWebDLL.cpp" />
     <ClCompile Include="Param\Cos1Param.cpp" />
     <ClCompile Include="Param\Cos2Param.cpp" />
@@ -248,6 +254,7 @@
     <ClCompile Include="Param\CosCParam.cpp" />
     <ClCompile Include="Param\CosDParam.cpp" />
     <ClCompile Include="Param\CosEParam.cpp" />
+    <ClCompile Include="Param\DefectType.cpp" />
     <ClCompile Include="Param\Param.cpp" />
     <ClCompile Include="Param\SystemParam.cpp" />
     <ClCompile Include="PreProcess\FindEdge.cpp" />

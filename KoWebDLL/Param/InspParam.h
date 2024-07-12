@@ -1,22 +1,22 @@
 #pragma once
-
+#include "../Defines.h"
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 서버에서 받는 검사 Parameter - s
+
+#define MAX_CNADIDATE_AREA	1280
 namespace InspParam
 {
 	typedef struct _stCommonParam
 	{
 		bool	useRandomCycle;
 		bool	useAi;
+		bool	useFlatImage;
 
 		int		TrgGrayDiff;	// 자동 제어 밝기 오차 영역
 		int		MakePyramid;	// 
 
 		int		BrightMax;
 		int		BrightMin;
-
-		int		AreaUpTh;
-		int		AreaDnTh;
 
 		int		PeriodLevel;	// 주기 불량을 1로 변경
 		int		SizeMethod;		// 사이즈 검출 방식
@@ -26,6 +26,8 @@ namespace InspParam
 		int		EdgeOffset;		// 에지 검출 후 에지 옵셋
 
 		int		AlgorithmType;	// 알고리즘 타입
+
+		int		AttachPxl;		// 이웃하는 Blob붙이는 것
 
 		int		TapeDist[3];	// 0: 테입거리, 1: 이형테입거리, 2: 보호 테입 거리
 		int		TapeSkipDist;	// 테입 인식 후 스킵 거리
@@ -67,7 +69,10 @@ namespace InspParam
 
 	typedef struct _stSpotParam
 	{
-		BASIC_INSP_PARAM Level[10];
+		int		AreaTh;
+
+		int		LvTH[MAX_LEVEL];
+		double	LvSize[MAX_LEVEL];
 	}SPOT_PARAM;
 
 	typedef struct _stBiningParam
@@ -96,7 +101,7 @@ namespace InspParam
 	{
 		int		Area;	// 군집 범위
 		int		Count;	//  갯수
-		int		Value;	// 군집 인식 발기 Value;
+		int		TH;		// 군집 인식 밝기 TH;
 		double	Size;	// 군집 사이즈
 	}GROUP_ITEM;
 
@@ -108,7 +113,7 @@ namespace InspParam
 		int		CvtLevel;		// 불량을 변경할 레벨
 		
 		GROUP_ITEM Base;
-		GROUP_ITEM Level[10];
+		GROUP_ITEM Level[MAX_LEVEL];
 
 	}GROUP_PARAM;
 
@@ -117,38 +122,49 @@ namespace InspParam
 	{
 		int		InspArea;		// 쿠닉검사 Area
 		double  CandiVal;		// 쿠닉 후보 최소값
-		double  Std[10];		// 독립적인 쿠닉  STD
-		double  Std1[10];		// 쿠닉 Value1과 짝을 이룸
-		double	Value1[10];		// 쿠닉 Std1과 짝을 이룸
+		double  Std[MAX_LEVEL];		// 독립적인 쿠닉  STD
+		double  Std1[MAX_LEVEL];		// 쿠닉 Value1과 짝을 이룸
+		double	Value1[MAX_LEVEL];		// 쿠닉 Std1과 짝을 이룸
 	}CUNIC_PARAM;
 
 	// SC 파라미터
 	typedef struct _stSC
 	{
-		int		ScVal[10];		// 스크래치 Value
+		int		Offset;					// 스크래치 검사 갭
+		int		ScVal[MAX_LEVEL];		// 스크래치 Value
 	}SC_PARAM;
 
 	// Long SC 파라미터
 	typedef struct _stLongSC
 	{
-		int		FrameSize;		// Long Scratch 검사할 frame Size
-		int		MinFrameCnt;	// 불량 발생 시 최소 불량 Frame 사이즈
+		int		FrameSize;				// Long Scratch 검사할 frame Size
+		int		MinFrameCnt;			// 불량 발생 시 최소 불량 Frame 사이즈
 
-		int		LongScVal[10];	// Long 스크래치 Value
+		int		LongScVal[MAX_LEVEL];	// Long 스크래치 Value
 	}LONG_SC_PARAM;
 
 	typedef struct _stPress
 	{
-		int		UpTh;			// 찍힘 판정 최소 백점 TH
-		int		DnTh;			// 찍힘 판정 최소 흑점 TH
+		bool	IsInsp;				// 검사 사용 유무
 
-		int		AreaUpTH;		// 영역 판정 TH
-		int		AreaDnTH;		// 영역 판정 TH
+		int		UpTh;				// 찍힘 판정 최소 백점 TH
+		int		DnTh;				// 찍힘 판정 최소 흑점 TH
+
+		int		AreaUpTH;			// 영역 판정 TH
+		int		AreaDnTH;			// 영역 판정 TH
 
 		// Level Value
-		int		Value[10];		// 밝기 차
-		double	Size[10];		// 최소 사이즈
+		int		Value[MAX_LEVEL];	// 밝기 차
+		double	Size[MAX_LEVEL];	// 최소 사이즈
 	}PRESS_PARAM;
+
+	typedef struct _stKipo
+	{
+		int		Value[MAX_LEVEL];		// 기포 이물 Value
+		double	Size[MAX_LEVEL];		// 기포 이물 Size
+		int		MinVal;					// 기포 이물 최소 Value
+		double	BrightDiff;				// 기포 이물 최소 밝기차
+	}KIPO_PARAM;
 
 
 	typedef struct _stBCR
@@ -178,7 +194,7 @@ namespace InspParam
 									// 탐색 못 했을 경우 영역 검색 처리
 		bool	UseMatSize;			// 24
 		int		WarningM;			// 25
-		int		ErrorM;			// 26
+		int		ErrorM;				// 26
 
 		bool	DoSaveImage;		// 27
 
@@ -205,6 +221,43 @@ namespace InspParam
 		// BCR - E
 		////////////////////////////////////////////////////////////////
 	}BCR_PARAM;
+
+	typedef struct _stCandiPoints
+	{
+		int Count;
+		int CountX;
+		int CountY;
+		int Value[MAX_CNADIDATE_AREA];
+		int PosX[MAX_CNADIDATE_AREA];
+		int PosY[MAX_CNADIDATE_AREA];
+		int Avg[MAX_CNADIDATE_AREA];
+
+		void Reset()
+		{
+			Count = 0;
+			CountX = 0;
+			CountY = 0;
+			memset(Value, 0x00, sizeof(int) * MAX_CNADIDATE_AREA);
+			memset(PosX, 0x00, sizeof(int) * MAX_CNADIDATE_AREA);
+			memset(PosY, 0x00, sizeof(int) * MAX_CNADIDATE_AREA);
+			memset(Avg, 0x00, sizeof(int) * MAX_CNADIDATE_AREA);
+		}
+
+		void SetData(int nId, int val, int x, int y, int avg)
+		{
+			Value[nId] = val;
+			PosX[nId] = x;
+			PosY[nId] = y;
+			Avg[nId] = avg;
+		}
+
+		void AddData(int val, int x, int y, int avg)
+		{
+			SetData(Count, val, x, y, avg);
+			Count++;
+		}
+
+	}CANDI_POINTS;
 }
 // 서버에서 받는 검사 Parameter - E
 /////////////////////////////////////////////////////////////////////////////////

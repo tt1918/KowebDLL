@@ -20,7 +20,7 @@ public:
 	void SetImageInfo(int width, int height);
 
 	unsigned char* GetImagePt(int level) { return _Image[level]; }
-	int GetImageWdith(int level) { return _Width[level]; }
+	int GetImageWidth(int level) { return _Width[level]; }
 	int GetImageHeight(int level) { return _Height[level]; }
 
 	bool MakeImage(unsigned char* buf, int width, int height);

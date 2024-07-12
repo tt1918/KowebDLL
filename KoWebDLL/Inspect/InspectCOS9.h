@@ -6,7 +6,7 @@ public:
 	InspectCOS9();
 	~InspectCOS9();
 
-	void Create() override;
+	void Create(int width, int height) override;
 	void Release() override;
 
 	void Run() override;

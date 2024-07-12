@@ -10,7 +10,7 @@ InspectCOS3::~InspectCOS3()
 {
 }
 
-void InspectCOS3::Create()
+void InspectCOS3::Create(int width, int height)
 {
 
 }

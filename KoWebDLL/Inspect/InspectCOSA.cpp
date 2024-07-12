@@ -10,7 +10,7 @@ InspectCOSA::~InspectCOSA()
 {
 }
 
-void InspectCOSA::Create()
+void InspectCOSA::Create(int width, int height)
 {
 
 }

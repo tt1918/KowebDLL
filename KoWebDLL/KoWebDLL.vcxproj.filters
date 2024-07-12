@@ -28,6 +28,9 @@
     <Filter Include="Component">
       <UniqueIdentifier>{a9fd1b8f-c911-4670-b9a7-e234d38bca64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Defect">
+      <UniqueIdentifier>{505f85ea-2e8e-47c5-8dc4-41bcb29ccbb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -180,6 +183,18 @@
     <ClInclude Include="PreProcess\PyramidImage.h">
       <Filter>PreProcess</Filter>
     </ClInclude>
+    <ClInclude Include="Fchain.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Defect\DefectData.h">
+      <Filter>Defect</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\MarkParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\DefectType.h">
+      <Filter>Defect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -307,6 +322,15 @@
     </ClCompile>
     <ClCompile Include="PreProcess\PyramidImage.cpp">
       <Filter>PreProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="Fchain.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspect\InspectSub.cpp">
+      <Filter>Inspection</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\DefectType.cpp">
+      <Filter>Param</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

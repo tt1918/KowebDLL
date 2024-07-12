@@ -42,6 +42,7 @@ void Param::ResetAddress()
 	_pLongSC = nullptr;
 	_pPress = nullptr;
 	_pBCR = nullptr;
+	_pKipo = nullptr;
 }
 
 void Param::Save(std::string path)

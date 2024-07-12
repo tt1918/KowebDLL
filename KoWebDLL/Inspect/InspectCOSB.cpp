@@ -10,7 +10,7 @@ InspectCOSB::~InspectCOSB()
 {
 }
 
-void InspectCOSB::Create()
+void InspectCOSB::Create(int width, int height)
 {
 
 }

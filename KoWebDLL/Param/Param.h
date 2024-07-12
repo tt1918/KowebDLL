@@ -2,6 +2,7 @@
 #include "enumParam.h"
 #include "TempParam.h"
 #include "InspParam.h"
+#include "../Defines.h"
 
 class Param
 {
@@ -22,7 +23,7 @@ public:
 	InspParam::CAM_PARAM		Cam;
 	InspParam::HOLE_SKIP_PARAM	HoleSkip;
 
-	bool						UseLv[10];
+	bool						UseLv[MAX_LEVEL];
 
 	// 판불량 검출 영역
 	int							*_pCheckFishEyeArea;
@@ -52,6 +53,9 @@ public:
 
 	// BCR 인식 파라미터
 	InspParam::BCR_PARAM		*_pBCR;
+
+	// 기포 이물 파라미터
+	InspParam::KIPO_PARAM		*_pKipo;
 
 public:
 	Param();

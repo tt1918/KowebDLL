@@ -10,7 +10,7 @@ InspectCOSBCR::~InspectCOSBCR()
 {
 }
 
-void InspectCOSBCR::Create()
+void InspectCOSBCR::Create(int width, int height)
 {
 
 }

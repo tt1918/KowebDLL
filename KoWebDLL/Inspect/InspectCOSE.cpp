@@ -10,7 +10,7 @@ InspectCOSE::~InspectCOSE()
 {
 }
 
-void InspectCOSE::Create()
+void InspectCOSE::Create(int width, int height)
 {
 
 }

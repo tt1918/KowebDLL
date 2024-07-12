@@ -8,7 +8,7 @@ public:
 	InspectCOS2();
 	~InspectCOS2();
 
-	void Create() override;
+	void Create(int width, int height) override;
 	void Release() override;
 
 	void Run() override;

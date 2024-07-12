@@ -122,6 +122,7 @@ namespace TempParam
 
 	typedef struct _stSCParam
 	{
+		bool IsInsp;		// 검사 실행 유무
 		int Max;			// 스크라치 나온 것중에서 최대값
 		int Avg;
 		int MaxLong;		// 스크라치 나온 것 중에서 최대값
@@ -276,10 +277,10 @@ namespace TempParam
 		int			PrevFound[3];		// 이전에 구한 edge
 		int			Type;				// 0: 안쪽, 1: 바깥쪽
 		int			Dir;				// 0: 왼쪽, 1: 오른쪽
-		int			X1;					// 검사 시작 영역
-		int			X2;					// 검사 시작 영역
-		int			EdgeX1;
-		int			EdgeX2;
+		int			X1;					// 검사 시작 영역 (검사 스킵 옵셋 포함한 에지 영역)
+		int			X2;					// 검사 시작 영역	(검사 스킵 옵셋 포함한 에지 영역)
+		int			EdgeX1;				// 에지 검출 시 순수 에지 영역
+		int			EdgeX2;				// 에지 검출 시 순수 에지 영역
 	}INSP_EDGE_PARAM;
 
 	typedef struct _stImageParam
@@ -348,6 +349,7 @@ namespace TempParam
 		int			ShiftDo;
 		int			RecvMark;
 
+		int			GrabFrameID;
 		bool		FirstReframe;		// 프레임 오차 발생 시, 첫 1번은 시간 오차 발생안해도 프레임 수정
 
 		// 화면 표시 데이터 
@@ -495,6 +497,9 @@ namespace TempParam
 
 		double			DelayOffset;	// 서버에서 전송 받은 데이터 지연 거리. mm 거리로 환산하여 처리함. 
 
+
+		// 핀홀 관련 검사 
+		PINHOLE			Pinhole;
 
 		void Reset()
 		{

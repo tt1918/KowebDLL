@@ -10,7 +10,7 @@ InspectCOS5::~InspectCOS5()
 {
 }
 
-void InspectCOS5::Create()
+void InspectCOS5::Create(int width, int height)
 {
 
 }
