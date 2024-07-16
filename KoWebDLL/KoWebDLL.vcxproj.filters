@@ -192,6 +192,9 @@
     <ClInclude Include="Param\DefectType.h">
       <Filter>Defect</Filter>
     </ClInclude>
+    <ClInclude Include="Component\json.hpp">
+      <Filter>Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

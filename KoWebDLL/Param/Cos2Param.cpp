@@ -29,3 +29,13 @@ void Cos2Param::SetAddress()
 {
 
 }
+
+void Cos2Param::to_json(json& j, const Param& p)
+{
+
+}
+
+void Cos2Param::from_json(json& j, const Param& p)
+{
+
+}

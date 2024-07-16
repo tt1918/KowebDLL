@@ -57,3 +57,13 @@ bool Param::Load(std::string path)
 
 	return isRes;
 }
+
+void Param::to_json(json& j, const Param& p)
+{
+
+}
+
+void Param::from_json(json& j, const Param& p)
+{
+
+}

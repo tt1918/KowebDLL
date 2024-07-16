@@ -29,3 +29,13 @@ void Cos8Param::SetAddress()
 {
 
 }
+
+void Cos8Param::to_json(json& j, const Param& p)
+{
+
+}
+
+void Cos8Param::from_json(json& j, const Param& p)
+{
+
+}

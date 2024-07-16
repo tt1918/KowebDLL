@@ -35,3 +35,13 @@ void Cos1Param::SetAddress()
 	_pSC = &SC;
 	_pLongSC = &LongSC;
 }
+
+void Cos1Param::to_json(json& j, const Param& p)
+{
+
+}
+
+void Cos1Param::from_json(json& j, const Param& p)
+{
+
+}

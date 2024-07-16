@@ -24,6 +24,9 @@ public:
 
 	void SetAddress() override;
 
+	void to_json(json& j, const Param& p);
+	void from_json(json& j, const Param& p);
+
 public:
 
 };

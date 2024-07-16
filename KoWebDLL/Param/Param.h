@@ -3,6 +3,9 @@
 #include "TempParam.h"
 #include "InspParam.h"
 #include "../Defines.h"
+#include "../Component/json/nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 class Param
 {
@@ -70,6 +73,10 @@ public:
 
 	void Save(std::string path);			// 현재 데이터를 저장
 	bool Load(std::string path);			// 파일에서 데이터 읽어오기
+
+	void to_json(json& j, const Param& p);
+	void from_json(json& j, const Param& p);
+
 public:
 
 	//파라미터 형식을 알려준다.

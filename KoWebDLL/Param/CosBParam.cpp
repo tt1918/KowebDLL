@@ -29,3 +29,13 @@ void CosBParam::SetAddress()
 {
 
 }
+
+void CosBParam::to_json(json& j, const Param& p)
+{
+
+}
+
+void CosBParam::from_json(json& j, const Param& p)
+{
+
+}
