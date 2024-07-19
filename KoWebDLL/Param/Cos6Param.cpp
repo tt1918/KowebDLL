@@ -2,6 +2,7 @@
 
 Cos6Param::Cos6Param()
 {
+	ResetAddress();
 	SetAddress();
 }
 

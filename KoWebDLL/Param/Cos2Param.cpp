@@ -2,6 +2,7 @@
 
 Cos2Param::Cos2Param()
 {
+	ResetAddress();
 	SetAddress();
 }
 
@@ -27,7 +28,12 @@ void Cos2Param::Apply()
 
 void Cos2Param::SetAddress()
 {
+	_pLvUp = &_LvUp;
+	_pLvDn = &_LvDn;
 
+	_pPinhole = &_Pinhole;
+	_pCunic = &_Cunic;
+	_pPress = &_Press;
 }
 
 void Cos2Param::to_json(json& j, const Param& p)

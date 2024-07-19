@@ -2,6 +2,7 @@
 
 Cos9Param::Cos9Param()
 {
+	ResetAddress();
 	SetAddress();
 }
 

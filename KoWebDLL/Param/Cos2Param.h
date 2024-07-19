@@ -2,10 +2,14 @@
 #include "Param.h"
 
 // 에지 투과 검사
-class Cos2Param : Param
+class Cos2Param : public Param
 {
 public:
-	InspParam::PRESS_PARAM Press;
+	InspParam::PINHOLE_PARAM _Pinhole;
+	InspParam::CUNIC_PARAM	_Cunic;		// 쿠닉 검사이나 여기서는 얼룩으로 대체
+	InspParam::PRESS_PARAM _Press;
+	InspParam::SPOT_PARAM _LvUp;
+	InspParam::SPOT_PARAM _LvDn;
 
 public:
 	Cos2Param();

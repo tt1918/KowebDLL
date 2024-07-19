@@ -2,7 +2,7 @@
 #include "Param.h"
 
 // 미세기포 군집 검사를 진행
-class Cos5Param : Param
+class Cos5Param : public Param
 {
 public:
 	InspParam::GROUP_PARAM		Group;			// 군집 판정 파라미터

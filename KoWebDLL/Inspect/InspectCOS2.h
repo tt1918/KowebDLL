@@ -2,7 +2,7 @@
 #include "Inspect.h"
 
 // Edge Transfer Inspect
-class InspectCOS2 : Inspect
+class InspectCOS2 : public  Inspect
 {
 public:
 	InspectCOS2();

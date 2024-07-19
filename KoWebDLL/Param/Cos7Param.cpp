@@ -2,6 +2,7 @@
 
 Cos7Param::Cos7Param()
 {
+	ResetAddress();
 	SetAddress();
 }
 

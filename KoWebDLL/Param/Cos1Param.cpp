@@ -2,6 +2,8 @@
 
 Cos1Param::Cos1Param()
 {
+	ResetAddress();
+
 	SetAddress();
 }
 

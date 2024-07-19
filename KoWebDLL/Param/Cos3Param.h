@@ -2,7 +2,7 @@
 #include "Param.h"
 
 // Á¤¹Ý»ç. 
-class Cos3Param : Param
+class Cos3Param : public Param
 {
 public:
 

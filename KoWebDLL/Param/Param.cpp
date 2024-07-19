@@ -1,4 +1,6 @@
 #include "Param.h"
+#include "../stdafx.h"
+
 
 Param::Param()
 {
@@ -56,6 +58,13 @@ bool Param::Load(std::string path)
 	SetParam();
 
 	return isRes;
+}
+
+eParamType::eType Param::GetParamType(std::string path, std::string section)
+{
+	char data[256];
+	GetPrivateProfileStringA(section.c_str(), "param41", "1", data, 256, path.c_str());
+	return (eParamType::eType) atoi(data);
 }
 
 void Param::to_json(json& j, const Param& p)

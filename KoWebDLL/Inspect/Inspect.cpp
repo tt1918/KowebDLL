@@ -48,18 +48,12 @@ void Inspect::Create(int width, int height)
 {
 	Release();
 
-	_pFlat = new FlatImage();
-	_pProfile = new Profile();
-	_pEdgeFinder = new FindEdge();
-	_pPyramid = new PyramidImage();
-	_pPyramidSc = new PyramidImage(2);	// 2배 축소한 이미지만 필요함. 
-	_pPyramid->SetImageInfo(width, height);
-
 	// 갯수는 임의 할당.. 나중에 보고 처리해야함.
 	_pChain = new CChain(1280, 20000);
 
-	_pFlatImg = new BYTE[width * height];
-	memset(_pFlatImg, 0x00, sizeof(BYTE) * width * height);
+
+	/*_pFlat->Init(width, height);
+	_pFlatImg = _pFlat->GetFlatImg();*/
 
 	_pFmTemp = new BYTE[width * height];
 	memset(_pFmTemp, 0x00, sizeof(BYTE) * width * height);
@@ -97,12 +91,6 @@ void Inspect::Release()
 	{
 		delete _pPyramidSc;
 		_pPyramidSc = nullptr;
-	}
-
-	if (_pFlatImg)
-	{
-		delete[] _pFlatImg;
-		_pFlatImg = nullptr;
 	}
 
 	if (_pChain)
@@ -172,6 +160,8 @@ void Inspect::Release()
 		delete[] _pKProjFlatMax;
 		_pKProjFlatMax = nullptr;
 	}
+
+	_pFlatImg = nullptr;
 }
 
 void Inspect::SetParam(Param* pParam) 
@@ -191,17 +181,7 @@ void Inspect::Run()
 
 void Inspect::MakePyramid()
 {
-	unsigned char* pSrc;
-
-	if (_pParam->Common.useFlatImage)	pSrc = _pFlatImg;
-	else								pSrc = _SrcImg;
-
-	// 피라미드 영상을 생성
-	if (_pTmpData->MakePyramidDone == 0)
-	{
-		_pPyramid->MakeImage(pSrc, _width, _height);
-		_pTmpData->MakePyramidDone = 1;
-	}
+	
 }
 
 void Inspect::SetScInspBuf(int width, int height)
@@ -897,7 +877,7 @@ int Inspect::FindScratch(LPBYTE fm, int left, int top, int right, int bottom, in
 		//-------------------------------------------------------------------------------
 
 
-				//원래 Profile과 ERODE(5x1)-DILATE(5x1)한것과의 차이(Profile에서 없어진 부분만 구함)
+		//원래 Profile과 ERODE(5x1)-DILATE(5x1)한것과의 차이(Profile에서 없어진 부분만 구함)
 		for (j = left; j < right; j++)
 		{
 			_pKProjFlat[j] = (_pKProjLocal[j] - _pKProjDilate[j]);    //원본 - (ERODE(5x1)-DILATE(5x1))
@@ -1142,6 +1122,7 @@ done:
 	return nScratchCount;
 }
 
+// 원래 소스 코드와 좀 다름 확인이 필요함.
 void Inspect::FindScratchSub(LPBYTE fm, int nX1, int nX2, int nHeight, int pitch, long* pKProj, int  nInspY, int nJumpY, int  nUpperCut, int* pKProjLocalArray)
 {
 	int nTotalCount;
@@ -1149,11 +1130,11 @@ void Inspect::FindScratchSub(LPBYTE fm, int nX1, int nX2, int nHeight, int pitch
 
 	Concurrency::parallel_for(size_t(0), size_t(nHeight), size_t(nJumpY), [&](size_t nY1)
 	{
-		int i, j;
-		int nY2, nAvg, nTmp;
+		size_t i, j, nY2;
+		int nAvg, nTmp;
 		int nUpperCutCount, nTmpSum, nMax;
 
-		nY2 = (int)(nY1 + nInspY);
+		nY2 = nY1 + nInspY;
 		if (nY2 > nHeight) { nY2 = nHeight; nY1 = nY2 - nInspY; }
 
 		for (j = nX1; j < nX2; j++)

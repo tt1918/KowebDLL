@@ -15,7 +15,6 @@
 class Inspect
 {
 private:
-
 	SystemParam*			_pSystem;		// 시스템 파라미터 (주소만 얻어옴)
 	Param*					_pParam;		// 검사 파라미터 (주소만 얻어옴)
 	TempParam::TEMP_PARAM*	_pTmpData;		// 검사 임시 파라미터 (주소만 얻어옴)
@@ -33,7 +32,7 @@ private:
 	int _height;
 
 	unsigned char*			_SrcImg;	// 원본 영상 (데이터 참조)
-	unsigned char*			_pFlatImg;	// 평활화 영상 (여기에서 생성)
+	unsigned char*			_pFlatImg;	// 평활화 영상 (데이터 참조)
 
 	InspParam::CANDI_POINTS	_CandiW;		// 백점 후보
 	InspParam::CANDI_POINTS	_CandiB;		// 흑점 후보
@@ -67,6 +66,7 @@ public:
 
 	void SetParam(Param* pParam);
 	void SetTempParam(TempParam::TEMP_PARAM* pTmpParam);
+	void SetSysParam(SystemParam* pParam) { _pSystem = pParam; }
 
 	virtual void Create(int width, int height);
 	virtual void Release();
@@ -78,6 +78,19 @@ public:
 	/// </summary>
 	/// <param name="pSrc"></param>
 	void SetSrcImage(unsigned char* pSrc) { _SrcImg = pSrc; }
+	void SetProfileCls(Profile* pCls)	{	_pProfile = pCls;	}
+	void SetEdgeFinderCls(FindEdge* pCls) { _pEdgeFinder = pCls; }
+	void SetPyramidCls(PyramidImage* pCls, int type)
+	{
+		if (type == 0) _pPyramid = pCls;
+		else			_pPyramidSc = pCls;
+	}
+
+	void SetFlatCls(FlatImage* pCls)
+	{
+		_pFlat = pCls;
+		_pFlatImg = _pFlat->GetFlatImg();
+	}
 
 	/// <summary>
 	/// 평활화 영상 참주 주소 전달

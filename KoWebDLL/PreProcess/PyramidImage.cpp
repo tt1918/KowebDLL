@@ -18,6 +18,8 @@ PyramidImage::PyramidImage(int maxLv)
 
 	_RefW = 0;
 	_RefH = 0;
+
+	_IsFinish = false;
 }
 
 PyramidImage::~PyramidImage()
@@ -61,6 +63,10 @@ bool PyramidImage::MakeImage(unsigned char* buf, int width, int height)
 			}
 		});
 	}
+
+	_IsFinish = true;
+
+	return true;
 }
 
 void PyramidImage::DeleteBuf()
@@ -76,6 +82,8 @@ void PyramidImage::DeleteBuf()
 			_Height[i] = 0;
 		}
 	}
+
+	_IsFinish = false;
 }
 
 void PyramidImage::CreateBuf()

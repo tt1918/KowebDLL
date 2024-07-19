@@ -2,7 +2,7 @@
 #include "Inspect.h"
 
 // Full Refect Inspect
-class InspectCOS3 : Inspect
+class InspectCOS3 : public  Inspect
 {
 public:
 	InspectCOS3();

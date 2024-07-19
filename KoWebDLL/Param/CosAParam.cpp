@@ -2,6 +2,7 @@
 
 CosAParam::CosAParam()
 {
+	ResetAddress();
 	SetAddress();
 }
 

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "../Param/TempParam.h"
 #define MAX_EDGE_COUNT 20
 
 ////////////////////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ public:
 	void Destroy();
 	void SetImagePartH(int nCount, int height) { m_nImagePart = nCount;  m_nImagePartH = height; }
 
-	bool GetEdge(unsigned char* src, int width, int height, double dScaleX, int nEdgeTh, int nAlgorithm, int nOffset, int nEdgeDir, int notInspArea, bool isDualEdge = false);
+	bool GetEdge(TempParam::INSP_EDGE_PARAM* edgeData, unsigned char* src, int width, int height, double dScaleX, int nEdgeTh, int nAlgorithm, int nOffset, int nEdgeDir, int notInspArea, bool isDualEdge = false);
 
 private:
 	int GetEdge_Sub0(unsigned char* src, int left, int top, int right, int bottom, int pitch, int offset, int thUp, int notInspArea);

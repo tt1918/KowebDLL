@@ -1,42 +1,43 @@
 #include "CosBCRParam.h"
 
-CosBCRParam::CosBCRParam()
+CBCRParam::CBCRParam()
 {
+	ResetAddress();
 	SetAddress();
 }
 
-CosBCRParam::~CosBCRParam()
+CBCRParam::~CBCRParam()
 {
 
 }
 
-void CosBCRParam::SetParam()
+void CBCRParam::SetParam()
 {
 
 }
 
-void CosBCRParam::GetParam()
+void CBCRParam::GetParam()
 {
 
 }
 
-void CosBCRParam::Apply()
+void CBCRParam::Apply()
 {
 
 }
 
 
-void CosBCRParam::SetAddress()
+void CBCRParam::SetAddress()
 {
 
 }
 
-void CosBCRParam::to_json(json& j, const Param& p)
+void CBCRParam::to_json(json& j, const Param& p)
 {
 
 }
 
-void CosBCRParam::from_json(json& j, const Param& p)
+void CBCRParam::from_json(json& j, const Param& p)
 {
 
 }

@@ -2,7 +2,7 @@
 #include "Param.h"
 
 // S1 검사를 진행
-class Cos4Param : Param
+class Cos4Param : public Param
 {
 public:
 	InspParam::PINHOLE_PARAM	Pinhole;		// Hole 검사 파라미터

@@ -2,6 +2,7 @@
 
 Cos3Param::Cos3Param()
 {
+	ResetAddress();
 	SetAddress();
 }
 

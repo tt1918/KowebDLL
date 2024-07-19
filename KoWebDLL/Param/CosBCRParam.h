@@ -2,14 +2,14 @@
 #include "Param.h"
 
 // 
-class CosBCRParam : Param
+class CBCRParam : public Param
 {
 public:
 	InspParam::BCR_PARAM Bcr;
 
 public:
-	CosBCRParam();
-	~CosBCRParam();
+	CBCRParam();
+	~CBCRParam();
 
 	void SetParam() override;
 	void GetParam() override;

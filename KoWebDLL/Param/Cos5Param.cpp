@@ -2,6 +2,7 @@
 
 Cos5Param::Cos5Param()
 {
+	ResetAddress();
 	SetAddress();
 }
 

@@ -22,8 +22,10 @@ namespace InspParam
 		int		SizeMethod;		// 사이즈 검출 방식
 
 		int		NoInspection;	// No 검사
+		int		NotInspArea;	// 미검 영역
 		int		EdgeTh;			// 에지 검출 TH
 		int		EdgeOffset;		// 에지 검출 후 에지 옵셋
+		int		EdgeDir;		// 에지 방향 [0 : 왼쪽 못 씀, 1: 오른쪽 못 씀]
 
 		int		AlgorithmType;	// 알고리즘 타입
 

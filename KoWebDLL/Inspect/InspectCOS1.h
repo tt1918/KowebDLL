@@ -2,7 +2,7 @@
 #include "Inspect.h"
 
 // Cross Åõ°ú
-class InspectCOS1 : Inspect
+class InspectCOS1 : public Inspect
 {
 public:
 	InspectCOS1();

@@ -195,6 +195,12 @@
     <ClInclude Include="Component\json.hpp">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="Param\CosParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspect\InspectCos.h">
+      <Filter>Inspection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

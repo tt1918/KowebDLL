@@ -2,6 +2,7 @@
 
 Cos8Param::Cos8Param()
 {
+	ResetAddress();
 	SetAddress();
 }
 

@@ -2,6 +2,7 @@
 
 Cos4Param::Cos4Param()
 {
+	ResetAddress();
 	SetAddress();
 }
 

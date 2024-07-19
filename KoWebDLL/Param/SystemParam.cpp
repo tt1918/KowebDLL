@@ -8,7 +8,7 @@
 using namespace std;
 SystemParam::SystemParam()
 {
-
+	Init();
 }
 
 SystemParam::~SystemParam()

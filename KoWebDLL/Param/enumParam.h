@@ -17,7 +17,7 @@ namespace eParamType
 		eCOSB,
 		eCOSC,
 		eCOSD,
+		eCOSE,
 		eCBCR,
-		eCMAK,
 	};
 }

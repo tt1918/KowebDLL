@@ -1,6 +1,6 @@
 #pragma once
 #include "Inspect.h"
-class InspectCOS9 : Inspect
+class InspectCOS9 : public Inspect
 {
 public:
 	InspectCOS9();

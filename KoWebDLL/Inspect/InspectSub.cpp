@@ -222,7 +222,7 @@ void Inspect::FindCandidateParallel(int nStartX, int nWidth, int nGap)
 
 	//l_nPyramidHeight[0]가 nGap의 배수가 아니면 아래와 같이처리-------
 	nM = nPyWidth[0] / nGap;
-	if (nPyWidth[0] - nM * nGap > 0)    nM++;
+	if (nPyWidth[0] - nM * nGap > 0)    nM++;        
 
 	//전체영역이 nGap의 배수가 아니면 
 	nNPitch = nPyWidth[0] / nGap;
@@ -346,7 +346,7 @@ void Inspect::FindCandidateParallel(int nStartX, int nWidth, int nGap)
 			_CandiArea.SetData(nID, nMaxDiff, nMaxPosX * nLastGap + nLastGap / 2, nMaxPosY * nLastGap + nLastGap, nFlag);
 			//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		}
-		});
+	});
 }
 
 int Inspect::FindCandiSorting(int nStartX, int nWidth, int nGap)

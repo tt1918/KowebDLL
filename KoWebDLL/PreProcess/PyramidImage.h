@@ -13,6 +13,7 @@ private:
 
 	int				_MaxLv;
 
+	bool			_IsFinish;
 public:
 	
 public:
@@ -26,6 +27,10 @@ public:
 	int GetImageHeight(int level) { return _Height[level]; }
 
 	bool MakeImage(unsigned char* buf, int width, int height);
+
+	void Reset() { _IsFinish = false; }
+	bool IsFinish() {	return _IsFinish;	}
+
 
 private:
 	void DeleteBuf();

@@ -5,13 +5,13 @@
 
 Profile::Profile()
 {
-	m_pProfile = nullptr;
-	m_pProfile100 = nullptr;
-	m_pProfileH = nullptr;
-	m_nProfileWidth = 0;
+	_pProfile = nullptr;
+	_pProfile100 = nullptr;
+	_pProfileH = nullptr;
+	_nProfileWidth = 0;
 
-	m_pTmpProf = nullptr;
-	m_pTmpCnt = nullptr;
+	_pTmpProf = nullptr;
+	_pTmpCnt = nullptr;
 }
 
 Profile::~Profile()
@@ -22,49 +22,49 @@ Profile::~Profile()
 void Profile::CreateProfile(int width)
 {
 	DeleteProfile();
-	m_nProfileWidth = width;
+	_nProfileWidth = width;
 
-	m_pProfile = new int[width];
-	m_pProfile100 = new int[width];
+	_pProfile = new int[width];
+	_pProfile100 = new int[width];
 
-	m_pProfileH = new int[width / 2];
+	_pProfileH = new int[width / 2];
 
-	m_pTmpProf = new int[10 * width];
-	m_pTmpCnt = new int[10 * width];
+	_pTmpProf = new int[10 * width];
+	_pTmpCnt = new int[10 * width];
 }
 
 void Profile::DeleteProfile()
 {
-	if (m_pProfile != nullptr)
+	if (_pProfile != nullptr)
 	{
-		delete[] m_pProfile;
-		m_pProfile = nullptr;
+		delete[] _pProfile;
+		_pProfile = nullptr;
 	}
 
-	if (m_pProfile100 != nullptr)
+	if (_pProfile100 != nullptr)
 	{
-		delete[] m_pProfile100;
-		m_pProfile100 = nullptr;
+		delete[] _pProfile100;
+		_pProfile100 = nullptr;
 	}
 
-	if (m_pProfileH != nullptr)
+	if (_pProfileH != nullptr)
 	{
-		delete[] m_pProfileH;
-		m_pProfileH = nullptr;
+		delete[] _pProfileH;
+		_pProfileH = nullptr;
 	}
 
-	m_nProfileWidth = 0;
+	_nProfileWidth = 0;
 
-	if (m_pTmpProf != nullptr)
+	if (_pTmpProf != nullptr)
 	{
-		delete[] m_pTmpProf;
-		m_pTmpProf = nullptr;
+		delete[] _pTmpProf;
+		_pTmpProf = nullptr;
 	}
 
-	if (m_pTmpCnt != nullptr)
+	if (_pTmpCnt != nullptr)
 	{
-		delete[] m_pTmpCnt;
-		m_pTmpCnt = nullptr;
+		delete[] _pTmpCnt;
+		_pTmpCnt = nullptr;
 	}
 
 }
@@ -72,7 +72,7 @@ void Profile::DeleteProfile()
 void Profile::MakeProfileData(unsigned char* src, int width, int height, int pitch)
 {
 	// Profile 사이즈 확인함.
-	if (m_pProfile == nullptr || m_pProfile100 == nullptr || m_nProfileWidth != width)
+	if (_pProfile == nullptr || _pProfile100 == nullptr || _nProfileWidth != width)
 		CreateProfile(width);
 
 	int i, j;
@@ -103,8 +103,8 @@ void Profile::MakeProfileData(unsigned char* src, int width, int height, int pit
 	// 10개 구역으로 평균 취합한 후 중심값 취하는 방식으로 처리		- S
 	int nStep = (height % 10 == 0 ? height : height + 10) / 10;
 	int tmpIdx, tmpOffset;
-	memset(m_pTmpProf, 0x00, sizeof(int) * 10 * width);
-	memset(m_pTmpCnt, 0x00, sizeof(int) * 10 * width);
+	memset(_pTmpProf, 0x00, sizeof(int) * 10 * width);
+	memset(_pTmpCnt, 0x00, sizeof(int) * 10 * width);
 
 	for (i = 0; i < height; i += nSkipY)
 	{
@@ -112,15 +112,15 @@ void Profile::MakeProfileData(unsigned char* src, int width, int height, int pit
 		tmpOffset = tmpIdx * width;
 		for (j = 0; j < width; j++)
 		{
-			m_pTmpProf[tmpOffset + j] += *(src + pitch * i + j);
-			m_pTmpCnt[tmpOffset + j]++;
+			_pTmpProf[tmpOffset + j] += *(src + pitch * i + j);
+			_pTmpCnt[tmpOffset + j]++;
 		}
 	}
 
 	for (i = 0; i < 10; i++)
 	{
 		for (j = 0; j < width; j++)
-			m_pTmpProf[i * width + j] /= m_pTmpCnt[i * width + j];
+			_pTmpProf[i * width + j] /= _pTmpCnt[i * width + j];
 	}
 
 	int tmpBuf[10];
@@ -128,24 +128,24 @@ void Profile::MakeProfileData(unsigned char* src, int width, int height, int pit
 	for (j = 0; j < width; j++)
 	{
 		for (i = 0; i < 10; i++)
-			tmpBuf[i] = m_pTmpProf[i * width + j];
+			tmpBuf[i] = _pTmpProf[i * width + j];
 
 		SortData(10, tmpBuf);
 		// 중간 데이터만 취합
-		*(m_pProfile100 + j) = (tmpBuf[4] + tmpBuf[5]) / 2;
+		*(_pProfile100 + j) = (tmpBuf[4] + tmpBuf[5]) / 2;
 	}
 	// 10개 구역으로 평균 취합한 후 중심값 취하는 방식으로 처리		- E
 	////////////////////////////////////////////////////////////////////////
 	
-	memset(m_pProfile, 0x00, sizeof(int)*width);
+	memset(_pProfile, 0x00, sizeof(int)*width);
 	for (i = 0; i < height; i += nSkipY)
 	{
 		for (j = 0; j < width; j++)
 		{
 			nValue = *(src + pitch*i + j);
-			if (nValue>*(m_pProfile100 + j) + 10)	*(m_pProfile + j) += *(m_pProfile100 + j) + 10;
-			else if (nValue<*(m_pProfile100 + j) - 10)   *(m_pProfile + j) += *(m_pProfile100 + j) - 10;
-			else											*(m_pProfile + j) += nValue;
+			if (nValue>*(_pProfile100 + j) + 10)	*(_pProfile + j) += *(_pProfile100 + j) + 10;
+			else if (nValue<*(_pProfile100 + j) - 10)   *(_pProfile + j) += *(_pProfile100 + j) - 10;
+			else											*(_pProfile + j) += nValue;
 
 			if (nValue>nMax) nMax = nValue;
 			if (nValue<nMin) nMin = nValue;
@@ -155,16 +155,37 @@ void Profile::MakeProfileData(unsigned char* src, int width, int height, int pit
 	////////////////////////////////////////////////////////////////////////
 	//LognScratchSimple을위한 추가 - S
 	for (j = 0; j < width; j++)
-		*(m_pProfile100 + j) = (*(m_pProfile + j) * 100) / nDevide;
+		*(_pProfile100 + j) = (*(_pProfile + j) * 100) / nDevide;
 	//LognScratchSimple을위한 추가 - E
 	////////////////////////////////////////////////////////////////////////
 
 	for (j = 0; j<width; j++)
 	{
-		*(m_pProfile + j) /= nDevide;
-		nAllSum += *(m_pProfile + j);
+		*(_pProfile + j) /= nDevide;
+		nAllSum += *(_pProfile + j);
 	}
 
 	for (j = 0; j<width / 2; j++)
-		*(m_pProfileH + j) = (*(m_pProfile + 2 * j) + *(m_pProfile + 2 * j + 1)) / 2;
+		*(_pProfileH + j) = (*(_pProfile + 2 * j) + *(_pProfile + 2 * j + 1)) / 2;
+}
+
+// 검사영역으로 평균밝기 구한다.
+int	Profile::CalcAvgBright(int stX, int edX, int refBright)
+{
+	int j, i;
+	int nSum = 0;
+	_AvgBright = 0;
+	if (edX - stX > 10)
+	{
+		for (j = stX; j < edX; j++)
+			nSum += *(_pProfile + j);
+
+		_AvgBright = (double)nSum / (edX - stX);
+	}
+	else
+	{
+		_AvgBright = refBright;
+	}
+
+	return _AvgBright;
 }

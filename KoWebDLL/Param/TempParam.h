@@ -43,7 +43,7 @@ namespace TempParam
 
 	typedef struct _stPCInfo
 	{
-		wchar_t		Name[8];	// "COS-101" 같이 7자리 
+		std::string	Name;		// "COS-101" 같이 7자리 
 		int			ID;			// 101 같은 3자리 수
 		int			Optic;		// 907이면 9, 103이면 1, 405면 4 (어떤 서버를 쓰느냐에 따라 달라짐)
 		int			FirstNo;	// COS번호
@@ -314,50 +314,50 @@ namespace TempParam
 	// 임시 검사 파라미터 
 	typedef struct _stTempParam
 	{
-		int			PGStart;				// Program이 켜지면 1
+		int				PGStart;				// Program이 켜지면 1
 
-		int			LatestResult;
-		int			ChangeedExpoFrameID;	// 노출이 바뀐 프레임
-		int			UsePrevImage;			// 직전 Frame
+		int				LatestResult;
+		int				ChangeedExpoFrameID;	// 노출이 바뀐 프레임
+		int				UsePrevImage;			// 직전 Frame
 
-		TPW_HOLE	Hole;					// PTW Hole 처리 
-		PC_INFO		PcInfo;					
+		TPW_HOLE		Hole;					// PTW Hole 처리 
+		PC_INFO			PcInfo;					
 		
-		int			ConnectAIServer;		// 1이면 연결, 0이면 끊김. 
-		int			FrameDiff;				// 결과 전송 시 Frame 차이
-		int			FrameDiffSum[2];		// 디버깅 용
+		int				ConnectAIServer;		// 1이면 연결, 0이면 끊김. 
+		int				FrameDiff;				// 결과 전송 시 Frame 차이
+		int				FrameDiffSum[2];		// 디버깅 용
 
-		int			RunInsp;				// 검사 중이면 1
-		bool		SaveOneFrame;			// true 이면 프레임 저장
+		int				RunInsp;				// 검사 중이면 1
+		bool			SaveOneFrame;			// true 이면 프레임 저장
 
 		// 노출 변경
-		int			ApplyExposure;			// 1이면 Exposure를 적용
-		int			ExpoData;				// 노출 시간(usec)
-		int			PrevExpoData;			// 이전 노출 시간 데이터
+		int				ApplyExposure;			// 1이면 Exposure를 적용
+		int				ExpoData;				// 노출 시간(usec)
+		int				PrevExpoData;			// 이전 노출 시간 데이터
 
-		int			StartAutoExpo;			// 자동밝기 시작
+		int				StartAutoExpo;			// 자동밝기 시작
 
 		// 검사 영역
 		INSP_EDGE_PARAM InspArea;
 
-		int			FlatSuccess;			// Flat 처리 성공
-		int			MakePyramidDone;		// 피라미드 이미지 생성 완료
+		int				FlatSuccess;			// Flat 처리 성공
+		int				MakePyramidDone;		// 피라미드 이미지 생성 완료
 
 		// Count 
-		CNT_PARAM	CntInfo;
+		CNT_PARAM		CntInfo;
 
-		int			ShiftDo;
-		int			RecvMark;
+		int				ShiftDo;
+		int				RecvMark;
 
-		int			GrabFrameID;
-		bool		FirstReframe;		// 프레임 오차 발생 시, 첫 1번은 시간 오차 발생안해도 프레임 수정
+		int				GrabFrameID;
+		bool			FirstReframe;		// 프레임 오차 발생 시, 첫 1번은 시간 오차 발생안해도 프레임 수정
 
 		// 화면 표시 데이터 
-		DISP_INFO	DispInfo;	
+		DISP_INFO		DispInfo;	
 
-		int			NBOImage;			// NBO 이미지는 평활화 다르게 한다.
+		int				NBOImage;			// NBO 이미지는 평활화 다르게 한다.
 		
-		IMG_PARAM	ImgParam;
+		IMG_PARAM		ImgParam;
 
 		// 군집 관련
 		KOONJIP_PARAM	KoonJip;
@@ -369,88 +369,88 @@ namespace TempParam
 		LINE_KIPO		LineKipo;
 
 		// 세로선 얼룩
-		int			MaxMultiVerLineVal;
+		int				MaxMultiVerLineVal;
 
 		// 서버로 데이터 처리 
-		int FrameInfoSendCount;
-		int FrameInfoScanCountBack;
-		int ImageInfoCount;
-		int ImageInfoSendCount;
+		int				FrameInfoSendCount;
+		int				FrameInfoScanCountBack;
+		int				ImageInfoCount;
+		int				ImageInfoSendCount;
 
-		int DefectExist[2];	// Red, Blue 불량이 있으면 1
+		int				DefectExist[2];	// Red, Blue 불량이 있으면 1
 
-		int LoadSizeX;
-		int LoadSizeY;
+		int				LoadSizeX;
+		int				LoadSizeY;
 
 		CYCLE_DEFECT_INFO CycleDefect;	// 주기 결점 정보
 
-		int LotChangeSignal;
-		int LotChnageFrame;
-		int LotChangeFMCount;
+		int				LotChangeSignal;
+		int				LotChnageFrame;
+		int				LotChangeFMCount;
 
 		// Spot 검사
-		int MaxGray;
-		int MinGray;
+		int				MaxGray;
+		int				MinGray;
 
 		// 얼룩 검사
-		PXL_INFO_D MuraMax;
-		PXL_INFO_D MuraMin;
+		PXL_INFO_D		MuraMax;
+		PXL_INFO_D		MuraMin;
 
 		// 쿠닉 검사
-		VALUE_INFO_D Cunic;
+		VALUE_INFO_D	Cunic;
 
 		// LR
-		PXL_INFO_I MaxLR;	// LR 최고값
-		PXL_INFO_I MaxLRW;	// LRW 최고값
+		PXL_INFO_I		MaxLR;	// LR 최고값
+		PXL_INFO_I		MaxLRW;	// LRW 최고값
 
-		int CkTape;	// Tape 신호 들어오면 1,2,3 바뀜
-		int CkSplice;	// 2동,3동에서 Tape 신호
-		int CkSpliceCount; // 3동에서 보내는 Tape 신호
+		int				CkTape;	// Tape 신호 들어오면 1,2,3 바뀜
+		int				CkSplice;	// 2동,3동에서 Tape 신호
+		int				CkSpliceCount; // 3동에서 보내는 Tape 신호
 
-		int DayChange;		// 바뀐 날짜 보관
-		int MonthChange;	// 바뀐 달 보관
+		int				DayChange;		// 바뀐 날짜 보관
+		int				MonthChange;	// 바뀐 달 보관
 
 		// 자동 밝기 조정
-		int AutoAdjStart;	// 자동 밝기 조정 시작
-		bool EnaAutoAdj;	// 자동 밝기 조정을 일시적으로 정지
+		int				AutoAdjStart;	// 자동 밝기 조정 시작
+		bool			EnaAutoAdj;	// 자동 밝기 조정을 일시적으로 정지
 
-		int ErrCode;		// 1이면 밝기가 검사 범위를 벗어남
+		int				ErrCode;		// 1이면 밝기가 검사 범위를 벗어남
 
 		// 투영 검사 
-		int MaxLineVal;
-		int MaxLineTDVal;
+		int				MaxLineVal;
+		int				MaxLineTDVal;
 
 		// 투영 검사
-		PXL_INFO_I MaxLine;
-		PXL_INFO_I MaxLineTD;
-		PXL_INFO_I MaxLineAngle;
-		int MountainCnt[5];			// 산 갯수
+		PXL_INFO_I		MaxLine;
+		PXL_INFO_I		MaxLineTD;
+		PXL_INFO_I		MaxLineAngle;
+		int				MountainCnt[5];			// 산 갯수
 
 		// 수직 라인 검사.
-		PXL_INFO_I MaxWLine;
-		PXL_INFO_I MaxBLine;
+		PXL_INFO_I		MaxWLine;
+		PXL_INFO_I		MaxBLine;
 
 		// 스크라치 
-		SC_PARAM Scratch;
+		SC_PARAM		Scratch;
 
 		// Pattern
-		int LastPatID;
+		int				LastPatID;
 
 		// LUT
-		int MakeLUT;	// LUT를 만들었으면 1
+		int				MakeLUT;	// LUT를 만들었으면 1
 
 		// Gain 변경
-		int GainChangeFlag;		// 1 이면 Grab Stop 후 Gain 변경
-		int SensorChangeFlag;	// 카메라 센서 모드 0,1,2 (0:4S, 1: 1S, 2: 2S)
+		int				GainChangeFlag;		// 1 이면 Grab Stop 후 Gain 변경
+		int				SensorChangeFlag;	// 카메라 센서 모드 0,1,2 (0:4S, 1: 1S, 2: 2S)
 
 		// 불량 영상
-		int FlagNGSave;
-		unsigned char* NGImage;		// 가장 최근 불량 영상
-		unsigned char* NGImageLoad;	// Load한 불량 
+		int				FlagNGSave;
+		unsigned char*	NGImage;		// 가장 최근 불량 영상
+		unsigned char*	NGImageLoad;	// Load한 불량 
 
-		std::string	MyComName;
-		std::string	LotName;
-		std::string	NewLotName;
+		std::string		MyComName;
+		std::string		LotName;
+		std::string		NewLotName;
 		
 		__time64_t		LastSendTime;
 		__time64_t		TimeCheckFrame;
@@ -465,33 +465,33 @@ namespace TempParam
 		DAKANO_PARAM	Dakano;
 
 		// 물때 이미지 저장용
-		int			NGMulTae;			// 물때 불량 발생함
-		int			SaveNumIDCompImg;	// Save ID(1/8 압축)
+		int				NGMulTae;			// 물때 불량 발생함
+		int				SaveNumIDCompImg;	// Save ID(1/8 압축)
 
 		// 정코 COS1에서 사용하는 변수
-		COAT_PARAM CoatPrm;
+		COAT_PARAM		CoatPrm;
 
 		// 무라 라인
-		int SetBaseLine;
-		int ReadyBaseLine;
+		int				SetBaseLine;
+		int				ReadyBaseLine;
 
 		// 무라 
-		int MuraMaxVal;
+		int				MuraMaxVal;
 
 		// Delay 이미지 처리
-		int GrabNextDelay;
+		int				GrabNextDelay;
 
 		// Knulling 데이터
-		KNULLING_PARAM Knulling;
+		KNULLING_PARAM	Knulling;
 
-		bool AutoLightCtrl;			// 서버에서 자동 조명제어시 1, 아니면 0( 밝기 정보를 빠르게 보냄)
+		bool			AutoLightCtrl;			// 서버에서 자동 조명제어시 1, 아니면 0( 밝기 정보를 빠르게 보냄)
 
 		// 랏 변경 시 검사 스킵 처리
-		bool	IsLeadingSkipInsp;
-		int		PolSensorCnt[2];	// 랏 체인지 신호 들어오고 Sensor 값 카운트. 0:Off Count, 1:On Count
+		bool			IsLeadingSkipInsp;
+		int				PolSensorCnt[2];	// 랏 체인지 신호 들어오고 Sensor 값 카운트. 0:Off Count, 1:On Count
 
-		bool	IsSkipPreSepa;		// 강제 SEPA LOT 전송 받으면 TRUE로 변경. 검사 진행하지 않도록 처리
-		bool	ManualInsp;			// UI에서 검사 버튼을 눌렀을 때 검사하도록 처리(SEPA LOT 인 경우 검사 안되서 추가)
+		bool			IsSkipPreSepa;		// 강제 SEPA LOT 전송 받으면 TRUE로 변경. 검사 진행하지 않도록 처리
+		bool			ManualInsp;			// UI에서 검사 버튼을 눌렀을 때 검사하도록 처리(SEPA LOT 인 경우 검사 안되서 추가)
 
 		NOT_INS_AREA	NotInspArea;	// 서버로 부터 받은 검사 스킵 영역 데이터
 

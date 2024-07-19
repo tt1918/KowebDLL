@@ -5,7 +5,6 @@ InspectCOS2::InspectCOS2()
 	Init();
 }
 
-
 InspectCOS2::~InspectCOS2()
 {
 }
@@ -22,5 +21,5 @@ void InspectCOS2::Release()
 
 void InspectCOS2::Run()
 {
-
+	SpotInspect();
 }

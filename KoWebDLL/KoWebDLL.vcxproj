@@ -22,32 +22,32 @@
     <ProjectGuid>{BF11C046-1BB0-4BCB-8463-CD0AAC117A01}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>KoWebDLL</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -158,6 +158,7 @@
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Inspector.h" />
     <ClInclude Include="Inspect\Inspect.h" />
+    <ClInclude Include="Inspect\InspectCos.h" />
     <ClInclude Include="Inspect\InspectCOS1.h" />
     <ClInclude Include="Inspect\InspectCOS2.h" />
     <ClInclude Include="Inspect\InspectCOS3.h" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Param\CosCParam.h" />
     <ClInclude Include="Param\CosDParam.h" />
     <ClInclude Include="Param\CosEParam.h" />
+    <ClInclude Include="Param\CosParam.h" />
     <ClInclude Include="Param\DefectType.h" />
     <ClInclude Include="Param\enumParam.h" />
     <ClInclude Include="Param\InspParam.h" />

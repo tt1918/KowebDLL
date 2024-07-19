@@ -45,7 +45,7 @@ void FindEdge::Destroy()
 	m_nWidth = m_nHeight = 0;
 }
 
-bool FindEdge::GetEdge(unsigned char* src, int width, int height, double dScaleX, int nEdgeTh, int nAlgorithm, int nOffset, int nEdgeDir, int notInspArea, bool isDualEdge)
+bool FindEdge::GetEdge(TempParam::INSP_EDGE_PARAM* edgeData, unsigned char* src, int width, int height, double dScaleX, int nEdgeTh, int nAlgorithm, int nOffset, int nEdgeDir, int notInspArea, bool isDualEdge)
 {
 	int nEdge = 0;
 	int nEdgeL, nEdgeR;
@@ -76,7 +76,7 @@ bool FindEdge::GetEdge(unsigned char* src, int width, int height, double dScaleX
 		case eParamType::eCOSC: nEdgeTh = 50; nEdgeType = 2;  break;
 		case eParamType::eCOSD: nEdgeTh = 50; nEdgeType = 2;  break;
 		case eParamType::eCBCR: nEdgeTh = 40; nEdgeType = 2;  break;
-		case eParamType::eCMAK:
+		case eParamType::eCOSE:
 			nEdgeTh = 50; 
 			if(isDualEdge==false)	nEdgeType = 2;
 			else { nEdgeType = 5; bUseDual = true; }
@@ -104,8 +104,13 @@ bool FindEdge::GetEdge(unsigned char* src, int width, int height, double dScaleX
 		nEdge = -2;
 	}
 
-	m_nInspX1 = 0;
-	m_nInspX2 = width - 1;
+	edgeData->EdgeX1 = m_nInspEdgeX1 = 0;
+	edgeData->EdgeX2 = m_nInspEdgeX2 = width - 1;
+
+	// 에지 기본 정보 업데이트
+
+	edgeData->Dir = nEdgeDir;
+	edgeData->Type = notInspArea;
 
 	if (bUseDual == false)	// 한쪽에만 에지가 존재할 경우
 	{
@@ -134,6 +139,12 @@ bool FindEdge::GetEdge(unsigned char* src, int width, int height, double dScaleX
 				if (m_nInspX2 < m_nInspX1) m_nInspX2 = m_nInspX1;
 			}
 			nFoundEdge = nEdge;
+
+			edgeData->X1 = m_nInspX1;
+			edgeData->X2 = m_nInspX2;
+			edgeData->EdgeX1 = m_nInspEdgeX1;
+			edgeData->EdgeX2 = m_nInspEdgeX2;
+			edgeData->Found = nFoundEdge;
 		}
 	}
 	else					// 양쪽에 에지가 전부 존재할 경우
@@ -155,6 +166,12 @@ bool FindEdge::GetEdge(unsigned char* src, int width, int height, double dScaleX
 			m_nInspX2 = nEdgeR - nOffset;
 			m_nInspEdgeX2 = nEdgeR;
 		}
+
+
+		edgeData->X1 = m_nInspX1;
+		edgeData->X2 = m_nInspX2;
+		edgeData->EdgeX1 = m_nInspEdgeX1;
+		edgeData->EdgeX2 = m_nInspEdgeX2;
 	}
 
 	return true;

@@ -5,18 +5,39 @@
 
 FlatImage::FlatImage()
 {
-	m_pArea = new int[MAX_CROSS_WIDTH];
+	_pArea = new int[MAX_CROSS_WIDTH];
+
+	_flatImg = nullptr;
 }
 
 FlatImage::~FlatImage()
 {
-	ProjFactor.Clear();
+	_projFactor.Clear();
 
-	if (m_pArea != nullptr)
+	if (_pArea != nullptr)
 	{
-		delete[] m_pArea;
-		m_pArea = nullptr;
+		delete[] _pArea;
+		_pArea = nullptr;
 	}
+
+	Clear();
+}
+
+void FlatImage::Init(int width, int height)
+{
+	_width = width;
+	_height = height;
+}
+
+void FlatImage::Clear()
+{
+	if (_flatImg != nullptr)
+	{
+		delete[] _flatImg;
+		_flatImg = nullptr;
+	}
+	
+	_width = _height = 0;
 }
 
 void FlatImage::MakeFlatLineScan(unsigned char* src, unsigned char* dst, int* profile, int flatBrt, int left, int width, int height, int pitch, int avg, int inspX1, int inspX2)
@@ -27,8 +48,8 @@ void FlatImage::MakeFlatLineScan(unsigned char* src, unsigned char* dst, int* pr
 	int* projFactor;
 
 	// Initialize Profile Data 
-	ProjFactor.Init(width);
-	projFactor = ProjFactor.Val;
+	_projFactor.Init(width);
+	projFactor = _projFactor.Val;
 
 	if (right <= inspX1 || left >= inspX2)
 	{
@@ -117,7 +138,7 @@ void FlatImage::MakeFlatArea320(unsigned char* src, unsigned char* dst, int nBas
 		/*for (j = left; j < right; j++) 
 			nImageProjection[j] = m_pArea[j] = 0;*/
 		memset(nImageProjection, 0x00, sizeof(int)*MAX_CROSS_WIDTH);
-		memset(m_pArea, 0x00, sizeof(int)*MAX_CROSS_WIDTH);
+		memset(_pArea, 0x00, sizeof(int)*MAX_CROSS_WIDTH);
 
 		for (i = (m * nHeightH); i < ((m + 1) * nHeightH); i += 4)
 		{
@@ -130,7 +151,7 @@ void FlatImage::MakeFlatArea320(unsigned char* src, unsigned char* dst, int nBas
 
 		nCount = nSum = 0;
 		for (j = left; j < right; j++)
-			m_pArea[j] = nImageProjection[j] + 15;
+			_pArea[j] = nImageProjection[j] + 15;
 		
 		//------------------------------------------------------------------------------------------------
 
@@ -143,7 +164,7 @@ void FlatImage::MakeFlatArea320(unsigned char* src, unsigned char* dst, int nBas
 			for (j = left; j < right; j++)
 			{
 				nTemp = *(src + i * pitch + j);
-				if (nTemp > m_pArea[j]) nTemp = m_pArea[j];
+				if (nTemp > _pArea[j]) nTemp = _pArea[j];
 				nImageProjection[j] += nTemp;
 			}
 		}
