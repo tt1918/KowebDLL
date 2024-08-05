@@ -221,11 +221,11 @@ void Inspect::FindCandidateParallel(int nStartX, int nWidth, int nGap)
 	if ((nStartX + nWidth) - nNW * nGap > 0)      nNW++;
 
 	//l_nPyramidHeight[0]가 nGap의 배수가 아니면 아래와 같이처리-------
-	nM = nPyWidth[0] / nGap;
-	if (nPyWidth[0] - nM * nGap > 0)    nM++;        
+	nM = nPyHeight[0] / nGap;
+	if (nPyHeight[0] - nM * nGap > 0)    nM++;
 
 	//전체영역이 nGap의 배수가 아니면 
-	nNPitch = nPyWidth[0] / nGap;
+	nNPitch = nPyWidth[0] / nGap; 
 	if (nPyWidth[0] > nNPitch * nGap)  nNPitch++;
 	//-----------------------------------------------------------------
 
@@ -233,7 +233,9 @@ void Inspect::FindCandidateParallel(int nStartX, int nWidth, int nGap)
 	_CandiB.Reset();
 	_CandiArea.Reset();
 
-	Concurrency::parallel_for(0, nM, [&](int n) {
+//	Concurrency::parallel_for(0, nM, [&](int n) {
+	for (int n = 0; n < nM; n++)
+	{
 		int nLimitX1 = _pTmpData->InspArea.X1 / 2;
 		int nLimitX2 = _pTmpData->InspArea.X2 / 2;
 
@@ -346,7 +348,8 @@ void Inspect::FindCandidateParallel(int nStartX, int nWidth, int nGap)
 			_CandiArea.SetData(nID, nMaxDiff, nMaxPosX * nLastGap + nLastGap / 2, nMaxPosY * nLastGap + nLastGap, nFlag);
 			//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		}
-	});
+//	});
+	}
 }
 
 int Inspect::FindCandiSorting(int nStartX, int nWidth, int nGap)
@@ -1256,7 +1259,7 @@ int Inspect::GetLevel(double dValue, double* pValue)
 
 	for (i = 0; i < MAX_LEVEL; i++)
 	{
-		if (_pParam->UseLv[i] && pValue[i] > 0 && dValue >= pValue[i])
+		if (_pParam->_UseLv[i] && pValue[i] > 0 && dValue >= pValue[i])
 		{
 			nLevel = i + 1;
 			break;
@@ -1274,7 +1277,7 @@ int Inspect::GetLevel(int dValue, int* pValue)
 
 	for (i = 0; i < MAX_LEVEL; i++)
 	{
-		if (_pParam->UseLv[i] && pValue[i] > 0 && dValue >= pValue[i])
+		if (_pParam->_UseLv[i] && pValue[i] > 0 && dValue >= pValue[i])
 		{
 			nLevel = i + 1;
 			break;
@@ -1292,7 +1295,7 @@ int Inspect::GetLevel(double dValue, double dSize, int nAvg, int* pValue, double
 
 	for (i = 0; i < MAX_LEVEL; i++)
 	{
-		if (_pParam->UseLv[i] && (pValue[i] > 0.0001 || pSize[i] > 0.0001) && (int)dValue >= pValue[i] && dSize >= pSize[i])
+		if (_pParam->_UseLv[i] && (pValue[i] > 0.0001 || pSize[i] > 0.0001) && (int)dValue >= pValue[i] && dSize >= pSize[i])
 		{
 			nLevel = i + 1;
 			break;
@@ -1311,7 +1314,7 @@ int Inspect::GetLevel(double dValueUp, double dValueDn, double dSize, int* pValu
 
 	for (i = 0; i < MAX_LEVEL; i++)
 	{
-		if (_pParam->UseLv[i] && ((pValueUp[i] > 0.0001 && pValueDn[i] > 0.0001) || pSize[i] > 0.0001) && (int)dValueUp >= pValueUp[i] && (int)dValueDn >= pValueDn[i] && dSize >= pSize[i])
+		if (_pParam->_UseLv[i] && ((pValueUp[i] > 0.0001 && pValueDn[i] > 0.0001) || pSize[i] > 0.0001) && (int)dValueUp >= pValueUp[i] && (int)dValueDn >= pValueDn[i] && dSize >= pSize[i])
 		{
 			nLevel = i + 1;
 			break;
@@ -1329,7 +1332,7 @@ int Inspect::GetLevel(double dValue, double dSize, double* pValue, double* pSize
 
 	for (i = 0; i < MAX_LEVEL; i++)
 	{
-		if (_pParam->UseLv[i] && (pValue[i] > 0.0001 || pSize[i] > 0.0001) && (int)dValue >= pValue[i] && dSize >= pSize[i])
+		if (_pParam->_UseLv[i] && (pValue[i] > 0.0001 || pSize[i] > 0.0001) && (int)dValue >= pValue[i] && dSize >= pSize[i])
 		{
 			nLevel = i + 1;
 			break;
@@ -2751,4 +2754,137 @@ void Inspect::BlobElongation(LPBYTE fm, int left, int top, int right, int bottom
 	for (i = top; i < bottom; i++)
 		for (j = left; j < right; j++)
 			if (*(fm + pitch * i + j) > 0) *(fm + pitch * i + j) = 255;
+}
+
+void Inspect::GetCunicValue_SameFrame(LPBYTE fm, int nX, int nY, int nMinX, int nMaxX, int pitch, int nMaxHeight, int nCunicSize, double* pCunic, int* pCunicValue)
+{
+	int i, j;
+	int ll, tt, rr, bb;
+	double dMaxCunic = 0, dCunic;
+	int nMaxPosX = -1, nMaxPosY = -1;
+	int nSum = 0, nAvg;
+	int nMaxValue = 0;
+	double  dBaseStd[2];
+
+	//영상양끝이 일반적으로 이상하기 때문에 양끝 10Pixel은 사용하지 않는다.---
+	if (nMinX < 10)	   nMinX = 10;
+	if (nMaxX > pitch - 10) nMaxX = pitch - 10;
+	//------------------------------------------------------------------------
+
+	*pCunic = *pCunicValue = 0;
+	if (nMaxX - nMinX - 2 < 2 * nCunicSize) return;
+
+	ll = nX - nCunicSize;   if (ll < nMinX + 1)   ll = nMinX + 1;
+	rr = ll + nCunicSize * 2; if (rr > nMaxX - 1) { rr = nMaxX - 1; ll = rr - nCunicSize * 2; }
+
+	tt = nY - nCunicSize;   if (tt < 1) tt = 1;
+	bb = tt + nCunicSize * 2; if (bb > nMaxHeight - 1) { bb = nMaxHeight - 1; tt = bb - nCunicSize * 2; }
+
+	//평균값, 최대값 구함--------------------------------------------------
+	for (i = tt; i < bb; i++)
+		for (j = ll; j < rr; j++)
+		{
+			nSum += *(fm + pitch * i + j);
+			if (*(fm + pitch * i + j) > nMaxValue) nMaxValue = *(fm + pitch * i + j);
+		}
+	nAvg = nSum / ((rr - ll) * (bb - tt));
+	*pCunicValue = nMaxValue - nAvg;
+	if (*pCunicValue > 99) *pCunicValue = 99;
+	//--------------------------------------------------------------------
+
+	tt = nY - nCunicSize / 2 - 20; if (tt < 0) tt = 0;
+	bb = tt + nCunicSize;
+
+	for (i = 0; i < 5; i++)
+	{
+		ll = nX - nCunicSize / 2 - 20; if (ll < nMinX) ll = nMinX;
+		rr = ll + nCunicSize;
+
+		for (j = 0; j < 5; j++)
+		{
+			dCunic = FinStd_WithLimitCut(fm, nAvg, ll, tt, rr, bb, pitch);
+
+			if (dCunic > dMaxCunic)
+			{
+				dMaxCunic = dCunic;
+				nMaxPosX = ll;
+				nMaxPosY = tt;
+			}
+
+			ll += 10;
+			rr += 10;
+			if (rr >= nMaxX)
+				break;
+		}
+		tt += 10;
+		bb += 10;
+		if (bb >= nMaxHeight)
+			break;
+	}
+	if (nMaxPosY < 0) return;
+	//최대값 찾기---------------------------------------------------
+	nMaxValue = 0;
+	for (i = nMaxPosY; i < nMaxPosY + nCunicSize; i++)
+		for (j = nMaxPosX; j < nMaxPosX + nCunicSize; j++)
+		{
+			if (*(fm + pitch * i + j) > nMaxValue) nMaxValue = *(fm + pitch * i + j);
+		}
+	//--------------------------------------------------------------	
+
+	if (dMaxCunic > 0)
+	{
+		if (nMaxPosX - nCunicSize * 2 < nMinX)			dBaseStd[0] = -101;
+		else									dBaseStd[0] = FinStd_WithLimitCut(fm, nAvg, nMaxPosX - nCunicSize * 2, nMaxPosY, nMaxPosX - nCunicSize, nMaxPosY + nCunicSize, pitch);
+
+		if (nMaxPosX + nCunicSize * 3 >= nMaxX)		dBaseStd[1] = -101;
+		else									dBaseStd[1] = FinStd_WithLimitCut(fm, nAvg, nMaxPosX + nCunicSize * 2, nMaxPosY, nMaxPosX + nCunicSize * 3, nMaxPosY + nCunicSize, pitch);
+
+		if (dBaseStd[0] > -100 && dBaseStd[1] > -100) *pCunic = dMaxCunic - (dBaseStd[0] + dBaseStd[1]) * 0.5;
+		else if (dBaseStd[0] > -100)				 *pCunic = dMaxCunic - dBaseStd[0];
+		else if (dBaseStd[1] > -100)				 *pCunic = dMaxCunic - dBaseStd[1];
+		else									 *pCunic = 0;
+
+		if (*pCunic < 0) *pCunic = 0;
+	}
+}
+
+#define REMOVE_W_LIMIT	10 
+#define REMOVE_B_LIMIT	10 
+
+double Inspect::FinStd_WithLimitCut(LPBYTE fm, int nAveMean, int left, int top, int right, int bottom, int pitch)
+{
+	int i, j, nTemp;
+	long nSum, nCount;
+	double dSum2, dStd;
+	int nArea = (right - left) * (bottom - top);
+
+	if (left <= 0) left = 1;
+	if (top <= 0)  top = 1;
+	if (right >= pitch) right = pitch - 1;
+	if (bottom >= _pSystem->ImageH) bottom = _pSystem->ImageH - 1;
+
+	nArea = (right - left) * (bottom - top);
+
+	nSum = 0;
+	dSum2 = 0;
+	nCount = 0;
+	for (i = top; i < bottom; i++)
+		for (j = left; j < right; j++)
+		{
+			nTemp = (*(fm + pitch * (i - 1) + j - 1) + *(fm + pitch * (i - 1) + j) + *(fm + pitch * (i - 1) + j + 1) +
+					 *(fm + pitch * i + j - 1) +	   *(fm + pitch * i + j) +		 *(fm + pitch * i + j + 1) +
+					 *(fm + pitch * (i + 1) + j - 1) + *(fm + pitch * (i + 1) + j) + *(fm + pitch * (i + 1) + j + 1)) / 9;
+
+			if (nTemp > nAveMean + REMOVE_W_LIMIT) { nTemp = nAveMean; nCount++; }
+			else if (nTemp < nAveMean - REMOVE_B_LIMIT) { nTemp = nAveMean; nCount++; }
+
+			if (nTemp > nAveMean + 3)  nTemp = nAveMean + 3;
+
+			nSum += nTemp;
+			dSum2 += (nTemp * nTemp);
+		}
+
+	dStd = sqrt((nArea * dSum2 - (double)nSum * (double)nSum) / ((double)nArea * ((double)nArea - 1.)));
+
+	return dStd;
 }

@@ -4,15 +4,21 @@
 #include "InspParam.h"
 #include "../Defines.h"
 #include "../Component/json/nlohmann/json.hpp"
+#include "TempParam.h"
+#include "SystemParam.h"
 
 using json = nlohmann::json;
 
 class Param
 {
 protected:
-	double			Data[300];
+	// 저장 버퍼
+	double				_Data[300];
+
 	// 파라미터 타입 처리
-	eParamType::eType m_nParamType;		
+	eParamType::eType	_ParamType;		
+	std::wstring		_MachineName;
+	std::wstring		_ModelName;
 
 public:
 	// 공통 파라미터 정적 생성
@@ -26,7 +32,9 @@ public:
 	InspParam::CAM_PARAM		Cam;
 	InspParam::HOLE_SKIP_PARAM	HoleSkip;
 
-	bool						UseLv[MAX_LEVEL];
+	bool						_UseLv[MAX_LEVEL];
+
+	float						_Cycle[MAX_CYCLE];
 
 	// 판불량 검출 영역
 	int							*_pCheckFishEyeArea;
@@ -64,6 +72,8 @@ public:
 	Param();
 	virtual ~Param();
 
+	void InitParam();
+
 	virtual void SetParam(); // 파라미터 개별 처리
 	virtual void GetParam();
 	virtual void Apply();							
@@ -71,11 +81,11 @@ public:
 	virtual void SetAddress();
 	void ResetAddress();
 
-	void Save(std::string path);			// 현재 데이터를 저장
-	bool Load(std::string path);			// 파일에서 데이터 읽어오기
+	void Save(TempParam::PC_INFO* pcInfo, std::wstring path, SystemParam* pSysParam);			// 현재 데이터를 저장
+	bool Load(TempParam::PC_INFO* pcInfo, std::wstring path, SystemParam* pSysParam);			// 파일에서 데이터 읽어오기
 
 	// Algorithm 확인
-	static eParamType::eType GetParamType(std::string path, std::string section);
+	static eParamType::eType GetParamType(std::wstring path, std::wstring section);
 
 	void to_json(json& j, const Param& p);
 	void from_json(json& j, const Param& p);
@@ -83,5 +93,5 @@ public:
 public:
 
 	//파라미터 형식을 알려준다.
-	eParamType::eType GetParamType() { return m_nParamType; }
+	eParamType::eType GetParamType() { return _ParamType; }
 };

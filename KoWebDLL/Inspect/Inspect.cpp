@@ -4,11 +4,14 @@
 Inspect::Inspect()
 {
 	Init();
+
+	_DefectData.Init();
 }
 
 
 Inspect::~Inspect()
 {
+	_DefectData.Release();
 }
 
 void Inspect::Init()
@@ -42,6 +45,8 @@ void Inspect::Init()
 	_pKProjFlatMax = nullptr;
 
 	_pFmTemp = nullptr;
+
+	
 }
 
 void Inspect::Create(int width, int height)
@@ -216,6 +221,9 @@ void Inspect::SpotInspect()
 
 	RECT rcTmpDefect, rcTmpDefect2;
 
+	double dCunic;
+	int nCunicValue;
+
 	_pTmpData->MaxGray = 0;
 	_pTmpData->MinGray = 255;
 
@@ -230,7 +238,7 @@ void Inspect::SpotInspect()
 	// 백/흑/쿠닉 파라미터 체크
 	for (i = 0; i < 10; i++)
 	{
-		if (_pParam->UseLv[i] == true)
+		if (_pParam->_UseLv[i] == true)
 		{
 			if (pLvUp != nullptr && (pLvUp->LvTH[i] > 0 || pLvUp->LvSize[i] > 0.0))	nWhiteInspect = 1;
 			if (pLvDn != nullptr && (pLvDn->LvTH[i] > 0 || pLvDn->LvSize[i] > 0.0))	nBlackInspect = 1;
@@ -247,7 +255,7 @@ void Inspect::SpotInspect()
 	{
 		for (i = 0; i < 10; i++)
 		{
-			if (_pParam->UseLv[i] == true && (pPress->Value[i] > 0 || pPress->Size[i] > 0.001))
+			if (_pParam->_UseLv[i] == true && (pPress->Value[i] > 0 || pPress->Size[i] > 0.001))
 			{
 				nWhiteInspect = nBlackInspect = 1;
 				break;
@@ -274,6 +282,13 @@ void Inspect::SpotInspect()
 	//백후보든 흑후보든 찍힘도 같이 검사한다.
 	int nLoop = _pSystem->CandiRect;
 	int nVal;
+
+	unsigned char* pImg=nullptr;
+	if (_pParam->Common.useFlatImage == true)
+		pImg = _pFlatImg;
+	else
+		pImg = _SrcImg;
+
 	for (i = 0; i < nLoop; i++)
 	{
 		// 핀홀 관련 전역 변수 초기화
@@ -288,7 +303,7 @@ void Inspect::SpotInspect()
 		{
 			nSkip = 0;
 			// 경계 투과(반사) 면 이미지가 울렁거려 단순울렁인지 Defect인지 한번 더 판단한다.
-			if (_pSystem->BDOverkill && CheckBoundaryOpticOverKill(_pFlatImg, _CandiW.PosX[i], _CandiW.PosY[i], _pSystem->ImageW, _pSystem->ImageH, 13)) nSkip = 1;
+			if (_pSystem->BDOverkill && CheckBoundaryOpticOverKill(pImg, _CandiW.PosX[i], _CandiW.PosY[i], _pSystem->ImageW, _pSystem->ImageH, 13)) nSkip = 1;
 			if (nSkip == 0 && _pParam->Common.AlgorithmType == COS2 && CheckSimpleGradient(_CandiW.PosX[i], _CandiW.PosY[i], 0, _pSystem->ImageW, _pSystem->ImageH, 3.5))	nSkip = 1;
 			if (_CandiB.PosX[i]< _pTmpData->InspArea.X1 || _CandiB.PosX[i]>_pTmpData->InspArea.X2)	nSkip = 1;
 		
@@ -296,8 +311,8 @@ void Inspect::SpotInspect()
 			{
 				dSize1[0] = dSize1[1] = dSize1[2] = dImulKipoSize1 = nValueUp1 = nValueDn1 = 0;
 				MakeDefectRect(_DefectData.Count, _CandiW.PosX[i], _CandiW.PosY[i], _pTmpData->InspArea.X1, _pTmpData->InspArea.X2);
-				GetSizeNValue(0, _pFlatImg, _CandiW.PosY[i], _DefectData.Area[_DefectData.Count].left, _DefectData.Area[_DefectData.Count].top, BAD_IMG_WIDTH, BAD_IMG_WIDTH, _pSystem->ImageW, 0,
-					_pParam->_pPress->AreaUpTH, _pParam->_pPress->AreaDnTH, _pParam->Common.AttachPxl, _pParam->Common.SizeMethod, _pParam->Cam.ScaleX, _pParam->Cam.ScaleY,
+				GetSizeNValue(0, pImg, _CandiW.PosY[i], _DefectData.Area[_DefectData.Count].left, _DefectData.Area[_DefectData.Count].top, BAD_IMG_WIDTH, BAD_IMG_WIDTH, _pSystem->ImageW, 0,
+					_pParam->_pLvUp->AreaTh, _pParam->_pLvDn->AreaTh, _pParam->Common.AttachPxl, _pParam->Common.SizeMethod, _pParam->Cam.ScaleX, _pParam->Cam.ScaleY,
 					&nAvg, &nValueUp, &nValueDn, dSize, &dImulKipoSize, &nDefectPosX, &nDefectPosY, &rcTmpDefect);
 
 				// 4배 압축 영상에서 Size 구함
@@ -327,11 +342,14 @@ void Inspect::SpotInspect()
 				// 찍힘검사 설정되어 있으면 찍힘검사한다. - S
 				if (_pParam->_pPress != nullptr && _pParam->_pPress->IsInsp == true)
 				{
-					GetSizeNValue(2, _pFlatImg, _CandiW.PosY[i], _DefectData.Area[_DefectData.Count].left, _DefectData.Area[_DefectData.Count].top, BAD_IMG_WIDTH, BAD_IMG_WIDTH, _pSystem->ImageW, 0,
+					GetSizeNValue(2, pImg, _CandiW.PosY[i], _DefectData.Area[_DefectData.Count].left, _DefectData.Area[_DefectData.Count].top, BAD_IMG_WIDTH, BAD_IMG_WIDTH, _pSystem->ImageW, 0,
 						_pParam->_pPress->AreaUpTH, _pParam->_pPress->AreaDnTH, _pParam->Common.AttachPxl, _pParam->Common.SizeMethod, _pParam->Cam.ScaleX, _pParam->Cam.ScaleY,
 						&nPAvg, &nPValueUp, &nPValueDn, dPSize, &dImulKipoSize, &nDefectPosX, &nDefectPosY, &rcTmpDefect2);
 					if (nPValueUp >= _pParam->_pPress->UpTh && nPValueDn >= _pParam->_pPress->DnTh)
-						nPLevel = GetLevel(nPValueUp + nPValueDn, dPSize[2], nPAvg, _pParam->_pPress->Value, _pParam->_pPress->Size);
+					{
+						nVal = nPValueUp + nPValueDn;
+						nPLevel = GetLevel(nVal, dPSize[2], nPAvg, _pParam->_pPress->Value, _pParam->_pPress->Size);
+					}
 					else
 						nPLevel = 0;
 
@@ -346,6 +364,7 @@ void Inspect::SpotInspect()
 						}
 					}
 				}
+				
 				// 찍힘검사 설정되어 있으면 찍힘검사한다. - E
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -425,7 +444,7 @@ void Inspect::SpotInspect()
 			nSkip = 0;
 
 			// 경계 투과(반사) 면 이미지가 울렁거려 단순울렁인지 Defect인지 한번 더 판단한다.
-			if (_pSystem->BDOverkill && CheckBoundaryOpticOverKill(_pFlatImg, _CandiB.PosX[i], _CandiB.PosY[i], _pSystem->ImageW, _pSystem->ImageH, 13)) nSkip = 1;
+			if (_pSystem->BDOverkill && CheckBoundaryOpticOverKill(pImg, _CandiB.PosX[i], _CandiB.PosY[i], _pSystem->ImageW, _pSystem->ImageH, 13)) nSkip = 1;
 			if (nSkip == 0 && _pParam->Common.AlgorithmType == COS2 && CheckSimpleGradient(_CandiB.PosX[i], _CandiB.PosY[i], 0, _pSystem->ImageW, _pSystem->ImageH, 3.5))	nSkip = 1;
 			if (_CandiB.PosX[i]< _pTmpData->InspArea.X1|| _CandiB.PosX[i]>_pTmpData->InspArea.X2)	nSkip = 1;
 
@@ -433,8 +452,8 @@ void Inspect::SpotInspect()
 			{
 				dSize1[0] = dSize1[1] = dSize1[2] = dImulKipoSize1 = nValueUp1 = nValueDn1 = 0;
 				MakeDefectRect(_DefectData.Count, _CandiB.PosX[i], _CandiB.PosY[i], _pTmpData->InspArea.X1, _pTmpData->InspArea.X2);
-				GetSizeNValue(1, _pFlatImg, _CandiB.PosY[i], _DefectData.Area[_DefectData.Count].left, _DefectData.Area[_DefectData.Count].top, BAD_IMG_WIDTH, BAD_IMG_WIDTH, _pSystem->ImageW, 0,
-					_pParam->_pPress->AreaUpTH, _pParam->_pPress->AreaDnTH, _pParam->Common.AttachPxl, _pParam->Common.SizeMethod, _pParam->Cam.ScaleX, _pParam->Cam.ScaleY,
+				GetSizeNValue(1, pImg, _CandiB.PosY[i], _DefectData.Area[_DefectData.Count].left, _DefectData.Area[_DefectData.Count].top, BAD_IMG_WIDTH, BAD_IMG_WIDTH, _pSystem->ImageW, 0,
+					_pParam->_pLvUp->AreaTh, _pParam->_pLvDn->AreaTh, _pParam->Common.AttachPxl, _pParam->Common.SizeMethod, _pParam->Cam.ScaleX, _pParam->Cam.ScaleY,
 					&nAvg, &nValueUp, &nValueDn, dSize, &dImulKipoSize, &nDefectPosX, &nDefectPosY, &rcTmpDefect);
 
 				// 4배 압축 영상에서 Size 구함
@@ -482,11 +501,15 @@ void Inspect::SpotInspect()
 					// 찍힘검사 설정되어 있으면 찍힘검사한다. - S
 					if (_pParam->_pPress != nullptr && _pParam->_pPress->IsInsp == true)
 					{
-						GetSizeNValue(2, _pFlatImg, _CandiB.PosY[i], _DefectData.Area[_DefectData.Count].left, _DefectData.Area[_DefectData.Count].top, BAD_IMG_WIDTH, BAD_IMG_WIDTH, _pSystem->ImageW, 0,
+						nPValueUp = nPValueDn = 0;
+						GetSizeNValue(2, pImg, _CandiB.PosY[i], _DefectData.Area[_DefectData.Count].left, _DefectData.Area[_DefectData.Count].top, BAD_IMG_WIDTH, BAD_IMG_WIDTH, _pSystem->ImageW, 0,
 							_pParam->_pPress->AreaUpTH, _pParam->_pPress->AreaDnTH, _pParam->Common.AttachPxl, _pParam->Common.SizeMethod, _pParam->Cam.ScaleX, _pParam->Cam.ScaleY,
 							&nPAvg, &nPValueUp, &nPValueDn, dPSize, &dImulKipoSize, &nDefectPosX, &nDefectPosY, &rcTmpDefect2);
 						if (nPValueUp >= _pParam->_pPress->UpTh && nPValueDn >= _pParam->_pPress->DnTh)
-							nPLevel = GetLevel(nPValueUp + nPValueDn, dPSize[2], nPAvg, _pParam->_pPress->Value, _pParam->_pPress->Size);
+						{
+							nVal = nPValueUp + nPValueDn;
+							nPLevel = GetLevel(nVal, dPSize[2], nPAvg, _pParam->_pPress->Value, _pParam->_pPress->Size);
+						}
 						else
 							nPLevel = 0;
 
@@ -573,48 +596,53 @@ void Inspect::SpotInspect()
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// AREA(찍힘) - S
-		if (_pParam->_pPress->IsInsp && _CandiArea.Value[i] >= 3)
+		// AREA(쿠닉 OR 오염) - S
+		if (nCunicInspect && _CandiArea.Value[i] >= 2)
 		{
 			nSkip = 0;
 			//경계투과(반사) 면 이미지가 울렁거려 단순울렁인건지 Defect인지 한번더 판단한다.
-			if (_pSystem->BDOverkill && CheckBoundaryOpticOverKill(_pFlatImg, _CandiArea.PosX[i], _CandiArea.PosY[i], _pSystem->ImageW, _pSystem->ImageH, 13))	nSkip = 1;
-			if (nSkip == 0 && CheckSimpleGradient(_CandiArea.PosX[i], _CandiArea.PosY[i], 0, _pSystem->ImageW, _pSystem->ImageH, 3.5))							nSkip = 1;
+			if (CheckSimpleGradient(_CandiArea.PosX[i], _CandiArea.PosY[i], 0, _pSystem->ImageW, _pSystem->ImageH, 3.5))		nSkip = 1;
 
 			if (nSkip == 0) //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			{
+				nValueUp = nValueDn = 0;
 				MakeDefectRect(_DefectData.Count, _CandiArea.PosX[i], _CandiArea.PosY[i], _pTmpData->InspArea.X1, _pTmpData->InspArea.X2);
-				GetSizeNValue(2, _pFlatImg, _CandiArea.PosY[i], _DefectData.Area[_DefectData.Count].left, _DefectData.Area[_DefectData.Count].top, BAD_IMG_WIDTH, BAD_IMG_HEIGHT, _pSystem->ImageW, 0,  
-					_pParam->_pPress->AreaUpTH, _pParam->_pPress->AreaDnTH, _pParam->Common.AttachPxl, _pParam->Common.SizeMethod, _pParam->Cam.ScaleX, _pParam->Cam.ScaleY,
-					&nAvg, &nValueUp, &nValueDn, dSize, &dImulKipoSize, &nDefectPosX, &nDefectPosY, &rcTmpDefect2);
-				if (nValueUp >= _pParam->_pPress->UpTh && nValueDn >= _pParam->_pPress->DnTh)
+
+				GetCunicValue_SameFrame(pImg, _CandiArea.PosX[i], _CandiArea.PosY[i], _pTmpData->InspArea.X1, _pTmpData->InspArea.X2, _pSystem->Pitch, _pSystem->ImageH, _pParam->_pCunic->InspArea, &dCunic, &nCunicValue);
+
+				nLevel = GetLevel(dCunic, _pParam->_pCunic->Std);
+
+				if (nLevel > 0)
 				{
-					nLevel = GetLevel(nValueUp + nValueDn, dSize[2], nAvg, _pParam->_pPress->Value, _pParam->_pPress->Size);
-					nClass = nLevel * MILLION + _pTmpData->PcInfo.FirstNo * CLASSDEV + g_NGType._SpotPress;  //찍힘			
+					nClass = nLevel * MILLION + _pTmpData->PcInfo.FirstNo * CLASSDEV + g_NGType._Cunic;
+					nValueUp = dCunic * 1000;
+				}
+				else
+				{
+					nClass = 0;
+				}
 
-					if (nClass > MILLION)
-					{
-						if (_pParam->Common.AlgorithmType != COS4)	CopyNGImage(true);
-						else										CopyNGImage(false);
+				if (nClass > MILLION)
+				{
+					if (_pParam->Common.AlgorithmType != COS4)	CopyNGImage(true);
+					else										CopyNGImage(false);
+					_DefectData.FrameNum = _pTmpData->GrabFrameID;
+					_DefectData.Info[_DefectData.Count].x_pos = (float)_CandiArea.PosX[i];	 //불량위치 X (Pixel)
+					_DefectData.Info[_DefectData.Count].y_pos = (float)_CandiArea.PosY[i];	 //불량위치 Y (Pixel)
+					_DefectData.Info[_DefectData.Count].type = nClass;				 //불량TYPE
+					_DefectData.Info[_DefectData.Count].size = 0;					 //Size
+					_DefectData.Info[_DefectData.Count].value = (float)(nValueUp);	 //Value	
+					_DefectData.Info[_DefectData.Count].sizeX = 0;					//Size X
+					_DefectData.Info[_DefectData.Count].sizeY = 0;					//Size Y
 
-						_DefectData.FrameNum = _pTmpData->GrabFrameID;
-						_DefectData.Info[_DefectData.Count].x_pos = (float)_CandiArea.PosX[i];	 //불량위치 X (Pixel)
-						_DefectData.Info[_DefectData.Count].y_pos = (float)_CandiArea.PosY[i];	 //불량위치 Y (Pixel)
-						_DefectData.Info[_DefectData.Count].type = nClass;				 //불량TYPE
-						_DefectData.Info[_DefectData.Count].size = (float)dSize[2];			 //Size
-						_DefectData.Info[_DefectData.Count].value = (float)(nValueUp + nValueDn);	 //Value	
-						_DefectData.Info[_DefectData.Count].sizeX = (float)dSize[0];			 //Size X
-						_DefectData.Info[_DefectData.Count].sizeY = (float)dSize[1];			 //Size Y
-
-						//겹치는 불량 점검-----------------------------------------------------------------------------------------------
-						memcpy(&_DefectData.Area[_DefectData.Count], &rcTmpDefect2, sizeof(RECT));
-						nOverlap = CheckDefectOverlap();
-						if (nOverlap == 0 && _DefectData.Count < _pSystem->MaxDefect) //안겹치고 불량갯수도 최대치보다 작으면 추가함.
-							_DefectData.Count++;
-						else
-							if (nOverlap == 3) CheckPriorLevel(1); //겹치는것 없고, 불량갯수가 이미 최대치에 도달했으면				
-						//---------------------------------------------------------------------------------------------------------------		
-					}
+					//겹치는 불량 점검-----------------------------------------------------------------------------------------------
+					memcpy(&_DefectData.Area[_DefectData.Count], &rcTmpDefect2, sizeof(RECT));
+					nOverlap = CheckDefectOverlap();
+					if (nOverlap == 0 && _DefectData.Count < _pSystem->MaxDefect) //안겹치고 불량갯수도 최대치보다 작으면 추가함.
+						_DefectData.Count++;
+					else
+						if (nOverlap == 3) CheckPriorLevel(0); //겹치는것 없고, 불량갯수가 이미 최대치에 도달했으면				
+					//---------------------------------------------------------------------------------------------------------------		
 				}
 			}
 		}
@@ -640,7 +668,7 @@ void Inspect::ScInspect()
 	//검사하기위한 데이타가 들어 있는지 확인---------------
 	for (i = 0; i < 10; i++)
 	{
-		if (_pParam->UseLv[i])
+		if (_pParam->_UseLv[i])
 			if (_pParam->_pSC->ScVal[i] < nScratchThres && _pParam->_pSC->ScVal[i] >= 100)
 			{
 				nScratchThres = _pParam->_pSC->ScVal[i];

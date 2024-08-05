@@ -25,8 +25,12 @@ FlatImage::~FlatImage()
 
 void FlatImage::Init(int width, int height)
 {
+	Clear();
+
 	_width = width;
 	_height = height;
+
+	_flatImg = new unsigned char[width * height];
 }
 
 void FlatImage::Clear()
@@ -40,12 +44,15 @@ void FlatImage::Clear()
 	_width = _height = 0;
 }
 
-void FlatImage::MakeFlatLineScan(unsigned char* src, unsigned char* dst, int* profile, int flatBrt, int left, int width, int height, int pitch, int avg, int inspX1, int inspX2)
+void FlatImage::MakeFlatLineScan(unsigned char* src, int* profile, int flatBrt, int left, int width, int height, int pitch, int avg, int inspX1, int inspX2)
 {
 	int i, j;
 	int right = left + width;
 	int factor;
 	int* projFactor;
+
+	unsigned char* dst = _flatImg;
+
 
 	// Initialize Profile Data 
 	_projFactor.Init(width);

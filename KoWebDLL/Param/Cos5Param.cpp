@@ -13,7 +13,7 @@ Cos5Param::~Cos5Param()
 
 void Cos5Param::SetParam()
 {
-
+	Param::SetParam();
 }
 
 void Cos5Param::GetParam()

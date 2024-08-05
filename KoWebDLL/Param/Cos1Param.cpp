@@ -14,7 +14,7 @@ Cos1Param::~Cos1Param()
 
 void Cos1Param::SetParam()
 {
-
+	Param::SetParam();
 }
 
 void Cos1Param::GetParam()

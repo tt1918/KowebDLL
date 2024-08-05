@@ -64,6 +64,6 @@ public:
 	int				GetWidth()	{ return _width; }
 	int				GetHeight() { return _height; }
 
-	void MakeFlatLineScan(unsigned char* src, unsigned char* dst, int* profile, int flatBrt, int left, int width, int height, int pitch, int avg, int inspX1, int inspX2);
+	void MakeFlatLineScan(unsigned char* src, int* profile, int flatBrt, int left, int width, int height, int pitch, int avg, int inspX1, int inspX2);
 	void MakeFlatArea320(unsigned char* src, unsigned char* dst, int nBaseValue, int left, int width, int height, int pitch);
 };

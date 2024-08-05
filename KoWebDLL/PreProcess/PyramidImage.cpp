@@ -48,7 +48,7 @@ bool PyramidImage::MakeImage(unsigned char* buf, int width, int height)
 	for (int k = 1; k < _MaxLv; k++)
 	{
 		fmS = _Image[k - 1];
-		pitchS = _Width[k];
+		pitchS = _Width[k-1];
 		fmD = _Image[k];
 		pitchD = _Width[k];
 		nW = _Width[k];
@@ -62,6 +62,17 @@ bool PyramidImage::MakeImage(unsigned char* buf, int width, int height)
 				*(fmD + pitchD * i + j) = (*(fmS + pitchS * nI + nJ) + *(fmS + pitchS * nI + nJ + 1) + *(fmS + pitchS * (nI + 1) + nJ) + *(fmS + pitchS * (nI + 1) + nJ + 1) + 2) / 4;
 			}
 		});
+
+		/*for (int i = 0; i < _Height[k]; i++)
+		{
+			int nI, nJ, j;
+			nI = i * 2;
+			for (j = 0; j < nW; j++)
+			{
+				nJ = j * 2;
+				*(fmD + pitchD * i + j) = (*(fmS + pitchS * nI + nJ) + *(fmS + pitchS * nI + nJ + 1) + *(fmS + pitchS * (nI + 1) + nJ) + *(fmS + pitchS * (nI + 1) + nJ + 1)) / 4;
+			}
+		};*/
 	}
 
 	_IsFinish = true;
@@ -97,13 +108,13 @@ void PyramidImage::CreateBuf()
 	_Width[0] = _RefW;
 	_Height[0] = _RefH;
 
-	_Image[0] = new unsigned char(_Width[0] * _Height[0]);
+	_Image[0] = new unsigned char[_Width[0] * _Height[0]];
 
 	for (int i = 1; i < _MaxLv; i++)
 	{
 		_Width[i] = _Width[i-1]/2;
 		_Height[i] = _Height[i-1]/2;
 
-		_Image[i] = new unsigned char(_Width[i] * _Height[i]);
+		_Image[i] = new unsigned char[_Width[i] * _Height[i]];
 	}
 }

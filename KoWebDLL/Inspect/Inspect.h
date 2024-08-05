@@ -18,7 +18,7 @@ private:
 	SystemParam*			_pSystem;		// 시스템 파라미터 (주소만 얻어옴)
 	Param*					_pParam;		// 검사 파라미터 (주소만 얻어옴)
 	TempParam::TEMP_PARAM*	_pTmpData;		// 검사 임시 파라미터 (주소만 얻어옴)
-	MARK_OPTIC*				_pMark;			// 결점 마킹 처리 데이터
+	MARK_OPTIC*				_pMark;			// 결점 마킹 처리 데이터 (주소만 얻어옴)
 
 	FlatImage*				_pFlat;			// 이미지 평활화 클래스
 	Profile*				_pProfile;		// 이미지 프로파일 클래스
@@ -55,8 +55,18 @@ private:
 	long  *_pKProjFlat, *_pKProjFlat1, *_pKProjFlatMax;
 	/////////////////////////////////////////////////////////////////////
 
+
+	/////////////////////////////////////////////////////////////////////
+	// 검서 결과 데이터	- S
+private:
 	// 검사 결과 
 	DEFECTDATA				_DefectData;
+
+public:
+	void ResetDefectData()	{	_DefectData.Reset();	}
+	DEFECTDATA* GetDefectData() {	return &_DefectData;	}
+	// 검서 결과 데이터	- E
+	/////////////////////////////////////////////////////////////////////
 
 public:
 	Inspect();
@@ -67,6 +77,7 @@ public:
 	void SetParam(Param* pParam);
 	void SetTempParam(TempParam::TEMP_PARAM* pTmpParam);
 	void SetSysParam(SystemParam* pParam) { _pSystem = pParam; }
+	void SetMarkParam(MARK_OPTIC* pParam) { _pMark = pParam; }
 
 	virtual void Create(int width, int height);
 	virtual void Release();
@@ -196,6 +207,11 @@ public:
 	int IsOverKillForScratch(LPBYTE fm, int nX, int nY, int pitch, int nHeight, int nValue);
 	int CheckRealScratch(LPBYTE fm, int nX, int nY, int pitch, int nMaxWidth, int nMaxHeight, int nMinLength);
 	void BlobElongation(LPBYTE fm, int left, int top, int right, int bottom, int pitch, int nMinLength);
+
+	// 쿠닉 검사.
+	void GetCunicValue_SameFrame(LPBYTE fm, int nX, int nY, int nMinX, int nMaxX, int pitch, int nMaxHeight, int nCunicSize, double* pCunic, int* pCunicValue);
+	double FinStd_WithLimitCut(LPBYTE fm, int nAveMean, int left, int top, int right, int bottom, int pitch);
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 };

@@ -4,7 +4,7 @@ class InspectCOS8 : public Inspect
 {
 public:
 	InspectCOS8();
-	~InspectCOS8();
+	virtual ~InspectCOS8();
 
 	void Create(int width, int height) override;
 	void Release() override;

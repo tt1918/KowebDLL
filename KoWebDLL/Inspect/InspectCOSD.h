@@ -4,7 +4,7 @@ class InspectCOSD : public Inspect
 {
 public:
 	InspectCOSD();
-	~InspectCOSD();
+	virtual ~InspectCOSD();
 
 	void Create(int width, int height) override;
 	void Release() override;

@@ -12,7 +12,7 @@ InspectCOSD::~InspectCOSD()
 
 void InspectCOSD::Create(int width, int height)
 {
-
+	Inspect::Create(width, height);
 }
 
 void InspectCOSD::Release()

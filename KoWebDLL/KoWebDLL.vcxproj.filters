@@ -31,6 +31,15 @@
     <Filter Include="Defect">
       <UniqueIdentifier>{505f85ea-2e8e-47c5-8dc4-41bcb29ccbb5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="KowebDLL">
+      <UniqueIdentifier>{b16acecc-2ec0-4770-acb1-c330c84d1b3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Param\InspParam">
+      <UniqueIdentifier>{2eb1e31c-9eca-46f9-a4c3-09f993e9945a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Param\SysParam">
+      <UniqueIdentifier>{83567b2d-7d49-4baa-bf47-85a8ff382960}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -40,9 +49,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KoWebDLL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Param\enumParam.h">
@@ -55,51 +61,6 @@
       <Filter>Param</Filter>
     </ClInclude>
     <ClInclude Include="Param\TempParam.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\Cos1Param.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\Cos2Param.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\Cos3Param.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\Cos4Param.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\Cos5Param.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\Cos6Param.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\Cos7Param.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\Cos8Param.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\Cos9Param.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\CosAParam.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\CosBCRParam.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\CosBParam.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\CosCParam.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\CosDParam.h">
-      <Filter>Param</Filter>
-    </ClInclude>
-    <ClInclude Include="Param\CosEParam.h">
       <Filter>Param</Filter>
     </ClInclude>
     <ClInclude Include="Common.h">
@@ -174,9 +135,6 @@
     <ClInclude Include="Inspector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Param\SystemParam.h">
-      <Filter>Param</Filter>
-    </ClInclude>
     <ClInclude Include="PreProcess\PyramidImage.h">
       <Filter>PreProcess</Filter>
     </ClInclude>
@@ -201,63 +159,66 @@
     <ClInclude Include="Inspect\InspectCos.h">
       <Filter>Inspection</Filter>
     </ClInclude>
+    <ClInclude Include="KoWebDLL.h">
+      <Filter>KowebDLL</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos1Param.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos2Param.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos3Param.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos4Param.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos5Param.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos6Param.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos7Param.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos8Param.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\Cos9Param.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosAParam.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosBCRParam.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosBParam.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosCParam.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosDParam.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\CosEParam.h">
+      <Filter>Param\InspParam</Filter>
+    </ClInclude>
+    <ClInclude Include="Param\SystemParam.h">
+      <Filter>Param\SysParam</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="KoWebDLL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Param\Param.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\Cos1Param.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\Cos2Param.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\Cos3Param.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\Cos4Param.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\Cos5Param.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\Cos6Param.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\Cos7Param.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\Cos8Param.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\Cos9Param.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\CosAParam.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\CosBCRParam.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\CosBParam.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\CosCParam.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\CosDParam.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Param\CosEParam.cpp">
       <Filter>Param</Filter>
     </ClCompile>
     <ClCompile Include="Inspect\Inspect.cpp">
@@ -323,9 +284,6 @@
     <ClCompile Include="Inspector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Param\SystemParam.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
     <ClCompile Include="PreProcess\PyramidImage.cpp">
       <Filter>PreProcess</Filter>
     </ClCompile>
@@ -337,6 +295,57 @@
     </ClCompile>
     <ClCompile Include="Param\DefectType.cpp">
       <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="KoWebDLL.cpp">
+      <Filter>KowebDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos1Param.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos2Param.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos3Param.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos4Param.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos5Param.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos6Param.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos7Param.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos8Param.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\Cos9Param.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosAParam.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosBCRParam.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosBParam.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosCParam.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosDParam.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\CosEParam.cpp">
+      <Filter>Param\InspParam</Filter>
+    </ClCompile>
+    <ClCompile Include="Param\SystemParam.cpp">
+      <Filter>Param\SysParam</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

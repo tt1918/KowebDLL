@@ -1,15 +1,19 @@
 #include "Inspector.h"
 
+#include "atlimage.h"
+
 Inspector::Inspector()
 {
-	_sysParam.Load("C:\\COSS\\");
+	_sysParam.Load(L"C:\\COSS\\");
 	_pParam = nullptr;
 	
 	_pSrcImg = nullptr;
 	_SrcW = _SrcH = 0;
 
+	_NumOfProc = 0;
 	_pInspect = nullptr;
-	_tempParam.Reset();
+	_tempParam = nullptr;
+	_pMarkParam = nullptr;
 
 	/////////////////////////////////////////////
 	// 전처리 클래스
@@ -20,97 +24,119 @@ Inspector::Inspector()
 	_pPyramidSc		= nullptr;
 	// 전처리 클래스
 	/////////////////////////////////////////////
-
 }
 
 Inspector::~Inspector()
 {
-
+	Release();
 }
 
-void Inspector::Initialize()
+void Inspector::Initialize(int numOfProc)
 {
+	Release();
 
+	_NumOfProc = numOfProc;
+
+	_pInspect = new Inspect* [numOfProc];
+	_pParam = new Param* [numOfProc];
+
+	_tempParam = new TempParam::TEMP_PARAM[numOfProc];
+
+	_pMarkParam = new MARK_OPTIC[numOfProc];
+
+	for (int i = 0; i < numOfProc; i++)
+	{
+		_pInspect[i] = nullptr;
+		_pParam[i] = nullptr;
+	}
 }
 
-void Inspector::Initialize(std::string paramPath)
+void Inspector::SetParam(int procNum, std::wstring pcName, std::wstring paramPath)
 {
-	std::string section = _tempParam.PcInfo.Name + std::string(" - Inspect Parameter");
+	TempParam::TEMP_PARAM* pTmpParam = &_tempParam[procNum];
+	
+	pTmpParam->PcInfo.Set(pcName);
+
+	std::wstring section = pTmpParam->PcInfo.Name + std::wstring(L" - Inspect Parameter");
 	eParamType::eType type = Param::GetParamType(paramPath, section);
 
-	if (_pParam != nullptr)
+	if (_pParam[procNum] != nullptr)
 	{
-		delete _pParam;
-		_pParam = nullptr;
+		delete _pParam[procNum];
+		_pParam[procNum] = nullptr;
 	}
 
 	switch (type)
 	{
 	case eParamType::eCOS1 :	
-		_pParam = new Cos1Param(); 
-		_pInspect = new InspectCOS1();
+		_pParam[procNum] = new Cos1Param();
+		_pInspect[procNum] = new InspectCOS1();
 		break;
 	case eParamType::eCOS2 :	
-		_pParam = new Cos2Param();
-		_pInspect = new InspectCOS2();
+		_pParam[procNum] = new Cos2Param();
+		_pInspect[procNum] = new InspectCOS2();
 		break;
 	case eParamType::eCOS3 :	
-		_pParam = new Cos3Param();
-		_pInspect = new InspectCOS3();
+		_pParam[procNum] = new Cos3Param();
+		_pInspect[procNum] = new InspectCOS3();
 		break;
 	case eParamType::eCOS4 :	
-		_pParam = new Cos4Param();
-		_pInspect = new InspectCOS4();
+		_pParam[procNum] = new Cos4Param();
+		_pInspect[procNum] = new InspectCOS4();
 		break;
 	case eParamType::eCOS5 :	
-		_pParam = new Cos5Param();
-		_pInspect = new InspectCOS5();
+		_pParam[procNum] = new Cos5Param();
+		_pInspect[procNum] = new InspectCOS5();
 		break;
 	case eParamType::eCOS6 :	
-		_pParam = new Cos6Param();
-		_pInspect = new InspectCOS6();
+		_pParam[procNum] = new Cos6Param();
+		_pInspect[procNum] = new InspectCOS6();
 		break;
 	case eParamType::eCOS7 :	
-		_pParam = new Cos7Param();
-		_pInspect = new InspectCOS7();
+		_pParam[procNum] = new Cos7Param();
+		_pInspect[procNum] = new InspectCOS7();
 		break;
 	case eParamType::eCOS8 :	
-		_pParam = new Cos8Param();
-		_pInspect = new InspectCOS8();
+		_pParam[procNum] = new Cos8Param();
+		_pInspect[procNum] = new InspectCOS8();
 		break;
 	case eParamType::eCOS9 :	
-		_pParam = new Cos9Param();
-		_pInspect = new InspectCOS9();
+		_pParam[procNum] = new Cos9Param();
+		_pInspect[procNum] = new InspectCOS9();
 		break;
 	case eParamType::eCOSA :	
-		_pParam = new CosAParam();
-		_pInspect = new InspectCOSA();
+		_pParam[procNum] = new CosAParam();
+		_pInspect[procNum] = new InspectCOSA();
 		break;
 	case eParamType::eCOSB :	
-		_pParam = new CosBParam();
-		_pInspect = new InspectCOSB();
+		_pParam[procNum] = new CosBParam();
+		_pInspect[procNum] = new InspectCOSB();
 		break;
 	case eParamType::eCOSC :	
-		_pParam = new CosCParam();
-		_pInspect = new InspectCOSC();
+		_pParam[procNum] = new CosCParam();
+		_pInspect[procNum] = new InspectCOSC();
 		break;
 	case eParamType::eCOSD :	
-		_pParam = new CosDParam();
-		_pInspect = new InspectCOSD();
+		_pParam[procNum] = new CosDParam();
+		_pInspect[procNum] = new InspectCOSD();
 		break;
 	case eParamType::eCOSE :	
-		_pParam = new CosEParam();
-		_pInspect = new InspectCOSE();
+		_pParam[procNum] = new CosEParam();
+		_pInspect[procNum] = new InspectCOSE();
 		break;
 	case eParamType::eCBCR :	
-		_pParam = new CBCRParam();
-		_pInspect = new InspectCOSBCR();
+		_pParam[procNum] = new CBCRParam();
+		_pInspect[procNum] = new InspectCOSBCR();
 		break;
 	}
 
-	_pParam->Load(paramPath);
-	_pInspect->Create(_sysParam.ImageW, _sysParam.ImageH);
+	Inspect* pIncp = _pInspect[procNum];
+	Param* pParam = _pParam[procNum];
 
+	pParam->Load(&pTmpParam->PcInfo, paramPath, &_sysParam);
+	pIncp->Create(_sysParam.ImageW, _sysParam.ImageH);
+
+	_pMarkParam[procNum].Load(&pTmpParam->PcInfo, paramPath);
 
 	/////////////////////////////////////////////////////////////////////////////////
 	// 평활화 이미지 클래스	 - S
@@ -151,20 +177,21 @@ void Inspector::Initialize(std::string paramPath)
 
 	//////////////////////////////////////////////////////////////////////////////////
 	// 각 전처리 클래스 및 데이터 클래스를 검사 클래스로 연결	- S
-	_pInspect->SetSrcImage(_pSrcImg);
-	_pInspect->SetFlatCls(_pFlat);
-	_pInspect->SetEdgeFinderCls(_pEdgeFinder);
-	_pInspect->SetProfileCls(_pProfile);
-	_pInspect->SetPyramidCls(_pPyramid, 0);
+	pIncp->SetSrcImage(_pSrcImg);
+	pIncp->SetFlatCls(_pFlat);
+	pIncp->SetEdgeFinderCls(_pEdgeFinder);
+	pIncp->SetProfileCls(_pProfile);
+	pIncp->SetPyramidCls(_pPyramid, 0);
 
-	_pInspect->SetSysParam(&_sysParam);
-	_pInspect->SetTempParam(&_tempParam);
-	_pInspect->SetParam(_pParam);
+	pIncp->SetSysParam(&_sysParam);
+	pIncp->SetTempParam(&pTmpParam[procNum]);
+	pIncp->SetParam(_pParam[procNum]);
+	pIncp->SetMarkParam(&_pMarkParam[procNum]);
 
-	if (_pParam->_pSC != nullptr)
+	if (pParam->_pSC != nullptr)
 	{
-		_pInspect->SetPyramidCls(_pPyramidSc, 1);
-		_pInspect->SetScInspBuf(_SrcW, _SrcH);
+		pIncp->SetPyramidCls(_pPyramidSc, 1);
+		pIncp->SetScInspBuf(_SrcW, _SrcH);
 	}
 	// 각 전처리 클래스 및 데이터 클래스를 검사 클래스로 연결	- E
 	//////////////////////////////////////////////////////////////////////////////////
@@ -208,9 +235,23 @@ void Inspector::Release()
 		_pParam = nullptr;
 	}
 
+	if (_pMarkParam != nullptr)
+	{
+		delete _pMarkParam;
+		_pMarkParam = nullptr;
+	}
+
 	if (_pInspect != nullptr)
 	{
-		delete _pInspect;
+		for (int i = 0; i < _NumOfProc; i++)
+		{
+			if (_pInspect[i] != nullptr)
+			{
+				delete _pInspect[i];
+				_pInspect[i] = nullptr;
+			}
+		}
+		delete[] _pInspect;
 		_pInspect = nullptr;
 	}
 
@@ -221,7 +262,7 @@ void Inspector::Release()
 	}
 }
 
-void Inspector::SetImage(unsigned char* pBuf, int width, int pitch, int height)
+void Inspector::SetImage(unsigned char* pBuf, int width, int height, int pitch)
 {
 	if (width == pitch)
 		memcpy(_pSrcImg, pBuf, sizeof(unsigned char) * width * height);
@@ -230,30 +271,122 @@ void Inspector::SetImage(unsigned char* pBuf, int width, int pitch, int height)
 		for (int i = 0; i < height; i++)
 			memcpy(_pSrcImg + i * width, pBuf + i * pitch, sizeof(unsigned char) * width);
 	}
+
+	RGBQUAD   m_bmiColors[256];
+	for (int i = 0; i < 256; i++)
+	{
+		m_bmiColors[i].rgbRed = m_bmiColors[i].rgbGreen = m_bmiColors[i].rgbBlue = (BYTE)i;
+		m_bmiColors[i].rgbReserved = 0;
+	}
 }
 
-void Inspector::RunWebInspect()
+void Inspector::RunWebInspect(int procNum)
 {
 	unsigned char* pSrc;
 
+	Param* pParam = _pParam[procNum];
+
+	int start = GetTickCount();
+
 	_pProfile->MakeProfileData(_pSrcImg, _SrcW, _SrcH, _SrcW);
+	_pEdgeFinder->GetEdge(&_tempParam[procNum].InspArea, _pSrcImg, _SrcW, _SrcH, pParam->Cam.ScaleX, pParam->Common.EdgeTh, pParam->Common.AlgorithmType, pParam->Common.EdgeOffset, pParam->Common.EdgeDir, pParam->Common.NotInspArea);
+
 	int nAvgBright = _pProfile->CalcAvgBright(_pEdgeFinder->m_nInspX1, _pEdgeFinder->m_nInspX2, _sysParam.FlatBright);
 
-	_pEdgeFinder->GetEdge(&_tempParam.InspArea, _pSrcImg, _SrcW, _SrcH, _pParam->Cam.ScaleX, _pParam->Common.EdgeTh, _pParam->Common.AlgorithmType, _pParam->Common.EdgeOffset, _pParam->Common.EdgeDir, _pParam->Common.NotInspArea);
 	
-	if(_pParam->Common.useFlatImage)
-		_pFlat->MakeFlatLineScan(_pSrcImg, _pFlat->GetFlatImg(), _pProfile->GetProfile(), _sysParam.FlatBright, 0, _SrcW, _SrcH, _SrcW, nAvgBright, _tempParam.InspArea.X1, _tempParam.InspArea.X2);
-
-	// Pyramid 영상 생성에 사용할 Src Img 선택
-	if (_pParam->Common.useFlatImage)	pSrc = _pFlat->GetFlatImg();
-	else								pSrc = _pSrcImg;
+	if (pParam->Common.useFlatImage)
+	{
+		_pFlat->MakeFlatLineScan(_pSrcImg, _pProfile->GetProfile(), _sysParam.FlatBright, 0, _SrcW, _SrcH, _SrcW, nAvgBright, _tempParam[procNum].InspArea.X1, _tempParam[procNum].InspArea.X2);
+		// Pyramid 영상 생성에 사용할 Src Img 선택
+		pSrc = _pFlat->GetFlatImg();
+	}
+	else	// Pyramid 영상 생성에 사용할 Src Img 선택
+		pSrc = _pSrcImg;
 
 	// 피라미드 영상을 생성
 	if (_pPyramid->IsFinish() == false)
 		_pPyramid->MakeImage(pSrc, _SrcW, _SrcH);
 
+	// 스크래치 검사의 경우에는 원본 영상을 사용한다.
+	// 평활화 하면서 수직 스크래치 정보가 손실될 수 있음.
+	if (pParam->_pSC != nullptr)
+		_pPyramidSc->MakeImage(_pSrcImg, _SrcW, _SrcH);
+
+
+	int end = GetTickCount();
+
+	//CImage tmpImage;
+	//RGBQUAD   bmiColors[256];
+	//for (int i = 0; i < 256; i++)
+	//{
+	//	bmiColors[i].rgbRed = bmiColors[i].rgbGreen = bmiColors[i].rgbBlue = (BYTE)i;
+	//	bmiColors[i].rgbReserved = 0;
+	//}
+
+	//for (int i = 0; i < 5; i++)
+	//{
+	//	tmpImage.Create(_pPyramid->GetImageWidth(i), _pPyramid->GetImageHeight(i), 8);
+	//	tmpImage.SetColorTable(0, 256, bmiColors);
+
+
+	//	LPBYTE dst = (LPBYTE)tmpImage.GetBits();
+
+	//	LPBYTE src = _pPyramid->GetImagePt(i);
+	//	int y, pitch1 = tmpImage.GetPitch();
+	//	for (y = 0; y < _pPyramid->GetImageHeight(i); y++, src += _pPyramid->GetImageWidth(i), dst += pitch1)
+	//		CopyMemory(dst, src, _pPyramid->GetImageWidth(i));
+
+	//	std::wstring fileName;
+	//	fileName.append(L"d:\\test_");
+	//	fileName.append(std::to_wstring(i));
+	//	fileName.append(L".bmp");
+	//	tmpImage.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
+
+	//	tmpImage.Destroy();
+	//}
+	
+
 	// 검사 진행
-	_pInspect->Run();
+	_pInspect[procNum]->ResetDefectData();
+	_pInspect[procNum]->Run();
 
 	// 검사 결과 처리
+
+
+	CString strTemp;
+	strTemp.Format(L"elap = %d\n", end - start);
+	OutputDebugString(strTemp);
+
+
+	DEFECTDATA* pData = _pInspect[procNum]->GetDefectData();
+
+	CImage tmpImage;
+	RGBQUAD   bmiColors[256];
+	for (int i = 0; i < 256; i++)
+	{
+		bmiColors[i].rgbRed = bmiColors[i].rgbGreen = bmiColors[i].rgbBlue = (BYTE)i;
+		bmiColors[i].rgbReserved = 0;
+	}
+
+	tmpImage.Create(BAD_IMG_WIDTH, BAD_IMG_HEIGHT, 8);
+	tmpImage.SetColorTable(0, 256, bmiColors);
+
+
+	for (int i = 0; i < pData->Count; i++)
+	{
+		LPBYTE dst = (LPBYTE)tmpImage.GetBits();
+
+		LPBYTE src = pData->pImage[i];
+		int y, pitch1 = tmpImage.GetPitch();
+		for (y = 0; y < BAD_IMG_HEIGHT; y++, src += BAD_IMG_WIDTH, dst += pitch1)
+			CopyMemory(dst, src, BAD_IMG_WIDTH);
+
+		std::wstring fileName;
+		fileName.append(L"c:\\COSS\\LOTDATA\\TEST\\test_");
+		fileName.append(std::to_wstring(i));
+		fileName.append(L".bmp");
+		tmpImage.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
+	}
+
+	tmpImage.Destroy();
 }

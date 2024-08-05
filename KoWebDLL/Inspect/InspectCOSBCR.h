@@ -4,7 +4,7 @@ class InspectCOSBCR : public  Inspect
 {
 public:
 	InspectCOSBCR();
-	~InspectCOSBCR();
+	virtual ~InspectCOSBCR();
 
 	void Create(int width, int height) override;
 	void Release() override;

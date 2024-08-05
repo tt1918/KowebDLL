@@ -13,7 +13,7 @@ Cos3Param::~Cos3Param()
 
 void Cos3Param::SetParam()
 {
-
+	Param::SetParam();
 }
 
 void Cos3Param::GetParam()

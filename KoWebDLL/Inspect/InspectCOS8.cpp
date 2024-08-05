@@ -12,7 +12,7 @@ InspectCOS8::~InspectCOS8()
 
 void InspectCOS8::Create(int width, int height)
 {
-
+	Inspect::Create(width, height);
 }
 
 void InspectCOS8::Release()

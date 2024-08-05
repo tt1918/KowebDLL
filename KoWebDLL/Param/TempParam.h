@@ -43,12 +43,40 @@ namespace TempParam
 
 	typedef struct _stPCInfo
 	{
-		std::string	Name;		// "COS-101" 같이 7자리 
-		int			ID;			// 101 같은 3자리 수
-		int			Optic;		// 907이면 9, 103이면 1, 405면 4 (어떤 서버를 쓰느냐에 따라 달라짐)
-		int			FirstNo;	// COS번호
-		int			SubNo;		// 907이면 7, 103이면 3, 405면 5
-		int			OwnPort;	// 현재 PC의 Port 번호
+		std::wstring	Name;		// "COS-101" 같이 7자리 
+		int				ID;			// 101 같은 3자리 수
+		int				Optic;		// 907이면 9, 103이면 1, 405면 4 (어떤 서버를 쓰느냐에 따라 달라짐)
+		int				FirstNo;	// COS번호
+		int				SubNo;		// 907이면 7, 103이면 3, 405면 5
+
+		void Set(std::wstring name)
+		{
+			Name = name;
+
+			size_t pos = 0, pos1=0;
+			std::wstring token;
+			std::vector<std::wstring> values;
+
+			while ((pos = name.find(L'-', pos1)) != -1)
+			{
+				token = name.substr(pos1, pos);
+				values.push_back(token);
+				pos1 = pos + 1;
+			}
+
+			if(pos1!=0)
+			{
+				token = name.substr(pos1, name.length());
+				values.push_back(token);
+			}
+
+			ID = _wtoi(values[1].c_str());
+			Optic = values[1].at(0) - '0';
+			FirstNo = Optic;
+			SubNo = values[1].at(2) - '0';
+
+		};
+
 	}PC_INFO;
 
 	typedef struct _stDispInfo
@@ -214,15 +242,15 @@ namespace TempParam
 		int				Dir;			// BCR 리딩 방향
 
 		bool			ForceInsert;		// BCR 강제 입력
-		std::string	ForceData;		// BCR 강제 입력 데이터
+		std::wstring	ForceData;		// BCR 강제 입력 데이터
 		bool			ForceDir;			// BCR 강제 입력시 Dir
 		bool			IsForceReading;		// BCR 강제 입력 처리 확인
 		double			ForceREadingDist;	// BCR 강제 입력 거리
 
 
-		std::string	ReadName;		// 인식 결과 바코드 정보
+		std::wstring	ReadName;		// 인식 결과 바코드 정보
 		int				PreInspFrame;		// 이전 BCR 인식된 Frame 번호
-		std::string	PreReadName;		// 이전 인식 결과 바코드 정보
+		std::wstring	PreReadName;		// 이전 인식 결과 바코드 정보
 		double			CrtRealPos;		// 원단상의 실제 위치
 		double			PreRealPos;		// 이전 BCR 원단상의 실제 위치
 		double			OffsetY;			// 프레임 내에서 바코드 위치에 따른 OFFSET
@@ -241,9 +269,9 @@ namespace TempParam
 
 		int				TempNullPos;
 
-		std::string	strLog;				// BCR 로그 저장용
+		std::wstring	strLog;				// BCR 로그 저장용
 
-		std::vector<std::string>	LoadedBcnoArr[2];	// 0 : 현재랏, 1 : 예약랏
+		std::vector<std::wstring>	LoadedBcnoArr[2];	// 0 : 현재랏, 1 : 예약랏
 		bool			FirstCompare;
 
 		bool			PrevSuccessRead; // 연속 프레임간 바코드 인식 예외 처리용
@@ -448,9 +476,9 @@ namespace TempParam
 		unsigned char*	NGImage;		// 가장 최근 불량 영상
 		unsigned char*	NGImageLoad;	// Load한 불량 
 
-		std::string		MyComName;
-		std::string		LotName;
-		std::string		NewLotName;
+		std::wstring	MyComName;
+		std::wstring	LotName;
+		std::wstring	NewLotName;
 		
 		__time64_t		LastSendTime;
 		__time64_t		TimeCheckFrame;

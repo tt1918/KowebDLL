@@ -116,8 +116,8 @@ bool FindEdge::GetEdge(TempParam::INSP_EDGE_PARAM* edgeData, unsigned char* src,
 	{
 		if (nEdge < 0) // 데이터 이상인 경우 전체 검사
 		{
-			m_nInspX1 = 0;
-			m_nInspX2 = width - 1;
+			edgeData->X1 = m_nInspX1 = 0;
+			edgeData->X2 = m_nInspX2 = width - 1;
 		}
 		else
 			nEdge = GetMediumEdge(nEdge);

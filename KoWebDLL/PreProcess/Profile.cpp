@@ -71,6 +71,8 @@ void Profile::DeleteProfile()
 
 void Profile::MakeProfileData(unsigned char* src, int width, int height, int pitch)
 {
+	_AvgBright = -1;
+
 	// Profile 사이즈 확인함.
 	if (_pProfile == nullptr || _pProfile100 == nullptr || _nProfileWidth != width)
 		CreateProfile(width);
@@ -174,7 +176,7 @@ int	Profile::CalcAvgBright(int stX, int edX, int refBright)
 {
 	int j, i;
 	int nSum = 0;
-	_AvgBright = 0;
+	_AvgBright = -1;
 	if (edX - stX > 10)
 	{
 		for (j = stX; j < edX; j++)

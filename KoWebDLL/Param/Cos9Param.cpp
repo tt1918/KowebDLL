@@ -13,7 +13,7 @@ Cos9Param::~Cos9Param()
 
 void Cos9Param::SetParam()
 {
-
+	Param::SetParam();
 }
 
 void Cos9Param::GetParam()

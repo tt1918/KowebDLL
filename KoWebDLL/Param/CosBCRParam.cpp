@@ -13,7 +13,7 @@ CBCRParam::~CBCRParam()
 
 void CBCRParam::SetParam()
 {
-
+	Param::SetParam();
 }
 
 void CBCRParam::GetParam()

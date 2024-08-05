@@ -24,8 +24,10 @@
 
 #define MAX_BADIMAGE_FILENAME	100
 
-#define PARAM_NAME			"Parameter.ini"
-#define SYSTEM_FILE_NAME	"System.ini"
+#define MAX_CYCLE			15
+
+#define PARAM_NAME			L"Parameter.ini"
+#define SYSTEM_FILE_NAME	L"System.ini"
 
 #define COS1			0x01	// SH 크로스
 #define COS2			0x02	// 투영반사

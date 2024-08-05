@@ -13,7 +13,7 @@ CosBParam::~CosBParam()
 
 void CosBParam::SetParam()
 {
-
+	Param::SetParam();
 }
 
 void CosBParam::GetParam()

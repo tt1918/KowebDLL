@@ -60,15 +60,12 @@ public:
 	// masterKey : PARAM - E
 	///////////////////////////////////////////////////////////////////
 
-
-	
-
 public:
 	SystemParam();
 	~SystemParam();
 
-	int Load(std::string mainFolder);
-	void Save(std::string mainFolder);
+	int Load(std::wstring mainFolder);
+	void Save(std::wstring mainFolder);
 
 private:
 

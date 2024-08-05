@@ -6,7 +6,7 @@ class InspectCOS1 : public Inspect
 {
 public:
 	InspectCOS1();
-	~InspectCOS1();
+	virtual ~InspectCOS1();
 
 	void Create(int width, int height) override;
 	void Release() override;

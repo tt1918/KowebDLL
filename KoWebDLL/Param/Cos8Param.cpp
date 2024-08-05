@@ -13,7 +13,7 @@ Cos8Param::~Cos8Param()
 
 void Cos8Param::SetParam()
 {
-
+	Param::SetParam();
 }
 
 void Cos8Param::GetParam()

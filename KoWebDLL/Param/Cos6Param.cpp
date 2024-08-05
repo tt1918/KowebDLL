@@ -13,7 +13,7 @@ Cos6Param::~Cos6Param()
 
 void Cos6Param::SetParam()
 {
-
+	Param::SetParam();
 }
 
 void Cos6Param::GetParam()

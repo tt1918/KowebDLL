@@ -12,7 +12,7 @@ InspectCOS1::~InspectCOS1()
 
 void InspectCOS1::Create(int width, int height)
 {
-
+	Inspect::Create(width, height);
 }
 
 void InspectCOS1::Release()

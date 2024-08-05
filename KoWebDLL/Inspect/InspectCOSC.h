@@ -4,7 +4,7 @@ class InspectCOSC : public Inspect
 {
 public:
 	InspectCOSC();
-	~InspectCOSC();
+	virtual ~InspectCOSC();
 
 	void Create(int width, int height) override;
 	void Release() override;
