@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "KoWebDLL.h"
+#include "Inspector.h"
 
 extern "C" DLL_EXPORT_API void* InitKoWebDll()
 {

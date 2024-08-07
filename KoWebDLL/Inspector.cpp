@@ -271,13 +271,6 @@ void Inspector::SetImage(unsigned char* pBuf, int width, int height, int pitch)
 		for (int i = 0; i < height; i++)
 			memcpy(_pSrcImg + i * width, pBuf + i * pitch, sizeof(unsigned char) * width);
 	}
-
-	RGBQUAD   m_bmiColors[256];
-	for (int i = 0; i < 256; i++)
-	{
-		m_bmiColors[i].rgbRed = m_bmiColors[i].rgbGreen = m_bmiColors[i].rgbBlue = (BYTE)i;
-		m_bmiColors[i].rgbReserved = 0;
-	}
 }
 
 void Inspector::RunWebInspect(int procNum)

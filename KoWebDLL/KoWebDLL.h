@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Inspector.h"
-
 #ifndef KOWEBDLL_EXPORTS
 #define DLL_EXPORT_API __declspec(dllimport)
 #else
