@@ -37,7 +37,7 @@ void Inspect::FindCandidate(int nStartX, int nWidth, int nGap)
 
 	nPyWidth[0] = _pPyramid->GetImageWidth(0);
 	nPyHeight[0] = _pPyramid->GetImageHeight(0);
-	pPyBuf[0] = _pPyramid->GetImagePt(0);
+	pPyBuf[0] = _pFlatImg;//_pPyramid->GetImagePt(0);
 
 	for (i = 1; i < COMP_LEVEL; i++)
 	{
@@ -200,7 +200,7 @@ void Inspect::FindCandidateParallel(int nStartX, int nWidth, int nGap)
 
 	nPyWidth[0] = _pPyramid->GetImageWidth(0);
 	nPyHeight[0] = _pPyramid->GetImageHeight(0);
-	pPyBuf[0] = _pPyramid->GetImagePt(0);
+	pPyBuf[0] = _pFlatImg;//_pPyramid->GetImagePt(0);
 	//////////////////////////////////////////////////////////
 
 	for (int i = 1; i < COMP_LEVEL; i++)

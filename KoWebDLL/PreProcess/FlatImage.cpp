@@ -2,6 +2,9 @@
 #include "FlatImage.h"
 #include "../Defines.h"
 #include <ppl.h>
+#include <omp.h>
+
+#include "atlimage.h"
 
 FlatImage::FlatImage()
 {
@@ -53,7 +56,9 @@ void FlatImage::MakeFlatLineScan(unsigned char* src, int* profile, int flatBrt, 
 
 	unsigned char* dst = _flatImg;
 
+	CString strTemp;
 
+	clock_t time1 = clock();
 	// Initialize Profile Data 
 	_projFactor.Init(width);
 	projFactor = _projFactor.Val;
@@ -65,6 +70,9 @@ void FlatImage::MakeFlatLineScan(unsigned char* src, int* profile, int flatBrt, 
 			memcpy(dst + pitch * i + left, src + pitch * i + left, sizeof(unsigned char) * (right - left));
 		return ;
 	}
+	clock_t time2 = clock();
+	strTemp.Format(L"FlatImage Elapsed Time 1 : %0.3f", double(time2 - time1) * 1000.0 / CLOCKS_PER_SEC);
+	OutputDebugString(strTemp);
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// Flat Factor 만들기 - S
@@ -87,6 +95,10 @@ void FlatImage::MakeFlatLineScan(unsigned char* src, int* profile, int flatBrt, 
 	// Flat Factor 만들기 - E
 	/////////////////////////////////////////////////////////////////////////////////////////
 
+	clock_t time3 = clock();
+	strTemp.Format(L"FlatImage Elapsed Time 2 : %0.3f", double(time3 - time2) * 1000.0 / CLOCKS_PER_SEC);
+	OutputDebugString(strTemp);
+
 	if (left<inspX1 && right > inspX1)
 	{
 		for (i = 0; i < height; i++)
@@ -98,8 +110,37 @@ void FlatImage::MakeFlatLineScan(unsigned char* src, int* profile, int flatBrt, 
 			memcpy(dst + pitch * i + inspX2, src + pitch * i + inspX2, sizeof(unsigned char) * (right - inspX2));
 	}
 
+
+	clock_t time4 = clock();
+	strTemp.Format(L"FlatImage Elapsed Time 3 : %0.3f", double(time4 - time3) * 1000.0 / CLOCKS_PER_SEC);
+	OutputDebugString(strTemp);
+
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// Flat 수행	- S
+	
+	//#pragma omp parallel for
+	//for (int ii = 0; ii < height; ii++)
+	//{
+	//	unsigned char* srcT, * dstT;
+	//	int* profileTmp, * projFactorTmp;
+
+	//	srcT = src + pitch * ii;// +left;
+	//	dstT = dst + pitch * ii;// +left;
+
+	//	profileTmp = profile;// +left;
+	//	projFactorTmp = projFactor;
+	//		
+	//	#pragma omp simd
+	//	for (int jj = left; jj < right; jj++)
+	//	{
+	//		int tmp = flatBrt + ((*(srcT + jj) - *(profileTmp + jj)) * *(projFactorTmp + jj - left) + 500) / 1000;
+	//		if (tmp < 0)				*(dstT + jj) = 0;
+	//		else if (tmp > 255)			*(dstT + jj) = 255;
+	//		else						*(dstT + jj) = tmp;
+	//	}
+	//}
+	
+
 	Concurrency::parallel_for(0, height, [&](int ii) {
 		int jj, tmp;
 		unsigned char* srcT, * dstT;
@@ -120,6 +161,10 @@ void FlatImage::MakeFlatLineScan(unsigned char* src, int* profile, int flatBrt, 
 	});
 	// Flat 수행	- E
 	/////////////////////////////////////////////////////////////////////////////////////////
+
+	clock_t time5 = clock();
+	strTemp.Format(L"FlatImage Elapsed Time 4 : %0.3f", double(time5 - time4) * 1000.0 / CLOCKS_PER_SEC);
+	OutputDebugString(strTemp);
 }
 
 void FlatImage::MakeFlatArea320(unsigned char* src, unsigned char* dst, int nBaseValue, int left, int width, int height, int pitch)

@@ -544,10 +544,10 @@ void FindEdge::GetEdge_Sub9(unsigned char* src, int left, int top, int right, in
 	{
 		nY1 = top + (bottom - top + 1) * loop / nStep;
 		nY2 = top + (bottom - top + 1) * (loop + 1) / nStep;
-		nOff = (nY2 - nY2) / 50;
+		nOff = (nY2 - nY1) / 50;
 		if (nOff < 1) nOff = 1;
 		nCount = 0;
-		memset(m_pProfileEdge, 0, (right + 1) * sizeof(int));
+		memset(m_pProfileEdge, 0, pitch * sizeof(int));
 		for (i = nY1; i < nY2; i += nOff)
 		{
 			nCount++;
@@ -747,3 +747,52 @@ int FindEdge::GetMediumEdgeSub(int count, int *pValue)
 	else			return arrVal[count / 2 - 1];
 }
 
+bool FindEdge::InspectEdge(unsigned char* src, int width, int height, int pitch, int depth, double dScaleX, double dScaleY, int nProdCnt, int nAlgorithm, int nEdgeTH, int nEdgeCnt, double nProdSize, double nProdGab, double* cntX, std::vector<FIND_EDGE_RESULT>* res)
+{
+	if (src == nullptr) return false;
+	if (width <= 0 || height <= 0 || pitch <= 0) return false;
+	if (res == nullptr) return false;
+
+	int maxCnt = nProdCnt;
+
+	// 제품 찾기
+
+	int nEdgeL, nEdgeR;
+	int left, top, right, bottom;
+
+	top = 0;
+	bottom = height;
+
+	left = 0; 
+	right = (cntX[0]+nProdSize/2.0+nProdGab)/dScaleX;
+
+	for (int i = 0; i < maxCnt; i++)
+	{
+		GetEdge_Sub9(src, left, top, right, bottom, pitch, nEdgeTH, 1, &nEdgeL, &nEdgeR);
+
+		FIND_EDGE_RESULT tmpRes;
+		tmpRes.InspType = nAlgorithm;
+		tmpRes.IsInspOK = (nEdgeL == -1 || nEdgeR == -1) ? false : true;
+		tmpRes.StX = (double)nEdgeL;
+		tmpRes.EdX = (double)nEdgeR;
+		res->push_back(tmpRes);
+
+		// 다음 검사 영역 업데이트
+		if (i < maxCnt - 1)
+		{
+			if (nEdgeL == -1 || nEdgeR == -1)
+			{
+				left = (int)((cntX[i + 1]- nProdSize / 2.0- nProdGab) / dScaleX);
+				right = (int)((cntX[i+1] + nProdSize / 2.0 + nProdGab) / dScaleX);
+			}
+			else
+			{
+				left = nEdgeR + nProdGab/(dScaleX*2.0);	// 갭의 절반만 사용
+				right = nEdgeR+ (nProdGab*2.0+nProdSize)/dScaleX;
+			}
+		}
+
+	}
+
+	return true;
+}

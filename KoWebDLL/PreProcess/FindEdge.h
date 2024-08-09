@@ -1,5 +1,7 @@
 #pragma once
 #include "../Param/TempParam.h"
+#include <vector>
+
 #define MAX_EDGE_COUNT 20
 
 ////////////////////////////////////////////////////////////////////////////
@@ -30,6 +32,16 @@ typedef struct _stEdgeInfo
 
 }EDGE_INFO, *LP_EDGE_INFO;
 ////////////////////////////////////////////////////////////////////////////
+
+#pragma pack(push, 1)
+typedef struct _stFindEdgeResult
+{
+	int InspType;		// 검사 데이터 성격 규정
+	int IsInspOK;		// 검사 결과 정보 : false(실패), true(성공)
+	double StX;			// 시작 에지 정보
+	double EdX;			// 끝 에지 정보
+}FIND_EDGE_RESULT;
+#pragma pack(pop)
 
 class FindEdge
 {
@@ -62,6 +74,9 @@ public:
 	void SetImagePartH(int nCount, int height) { m_nImagePart = nCount;  m_nImagePartH = height; }
 
 	bool GetEdge(TempParam::INSP_EDGE_PARAM* edgeData, unsigned char* src, int width, int height, double dScaleX, int nEdgeTh, int nAlgorithm, int nOffset, int nEdgeDir, int notInspArea, bool isDualEdge = false);
+
+	// 외부 호출 함수로만 사용. 
+	bool InspectEdge(unsigned char* src, int width, int height, int pitch, int depth, double dScaleX, double dScaleY, int nProdCnt, int nAlgorithm, int nEdgeTH, int nEdgeCnt, double nProdSize, double nProdGab, double *cntX, std::vector<FIND_EDGE_RESULT>* res);
 
 private:
 	int GetEdge_Sub0(unsigned char* src, int left, int top, int right, int bottom, int pitch, int offset, int thUp, int notInspArea);

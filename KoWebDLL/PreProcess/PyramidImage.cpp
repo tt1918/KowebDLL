@@ -1,6 +1,13 @@
 #include "PyramidImage.h"
 #include "math.h"
 #include <ppl.h>
+#include "../stdafx.h"
+
+#include "atlimage.h"
+
+#ifdef USE_OPENCV
+#include "opencv2/opencv.hpp"
+#endif
 
 PyramidImage::PyramidImage(int maxLv)
 {
@@ -43,23 +50,76 @@ bool PyramidImage::MakeImage(unsigned char* buf, int width, int height)
 	int pitchD, pitchS;
 	int nW;
 
-	memcpy(_Image[0], buf, sizeof(unsigned char) * width * height);
+	CString strTemp;
+	clock_t time1 = clock();
+	// 대용량 이미지의 경우 데이터 쓰기 속도로 인하여 원본 _Image[0]은 사용하지 않고 데이터를 처리한다. 
+	//memcpy(_Image[0], buf, sizeof(unsigned char) * width * height);
+
+	clock_t time2 = clock();
+	strTemp.Format(L"PyramidImage Elapsed Time 1 : %0.3f", double(time2 - time1) * 1000.0 / CLOCKS_PER_SEC);
+	OutputDebugString(strTemp);
+	
+#ifdef USE_OPENCV
+	cv::Mat matFlat = cv::Mat(height, width, CV_8UC1);
+	cv::Mat matPyr;
+
+	memcpy(matFlat.data, buf, sizeof(unsigned char) * height * width);
+
+
+	clock_t time21 = clock();
+	strTemp.Format(L"PyramidImage Elapsed Time 1____ : %0.3f", double(time21 - time2) * 1000.0 / CLOCKS_PER_SEC);
+	
+	OutputDebugString(strTemp);
+
+
+	for (int i = 1; i < 5; i++)
+	{
+		clock_t time3 = clock();
+		fmD = _Image[i];
+		cv::pyrDown(matFlat, matPyr, cv::Size(_Width[i], _Height[i]));
+
+		memcpy(fmD, matPyr.data, sizeof(unsigned char) * _Width[i] * _Height[i]);
+		matFlat.release();
+		matFlat = matPyr.clone();
+		clock_t time4 = clock();
+		strTemp.Format(L"PyramidImage Elapsed Time 1-%d : %0.3f", i, double(time4 - time3) * 1000.0 / CLOCKS_PER_SEC);
+		OutputDebugString(strTemp);
+	}
+	matFlat.release();
+#else
 
 	for (int k = 1; k < _MaxLv; k++)
 	{
-		fmS = _Image[k - 1];
+		clock_t time3 = clock();
+		if (k == 1)		fmS = buf;
+		else			fmS = _Image[k - 1];
 		pitchS = _Width[k-1];
 		fmD = _Image[k];
 		pitchD = _Width[k];
 		nW = _Width[k];
 
-		Concurrency::parallel_for(0, _Height[k], [&](int i) {
+		/*#pragma omp parallel for
+		for (int i = 0; i < _Height[k]; i++)
+		{
+			int nI;
+			nI = i * 2;
+			
+			#pragma omp simd
+			for (int j = 0; j < nW; j++)
+				*(fmD + pitchD * i + j) = (*(fmS + pitchS * nI + j * 2) + *(fmS + pitchS * nI + j * 2 + 1) + *(fmS + pitchS * (nI + 1) + j * 2) + *(fmS + pitchS * (nI + 1) + j * 2 + 1)) / 4;
+		};*/
+
+
+		Concurrency::parallel_for(0, _Height[k], [&](int i) 
+		{
 			int nI, nJ, j;
 			nI = i * 2;
+			unsigned char* pFmD = fmD + pitchD * i;
+			unsigned char* pFmS = fmS + pitchS * nI;
 			for (j = 0; j < nW; j++)
 			{
 				nJ = j * 2;
-				*(fmD + pitchD * i + j) = (*(fmS + pitchS * nI + nJ) + *(fmS + pitchS * nI + nJ + 1) + *(fmS + pitchS * (nI + 1) + nJ) + *(fmS + pitchS * (nI + 1) + nJ + 1) + 2) / 4;
+				*(pFmD + j) = (*(pFmS + nJ) + *(pFmS + nJ + 1) + *(pFmS + pitchS + nJ) + *(pFmS + pitchS + nJ + 1) + 2) / 4;
 			}
 		});
 
@@ -73,8 +133,12 @@ bool PyramidImage::MakeImage(unsigned char* buf, int width, int height)
 				*(fmD + pitchD * i + j) = (*(fmS + pitchS * nI + nJ) + *(fmS + pitchS * nI + nJ + 1) + *(fmS + pitchS * (nI + 1) + nJ) + *(fmS + pitchS * (nI + 1) + nJ + 1)) / 4;
 			}
 		};*/
-	}
 
+		clock_t time4 = clock();
+		strTemp.Format(L"PyramidImage Elapsed Time 1-%d : %0.3f", k, double(time4 - time3) * 1000.0 / CLOCKS_PER_SEC);
+		OutputDebugString(strTemp);
+	}
+#endif
 	_IsFinish = true;
 
 	return true;
@@ -108,7 +172,9 @@ void PyramidImage::CreateBuf()
 	_Width[0] = _RefW;
 	_Height[0] = _RefH;
 
-	_Image[0] = new unsigned char[_Width[0] * _Height[0]];
+	// 0 번은 생성 안 함. 
+	// 굳이 필요하지 않음. 
+	_Image[0] = nullptr;//new unsigned char[_Width[0] * _Height[0]];
 
 	for (int i = 1; i < _MaxLv; i++)
 	{

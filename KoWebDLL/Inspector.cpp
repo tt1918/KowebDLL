@@ -278,14 +278,31 @@ void Inspector::RunWebInspect(int procNum)
 	unsigned char* pSrc;
 
 	Param* pParam = _pParam[procNum];
+	CString strTemp;
 
-	int start = GetTickCount();
+	clock_t start = clock();
 
+	_pPyramid->Reset();
+
+	/*int start = GetTickCount();*/
+
+	clock_t time1 = clock();
 	_pProfile->MakeProfileData(_pSrcImg, _SrcW, _SrcH, _SrcW);
+	clock_t time2 = clock();
+	strTemp.Format(L"Elapsed Time 1 : %0.3f", double(time2 - time1) * 1000.0 / CLOCKS_PER_SEC);
+	OutputDebugString(strTemp);
+
 	_pEdgeFinder->GetEdge(&_tempParam[procNum].InspArea, _pSrcImg, _SrcW, _SrcH, pParam->Cam.ScaleX, pParam->Common.EdgeTh, pParam->Common.AlgorithmType, pParam->Common.EdgeOffset, pParam->Common.EdgeDir, pParam->Common.NotInspArea);
+
+	clock_t time3 = clock();
+	strTemp.Format(L"Elapsed Time 2 : %0.3f", double(time3 - time2) * 1000.0 / CLOCKS_PER_SEC);
+	OutputDebugString(strTemp);
 
 	int nAvgBright = _pProfile->CalcAvgBright(_pEdgeFinder->m_nInspX1, _pEdgeFinder->m_nInspX2, _sysParam.FlatBright);
 
+	clock_t time4 = clock();
+	strTemp.Format(L"Elapsed Time 3 : %0.3f", double(time4 - time3) * 1000.0 / CLOCKS_PER_SEC);
+	OutputDebugString(strTemp);
 	
 	if (pParam->Common.useFlatImage)
 	{
@@ -296,9 +313,17 @@ void Inspector::RunWebInspect(int procNum)
 	else	// Pyramid 영상 생성에 사용할 Src Img 선택
 		pSrc = _pSrcImg;
 
+	clock_t time5 = clock();
+	strTemp.Format(L"Elapsed Time 4 : %0.3f", double(time5 - time4) * 1000.0 / CLOCKS_PER_SEC);
+	OutputDebugString(strTemp);
+
 	// 피라미드 영상을 생성
 	if (_pPyramid->IsFinish() == false)
 		_pPyramid->MakeImage(pSrc, _SrcW, _SrcH);
+
+	clock_t time6 = clock();
+	strTemp.Format(L"Elapsed Time 5 : %0.3f", double(time6 - time5) * 1000.0 / CLOCKS_PER_SEC);
+	OutputDebugString(strTemp);
 
 	// 스크래치 검사의 경우에는 원본 영상을 사용한다.
 	// 평활화 하면서 수직 스크래치 정보가 손실될 수 있음.
@@ -306,7 +331,8 @@ void Inspector::RunWebInspect(int procNum)
 		_pPyramidSc->MakeImage(_pSrcImg, _SrcW, _SrcH);
 
 
-	int end = GetTickCount();
+	
+	
 
 	//CImage tmpImage;
 	//RGBQUAD   bmiColors[256];
@@ -343,12 +369,14 @@ void Inspector::RunWebInspect(int procNum)
 	_pInspect[procNum]->ResetDefectData();
 	_pInspect[procNum]->Run();
 
-	// 검사 결과 처리
-
-
-	CString strTemp;
-	strTemp.Format(L"elap = %d\n", end - start);
+	clock_t time7 = clock();
+	strTemp.Format(L"Elapsed Time 6 : %0.3f", double(time7 - time6) * 1000.0 / CLOCKS_PER_SEC);
 	OutputDebugString(strTemp);
+
+	strTemp.Format(L"Elapsed Time  : %0.3f", double(time7 - time1) * 1000.0 / CLOCKS_PER_SEC);
+	OutputDebugString(strTemp);
+
+	// 검사 결과 처리
 
 
 	DEFECTDATA* pData = _pInspect[procNum]->GetDefectData();

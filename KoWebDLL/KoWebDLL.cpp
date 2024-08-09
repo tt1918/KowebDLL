@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "KoWebDLL.h"
 #include "Inspector.h"
+#include "PreProcess/FindEdge.h"
 
 extern "C" DLL_EXPORT_API void* InitKoWebDll()
 {
@@ -80,4 +81,47 @@ extern "C" DLL_EXPORT_API int RunWebInspect(void* pHandle, int procNum)
 	pInsp->RunWebInspect(procNum);
 
 	return 0;
+}
+
+extern "C" DLL_EXPORT_API bool EdgeFind(unsigned char* image, int width, int height, int pitch, int depth, double scaleX, double scaleY,
+										int inspMethod, int prodCnt, double prodSize, double prodGap, double refCenterX[],
+										int edgeTH, int edgeCnt, FIND_EDGE_RESULT *res)
+{
+	FindEdge findEdge;
+	findEdge.Init(width, height);
+
+	std::vector<FIND_EDGE_RESULT> inspResult;
+
+	bool bRes = findEdge.InspectEdge(image, width, height, pitch, depth, scaleX, scaleY, prodCnt, inspMethod, edgeTH, edgeCnt, prodSize, prodGap, refCenterX, &inspResult);
+
+	for (int i = 0; i < inspResult.size(); i++)
+		res[i] = inspResult[i];
+
+	// 데이터 정리
+	findEdge.Destroy();
+
+	return bRes;
+}
+
+extern "C" DLL_EXPORT_API bool EdgeFind1(unsigned char* image, int width, int height, int pitch, int depth, double scaleX, double scaleY,
+	int inspMethod, int prodCnt, double prodSize, double prodGap, double refCenterX[],
+	int edgeTH, int edgeCnt, FIND_EDGE_RESULT * res, int size, int64_t& dataPtr)
+{
+	dataPtr = (int64_t)res;
+	FindEdge findEdge;
+	findEdge.Init(width, height);
+
+	std::vector<FIND_EDGE_RESULT> inspResult;
+
+	int size1 = sizeof(FIND_EDGE_RESULT);
+
+	bool bRes = findEdge.InspectEdge(image, width, height, pitch, depth, scaleX, scaleY, prodCnt, inspMethod, edgeTH, edgeCnt, prodSize, prodGap, refCenterX, &inspResult);
+
+	for (int i = 0; i < inspResult.size(); i++)
+		res[i] = inspResult[i];
+
+	// 데이터 정리
+	findEdge.Destroy();
+
+	return bRes;
 }
