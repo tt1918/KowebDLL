@@ -62,21 +62,59 @@ void Cos2Param::SetParam()
 	
 	////////////////////////////////////////////////
 	// 얼룩 검사.
-	_Cunic.InspArea = _Data[10];	// 이물성 쿠닉 검사 영역 
-	_Cunic.CandiVal = _Data[11];	// 이물성 쿠닉 Value
+	_Cunic.InspArea = (int)_Data[10];	// 이물성 쿠닉 검사 영역 
+	_Cunic.CandiVal = (int)_Data[11];	// 이물성 쿠닉 Value
 
-	if (_Cunic.InspArea < 24) _Cunic.InspArea = 24;
-	else if (_Cunic.InspArea > 80) _Cunic.InspArea = 80;
+	if (_Cunic.InspArea < 24)		_Cunic.InspArea = 24;
+	else if (_Cunic.InspArea > 80)	_Cunic.InspArea = 80;
 
 	for (int i = 0; i < MAX_LEVEL; i++)
 	{
-		_Cunic.Value1[i] = _Data[150 + i];
-		_Cunic.Std1[i] = _Data[160 + i];
-		_Cunic.Std[i] = _Data[170 + i];
+		_Cunic.Value1[i]	= _Data[150 + i];
+		_Cunic.Std1[i]		= _Data[160 + i];
+		_Cunic.Std[i]		= _Data[170 + i];
 		if (_Cunic.Std[i] > 100.0) _Cunic.Std[i] /= 1000.0;
 	}
 
 	////////////////////////////////////////////////
+}
+
+// 데이터 
+void Cos2Param::SetInstParam(InspParam::COMMON_PARAM *pCommon, 
+	InspParam::CAM_PARAM	*pCam, 
+	InspParam::HOLE_SKIP_PARAM *pHoleSkip, 
+	bool *pUseLv,
+	float *pCycle,
+	InspParam::SPOT_PARAM* pLvUp, 
+	InspParam::SPOT_PARAM* pLvDn, 
+	InspParam::PRESS_PARAM* pPress,
+	InspParam::CUNIC_PARAM* pCunic, 
+	InspParam::PINHOLE_PARAM* pPinhole, 
+	InspParam::SC_PARAM* pSc)
+{
+	memcpy(&Common, pCommon, sizeof(InspParam::COMMON_PARAM));
+	memcpy(&Cam, pCam, sizeof(InspParam::COMMON_PARAM));
+	memcpy(&HoleSkip, pHoleSkip, sizeof(InspParam::HOLE_SKIP_PARAM));
+	memcpy(&_UseLv, pUseLv, sizeof(bool));
+	memcpy(&_Cycle, pCycle, sizeof(float));
+
+	if (pLvUp != nullptr)	memcpy(&_LvUp, pLvUp, sizeof(InspParam::SPOT_PARAM));
+	else					_LvUp.Init(); 
+
+	if (pLvDn != nullptr)	memcpy(&_LvDn, pLvDn, sizeof(InspParam::SPOT_PARAM));
+	else					_LvDn.Init();
+
+	if (pPress != nullptr)	memcpy(&_Press, pPress, sizeof(InspParam::PRESS_PARAM));
+	else					_Press.Init(); 
+
+	if (pCunic != nullptr) 	memcpy(&_Cunic, pCunic, sizeof(InspParam::CUNIC_PARAM));
+	else					_Cunic.Init(); 
+
+	if (pPinhole != nullptr) memcpy(&_Pinhole, pPinhole, sizeof(InspParam::PINHOLE_PARAM));
+	else					_Pinhole.Init(); 
+
+	if (pSc != nullptr)		memcpy(&_SC, pSc, sizeof(InspParam::SC_PARAM));
+	else					_SC.Init();
 }
 
 void Cos2Param::GetParam()
@@ -99,6 +137,8 @@ void Cos2Param::SetAddress()
 	_pPinhole = &_Pinhole;
 
 	_pCunic = &_Cunic;
+
+	_pSC = &_SC;
 }
 
 void Cos2Param::to_json(json& j, const Param& p)

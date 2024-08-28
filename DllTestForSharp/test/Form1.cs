@@ -129,21 +129,30 @@ namespace test
 
         private void btnMatchImage_Click(object sender, EventArgs e)
         {
-            //_Koweb.RunInspect(0);
             Mat grayImg = new Mat();
             grayImg.Create(mainImage.Rows, mainImage.Cols, MatType.CV_8UC1);
             Cv2.CvtColor(mainImage, grayImg, ColorConversionCodes.RGB2GRAY);
 
-            List<double> refCntX = new List<double>();
-            refCntX.Add(107.5);
-            refCntX.Add(190.0);
 
-            KoWebInsp.FIND_EDGE_RESULT[] res = new KoWebInsp.FIND_EDGE_RESULT[2];
-            res[0] = new KoWebInsp.FIND_EDGE_RESULT();
-            res[1] = new KoWebInsp.FIND_EDGE_RESULT();
+            _Koweb.RunBasicInsp(grayImg.Data, grayImg.Cols, grayImg.Rows, grayImg.Cols);
+            
+            
+            grayImg.Dispose();
+            //return;
 
-            _Koweb.FindEdge(grayImg.Data, grayImg.Cols, grayImg.Rows, grayImg.Cols, grayImg.Channels(), 0.05, 0.05, 1, 2, 165.0,
-                25.0, refCntX.ToArray(), 30, 2, ref res);
+            //List<double> refCntX = new List<double>();
+            //refCntX.Add(107.5);
+            //refCntX.Add(190.0);
+
+            //KoWebInsp.FIND_EDGE_RESULT[] res = new KoWebInsp.FIND_EDGE_RESULT[2];
+            //res[0] = new KoWebInsp.FIND_EDGE_RESULT();
+            //res[1] = new KoWebInsp.FIND_EDGE_RESULT();
+
+            //_Koweb.FindEdge(grayImg.Data, grayImg.Cols, grayImg.Rows, grayImg.Cols, grayImg.Channels(), 0.05, 0.05, 1, 2, 165.0,
+            //    25.0, refCntX.ToArray(), 30, 2, ref res);
+
+
+            grayImg.Dispose();
         }
 
     }

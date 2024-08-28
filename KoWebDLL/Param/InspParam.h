@@ -37,7 +37,7 @@ namespace InspParam
 		int		TapeToOpticDist;	// 테입 센서 <-> 광학계 까지의 거리
 
 		int		BrightCompensation; // 밝기 보상값
-		
+
 		void Init()
 		{
 			useRandomCycle = false;
@@ -47,7 +47,7 @@ namespace InspParam
 			GrabBright = 80;
 			TrgGrayDiff = 5;
 
-			BrightMax = 0;
+			BrightMax = 255;
 			BrightMin = 0;
 			
 			PeriodLevel = 1;
@@ -108,6 +108,17 @@ namespace InspParam
 		double ScaleY;
 
 		double ImageAngleFactoryY;
+
+		void Init()
+		{
+			Exposure = 0;
+			SttPosX = 0.0;
+			SttPosY = 0.0;
+			FrameLength = 0.0;
+			ScaleX = 0.0;
+			ScaleY = 0.0;
+		}
+
 	}CAM_PARAM;
 
 	typedef struct _stBasicInspParam
@@ -135,6 +146,46 @@ namespace InspParam
 			memset(LvTH, 0x00, sizeof(int) * MAX_LEVEL);
 			memset(LvSize, 0x00, sizeof(double) * MAX_LEVEL);
 		}
+
+		void SetData(int th, int val[], double val1[])
+		{
+			AreaTh = th;
+
+			for (int i = 0; i < MAX_LEVEL; i++)
+				LvTH[i] = val[i];
+
+			for (int i = 0; i < MAX_LEVEL; i++)
+				LvSize[i] = val1[i];
+		}
+
+		void SetLvTH(int val1, int val2, int val3, int val4, int val5, int val6, int val7, int val8, int val9, int val10)
+		{
+			LvTH[0] = val1;
+			LvTH[1] = val2;
+			LvTH[2] = val3;
+			LvTH[3] = val4;
+			LvTH[4] = val5;
+			LvTH[5] = val6;
+			LvTH[6] = val7;
+			LvTH[7] = val8;
+			LvTH[8] = val9;
+			LvTH[9] = val1;
+		}
+
+		void SetLvSize(double val1, double val2, double val3, double val4, double val5, double val6, double val7, double val8, double val9, double val10)
+		{
+			LvSize[0] = val1;
+			LvSize[1] = val2;
+			LvSize[2] = val3;
+			LvSize[3] = val4;
+			LvSize[4] = val5;
+			LvSize[5] = val6;
+			LvSize[6] = val7;
+			LvSize[7] = val8;
+			LvSize[8] = val9;
+			LvSize[9] = val10;
+		}
+
 	}SPOT_PARAM;
 
 	typedef struct _stBiningParam
@@ -236,8 +287,49 @@ namespace InspParam
 			CandiVal = 0.0;
 			memset(Std, 0x00, sizeof(double) * MAX_LEVEL);
 			memset(Std1, 0x00, sizeof(double) * MAX_LEVEL);
-			memset(Value1, 0x00, sizeof(double) * MAX_LEVEL);
+			for (int i = 0; i < MAX_LEVEL; i++)
+				Value1[i] = 255;
 		}
+
+		void SetData(int areaVal, double candiVal, double lvVal[])
+		{
+			SetInspArea(areaVal, candiVal);
+
+			for (int i = 0; i < MAX_LEVEL; i++)
+			{
+				Std[i] = lvVal[i];
+				if (Std[i] > 100.0) Std[i] /= 1000.0;
+			}
+		}
+
+		void SetInspArea(int areaVal, double candiVal)
+		{
+			InspArea = areaVal;
+			if (InspArea < 24) InspArea = 24;
+			if (InspArea > 80) InspArea = 80;
+
+			CandiVal = candiVal;
+		}
+
+		void SetStd(double val1, double val2, double val3, double val4, double val5, double val6, double val7, double val8, double val9, double val10)
+		{
+			Std[0] = val1;
+			Std[1] = val2;
+			Std[2] = val3;
+			Std[3] = val4;
+			Std[4] = val5;
+			Std[5] = val6;
+			Std[6] = val7;
+			Std[7] = val8;
+			Std[8] = val9;
+			Std[9] = val10;
+
+			for (int i = 0; i < MAX_LEVEL; i++)
+			{
+				if (Std[i] > 100.0) Std[i] /= 1000.0;
+			}
+		}
+
 
 	}CUNIC_PARAM;
 
@@ -252,6 +344,26 @@ namespace InspParam
 			Offset = 0;
 			memset(ScVal, 0x00, sizeof(int) * MAX_LEVEL);
 		}
+
+		void SetValue(int val1, int val2, int val3, int val4, int val5, int val6, int val7, int val8, int val9, int val10)
+		{
+			ScVal[0] = val1;
+			ScVal[1] = val2;
+			ScVal[2] = val3;
+			ScVal[3] = val4;
+			ScVal[4] = val5;
+			ScVal[5] = val6;
+			ScVal[6] = val7;
+			ScVal[7] = val8;
+			ScVal[8] = val9;
+			ScVal[9] = val10;
+		}
+
+		void SetValue(int val[])
+		{
+			memcpy(ScVal, val, sizeof(int) * MAX_LEVEL);
+		}
+
 	}SC_PARAM;
 
 	// Long SC 파라미터
@@ -297,6 +409,69 @@ namespace InspParam
 
 			memset(Value, 0x00, sizeof(int) * MAX_LEVEL);
 			memset(Size, 0x00, sizeof(double) * MAX_LEVEL);
+		}
+
+		
+
+		void SetBaseParam(int upTh, int dnTh, int areaUpTh, int areaDnTh)
+		{
+			UpTh = upTh;
+			DnTh = dnTh;
+
+			AreaUpTH = areaUpTh;
+			AreaDnTH = areaDnTh;
+		}
+
+		void CheckEnable()
+		{
+			IsInsp = false;
+			for (int i = 0; i < MAX_LEVEL; i++)
+			{
+				if (Value[i] > 0 && Size[i] > 0)
+					IsInsp = true;
+			}
+		}
+
+		void SetValue(int val1, int val2, int val3, int val4, int val5, int val6, int val7, int val8, int val9, int val10)
+		{
+			Value[0] = val1;
+			Value[1] = val2;
+			Value[2] = val3;
+			Value[3] = val4;
+			Value[4] = val5;
+			Value[5] = val6;
+			Value[6] = val7;
+			Value[7] = val8;
+			Value[8] = val9;
+			Value[9] = val10;
+
+			// 업데이트 후 검사 가능 여부 확인 
+			CheckEnable();
+		}
+
+		void SetSize(double val1, double val2, double val3, double val4, double val5, double val6, double val7, double val8, double val9, double val10)
+		{
+			Size[0] = val1;
+			Size[1] = val2;
+			Size[2] = val3;
+			Size[3] = val4;
+			Size[4] = val5;
+			Size[5] = val6;
+			Size[6] = val7;
+			Size[7] = val8;
+			Size[8] = val9;
+			Size[9] = val10;
+
+			// 업데이트 후 검사 가능 여부 확인 
+			CheckEnable();
+		}
+
+		void SetData(int upTh, int dnTh, int areaUpTh, int areaDnTh, int val[], double size[])
+		{
+			SetBaseParam(upTh, dnTh, areaUpTh, areaDnTh);
+
+			memcpy(Value, val, sizeof(int)*MAX_LEVEL);
+			memcpy(Size, size, sizeof(double) * MAX_LEVEL);
 		}
 
 	}PRESS_PARAM;

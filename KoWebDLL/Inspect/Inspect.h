@@ -20,11 +20,11 @@ private:
 	TempParam::TEMP_PARAM*	_pTmpData;		// 검사 임시 파라미터 (주소만 얻어옴)
 	MARK_OPTIC*				_pMark;			// 결점 마킹 처리 데이터 (주소만 얻어옴)
 
-	FlatImage*				_pFlat;			// 이미지 평활화 클래스
-	Profile*				_pProfile;		// 이미지 프로파일 클래스
-	FindEdge*				_pEdgeFinder;	// 에지 검출 클래스	
-	PyramidImage*			_pPyramid;		// 피라미드 영상 생성
-	PyramidImage*			_pPyramidSc;	// 피라미드 영상 생성
+	FlatImage*				_pFlat;			// 이미지 평활화 클래스	(주소만 얻어옴)
+	Profile*				_pProfile;		// 이미지 프로파일 클래스 (주소만 얻어옴)
+	FindEdge*				_pEdgeFinder;	// 에지 검출 클래스	(주소만 얻어옴)
+	PyramidImage*			_pPyramid;		// 피라미드 영상 생성 (주소만 얻어옴)
+	PyramidImage*			_pPyramidSc;	// 피라미드 영상 생성 (주소만 얻어옴)
 	CChain*					_pChain;		// Blob용 Chain Code	
 
 	// 이미지 데이터
@@ -42,17 +42,17 @@ private:
 	unsigned char			_fmBin[BAD_IMG_HEIGHT * BAD_IMG_WIDTH];
 
 	// 전체 영상 임시 버퍼
-	LPBYTE					_pFmTemp;
+	LPBYTE					_pFmTemp;		// (현재 클래스에서 생성)
 	
 	/////////////////////////////////////////////////////////////////////
 	// 스크라치 검사용 버퍼
 	int _nMaxBK[256][64], _nMaxPos[256][64];		//세로 최대 128, 가로는 128씩 체크 
 	int _nMax[256][64], _nMax1[256][64];
-	long *_pKProjFlatAvg;
-	long *_pKProj, *_pKProjLocal;
-	int *_pKProjLocalArray;
-	long *_pKProjErode, * _pKProjDilate;
-	long  *_pKProjFlat, *_pKProjFlat1, *_pKProjFlatMax;
+	long *_pKProjFlatAvg;								// (현재 클래스에서 생성)
+	long *_pKProj, *_pKProjLocal;						// (현재 클래스에서 생성)
+	int *_pKProjLocalArray;								// (현재 클래스에서 생성)
+	long *_pKProjErode, * _pKProjDilate;				// (현재 클래스에서 생성)
+	long  *_pKProjFlat, *_pKProjFlat1, *_pKProjFlatMax;	// (현재 클래스에서 생성)
 	/////////////////////////////////////////////////////////////////////
 
 
@@ -79,7 +79,7 @@ public:
 	void SetSysParam(SystemParam* pParam) { _pSystem = pParam; }
 	void SetMarkParam(MARK_OPTIC* pParam) { _pMark = pParam; }
 
-	virtual void Create(int width, int height);
+	virtual void Create(int width, int height, bool isInit=false);
 	virtual void Release();
 
 	virtual void Run();

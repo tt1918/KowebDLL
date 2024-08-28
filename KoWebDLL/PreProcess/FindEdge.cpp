@@ -3,6 +3,7 @@
 #include "stdlib.h"
 #include <memory.h>
 #include "../Functions.h"
+#include "atlimage.h"
 
 FindEdge::FindEdge()
 {
@@ -790,6 +791,11 @@ bool FindEdge::InspectEdge(unsigned char* src, int width, int height, int pitch,
 				left = nEdgeR + nProdGab/(dScaleX*2.0);	// 갭의 절반만 사용
 				right = nEdgeR+ (nProdGab*2.0+nProdSize)/dScaleX;
 			}
+
+			CString strTemp;
+			strTemp.Format(_T("Edge Search Range : R_%d, L_%d\n"), left, right);
+			OutputDebugString(strTemp);
+
 		}
 
 	}

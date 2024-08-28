@@ -9,9 +9,9 @@ InspectCOS2::~InspectCOS2()
 {
 }
 
-void InspectCOS2::Create(int width, int height)
+void InspectCOS2::Create(int width, int height, bool isInit)
 {
-	Inspect::Create(width, height);
+	Inspect::Create(width, height, isInit);
 }
 
 void InspectCOS2::Release()
@@ -22,4 +22,5 @@ void InspectCOS2::Release()
 void InspectCOS2::Run()
 {
 	SpotInspect();
+	ScInspect();
 }

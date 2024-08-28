@@ -10,9 +10,9 @@ InspectCOSA::~InspectCOSA()
 {
 }
 
-void InspectCOSA::Create(int width, int height)
+void InspectCOSA::Create(int width, int height, bool isInit)
 {
-	Inspect::Create(width, height);
+	Inspect::Create(width, height, isInit);
 }
 
 void InspectCOSA::Release()

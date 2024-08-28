@@ -6,7 +6,7 @@ public:
 	InspectCOS5();
 	virtual ~InspectCOS5();
 
-	void Create(int width, int height) override;
+	void Create(int width, int height, bool isInit = false) override;
 	void Release() override;
 
 	void Run() override;

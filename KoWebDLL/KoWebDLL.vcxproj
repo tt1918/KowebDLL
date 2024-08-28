@@ -183,6 +183,7 @@
     <ClInclude Include="Inspect\InspectCOSC.h" />
     <ClInclude Include="Inspect\InspectCOSD.h" />
     <ClInclude Include="Inspect\InspectCOSE.h" />
+    <ClInclude Include="InstInspector.h" />
     <ClInclude Include="KoWebDLL.h" />
     <ClInclude Include="Param\Cos1Param.h" />
     <ClInclude Include="Param\Cos2Param.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="Inspect\InspectCOSD.cpp" />
     <ClCompile Include="Inspect\InspectCOSE.cpp" />
     <ClCompile Include="Inspect\InspectSub.cpp" />
+    <ClCompile Include="InstInspector.cpp" />
     <ClCompile Include="KoWebDLL.cpp" />
     <ClCompile Include="Param\Cos1Param.cpp" />
     <ClCompile Include="Param\Cos2Param.cpp" />

@@ -911,10 +911,10 @@ void Inspect::MakeDefectRect(int nDefect, int nX, int nY, int nLeft, int nRight)
 	}
 
 
-	_DefectData.Area[nDefect].left = ll;
-	_DefectData.Area[nDefect].top = tt;
-	_DefectData.Area[nDefect].right = rr;
-	_DefectData.Area[nDefect].bottom = bb;
+	_DefectData.pArea[nDefect].left = ll;
+	_DefectData.pArea[nDefect].top = tt;
+	_DefectData.pArea[nDefect].right = rr;
+	_DefectData.pArea[nDefect].bottom = bb;
 }
 
 void Inspect::MakeDefectRect_BigDefect(int nX, int nY, int nLeft, int nRight, int* left, int* top)
@@ -991,10 +991,10 @@ void Inspect::MakeDefectRect_BigDefect1(int nDefect, int nX, int nY, int nLeft, 
 	}
 
 
-	_DefectData.Area[nDefect].left = ll;
-	_DefectData.Area[nDefect].top = tt;
-	_DefectData.Area[nDefect].right = rr;
-	_DefectData.Area[nDefect].bottom = bb;
+	_DefectData.pArea[nDefect].left = ll;
+	_DefectData.pArea[nDefect].top = tt;
+	_DefectData.pArea[nDefect].right = rr;
+	_DefectData.pArea[nDefect].bottom = bb;
 }
 
 // 이함수가 위보다 0.15msec 덜걸림(128x128)기준
@@ -1589,16 +1589,29 @@ void Inspect::GetSizeNValue(int nType, unsigned char* fm, int nDefectY, int left
 		{
 			ll = _pChain->FindMinX(nBlobID);
 			rr = _pChain->FindMaxX(nBlobID);
-			tt = _pChain->FindMinY(nBlobID) + nDilation;
-			bb = _pChain->FindMaxY(nBlobID) - nDilation;
+			tt = _pChain->FindMinY(nBlobID);// + nDilation;
+			bb = _pChain->FindMaxY(nBlobID);// - nDilation;
 
 		}
 		else
 		{
-			ll = _pChain->FindMinX(nBlobID) + nDilation;
-			rr = _pChain->FindMaxX(nBlobID) - nDilation;
-			tt = _pChain->FindMinY(nBlobID) + nDilation;
-			bb = _pChain->FindMaxY(nBlobID) - nDilation;
+			
+			ll = _pChain->FindMinX(nBlobID);//+ nDilation;
+			rr = _pChain->FindMaxX(nBlobID);//- nDilation;
+			tt = _pChain->FindMinY(nBlobID);//+ nDilation;
+			bb = _pChain->FindMaxY(nBlobID);//- nDilation;
+
+			if (rr - ll > 1)
+			{
+				ll += nDilation;
+				rr -= nDilation;
+			}
+		}
+
+		if (bb - tt > 1)
+		{
+			tt += nDilation;
+			bb -= nDilation;
 		}
 
 		// 불량 확인 표시용으로 추가
@@ -1983,8 +1996,8 @@ int Inspect::SelectDefect(int nLevel1, int nClass1, int nLevel2, int nClass2)
 int Inspect::CopyNGImage(bool bFlat)
 {
 	int i, j, nTmp;
-	int nOffX = _DefectData.Area[_DefectData.Count].left;
-	int nOffY = _DefectData.Area[_DefectData.Count].top;
+	int nOffX = _DefectData.pArea[_DefectData.Count].left;
+	int nOffY = _DefectData.pArea[_DefectData.Count].top;
 	int pitch = _pSystem->Pitch;
 	LPBYTE fm;
 	LPBYTE fmD = _DefectData.pImage[_DefectData.Count];
@@ -2238,8 +2251,8 @@ int Inspect::CopyNGImageFMArea(LPBYTE fm, int left, int top, int right, int bott
 int Inspect::CopyNGImageFM(LPBYTE fm, int pitch)
 {
 	int i, j;
-	int nOffX = _DefectData.Area[_DefectData.Count].left;
-	int nOffY = _DefectData.Area[_DefectData.Count].top;
+	int nOffX = _DefectData.pArea[_DefectData.Count].left;
+	int nOffY = _DefectData.pArea[_DefectData.Count].top;
 	int nOrgPitch = _pSystem->Pitch;
 	LPBYTE fmD = _DefectData.pImage[_DefectData.Count];
 
@@ -2277,8 +2290,8 @@ int Inspect::CheckDefectOverlap(double instRngX, double instRngY)
 	if (_DefectData.Count > _pSystem->MaxDefect ) return 2;
 
 	int nResult = 0, i;
-	int nLevelC = _DefectData.Info[_DefectData.Count].type / MILLION;
-	int nTypeC = _DefectData.Info[_DefectData.Count].type % CLASSDEV;
+	int nLevelC = _DefectData.pInfo[_DefectData.Count].type / MILLION;
+	int nTypeC = _DefectData.pInfo[_DefectData.Count].type % CLASSDEV;
 	int nMarkC, nXC, nYC;
 
 	int nMark;
@@ -2307,18 +2320,18 @@ int Inspect::CheckDefectOverlap(double instRngX, double instRngY)
 	if (nLevelC < 1 || nLevelC > 10 || nTypeC < 1 || nTypeC > 9) return 2; //현재 검출한 데이타가 쓰레기라 버린다.
 
 	nMarkC = _pMark->Marking[nTypeC - 1][nLevelC - 1];
-	nXC = (int)_DefectData.Info[_DefectData.Count].x_pos;
-	nYC = (int)_DefectData.Info[_DefectData.Count].y_pos;
+	nXC = (int)_DefectData.pInfo[_DefectData.Count].x_pos;
+	nYC = (int)_DefectData.pInfo[_DefectData.Count].y_pos;
 
 	for (i = 0; i < _DefectData.Count; i++)
 	{
-		nDiffX = nXC - (int)_DefectData.Info[i].x_pos; if (nDiffX < 0) nDiffX *= -1;
-		nDiffY = nYC - (int)_DefectData.Info[i].y_pos; if (nDiffY < 0) nDiffY *= -1;
+		nDiffX = nXC - (int)_DefectData.pInfo[i].x_pos; if (nDiffX < 0) nDiffX *= -1;
+		nDiffY = nYC - (int)_DefectData.pInfo[i].y_pos; if (nDiffY < 0) nDiffY *= -1;
 
 		if (nDiffX < nOffsetX && nDiffY < nOffsetY)
 		{
-			nLevel = _DefectData.Info[i].type / MILLION;
-			nType = _DefectData.Info[i].type % CLASSDEV;
+			nLevel = _DefectData.pInfo[i].type / MILLION;
+			nType = _DefectData.pInfo[i].type % CLASSDEV;
 			nMark = _pMark->Marking[nType - 1][nLevel - 1];
 
 			if (nMarkC == nMark) //1. 같은 마킹이면------------------------------------------------------------
@@ -2327,7 +2340,7 @@ int Inspect::CheckDefectOverlap(double instRngX, double instRngY)
 				{
 					if (nType == g_NGType._Scratch && nTypeC == g_NGType._Scratch)  //둘다 스크라치면 Value가 큰 것으로 선택
 					{
-						if (_DefectData.Info[_DefectData.Count].value > _DefectData.Info[i].value)
+						if (_DefectData.pInfo[_DefectData.Count].value > _DefectData.pInfo[i].value)
 						{
 							nExistNum = i;    //현재검출한 불량 선택
 						}
@@ -2355,7 +2368,7 @@ int Inspect::CheckDefectOverlap(double instRngX, double instRngY)
 						else if (nType == g_NGType._Scratch && nTypeC == g_NGType._SpotW && _pParam->Common.AlgorithmType == COS1)
 						{
 							// 밝은 불량은 휘점 불량으로 처리한다.
-							if (_DefectData.Info[_DefectData.Count].value + _pSystem->FlatBright> 220)
+							if (_DefectData.pInfo[_DefectData.Count].value + _pSystem->FlatBright> 220)
 							{
 								nExistNum = i;    //현재검출한 불량 선택
 								break;
@@ -2378,14 +2391,14 @@ int Inspect::CheckDefectOverlap(double instRngX, double instRngY)
 						}
 
 						//둘다 스크라치가 아니면 Size로 구분
-						if (_DefectData.Info[_DefectData.Count].size > _DefectData.Info[i].size &&
-							(_DefectData.Info[_DefectData.Count].size - _DefectData.Info[i].size > 0.1))
+						if (_DefectData.pInfo[_DefectData.Count].size > _DefectData.pInfo[i].size &&
+							(_DefectData.pInfo[_DefectData.Count].size - _DefectData.pInfo[i].size > 0.1))
 						{
 							nExistNum = i;    //현재검출한 불량 선택
 						}
-						else if (_DefectData.Info[_DefectData.Count].size == _DefectData.Info[i].size) //Size가 같으면 Value 비교
+						else if (_DefectData.pInfo[_DefectData.Count].size == _DefectData.pInfo[i].size) //Size가 같으면 Value 비교
 						{
-							if (_DefectData.Info[_DefectData.Count].value > _DefectData.Info[i].value)
+							if (_DefectData.pInfo[_DefectData.Count].value > _DefectData.pInfo[i].value)
 								nExistNum = i;
 							else
 								nResult = 2;		//현재불량 버림
@@ -2417,21 +2430,21 @@ int Inspect::CheckDefectOverlap(double instRngX, double instRngY)
 	{
 		N = _DefectData.Count;
 
-		_DefectData.Info[nExistNum].x_pos = _DefectData.Info[N].x_pos;
-		_DefectData.Info[nExistNum].y_pos = _DefectData.Info[N].y_pos;
-		_DefectData.Info[nExistNum].type = _DefectData.Info[N].type;
-		_DefectData.Info[nExistNum].size = _DefectData.Info[N].size;
-		_DefectData.Info[nExistNum].value = _DefectData.Info[N].value;
-		_DefectData.Info[nExistNum].sizeX = _DefectData.Info[N].sizeX;
-		_DefectData.Info[nExistNum].sizeY = _DefectData.Info[N].sizeY;
+		_DefectData.pInfo[nExistNum].x_pos = _DefectData.pInfo[N].x_pos;
+		_DefectData.pInfo[nExistNum].y_pos = _DefectData.pInfo[N].y_pos;
+		_DefectData.pInfo[nExistNum].type =  _DefectData.pInfo[N].type;
+		_DefectData.pInfo[nExistNum].size =  _DefectData.pInfo[N].size;
+		_DefectData.pInfo[nExistNum].value = _DefectData.pInfo[N].value;
+		_DefectData.pInfo[nExistNum].sizeX = _DefectData.pInfo[N].sizeX;
+		_DefectData.pInfo[nExistNum].sizeY = _DefectData.pInfo[N].sizeY;
 		for (i = 0; i < 2; i++)
-			_DefectData.Info[nExistNum].dTemp[i] = _DefectData.Info[N].dTemp[i];
+			_DefectData.pInfo[nExistNum].dTemp[i] = _DefectData.pInfo[N].dTemp[i];
 
 		//파일이름
-		memcpy(_DefectData.Info[nExistNum].filename, _DefectData.Info[N].filename, MAX_BADIMAGE_FILENAME);
+		memcpy(_DefectData.pInfo[nExistNum].filename, _DefectData.pInfo[N].filename, MAX_BADIMAGE_FILENAME);
 
 		//사각형--------------------------------------------------------------
-		memcpy(&_DefectData.Area[nExistNum], &_DefectData.Area[N], sizeof(RECT));
+		memcpy(&_DefectData.pArea[nExistNum], &_DefectData.pArea[N], sizeof(RECT));
 
 		//Image--------------------------------------------------------------
 		memcpy(_DefectData.pImage[nExistNum], _DefectData.pImage[N], BAD_IMG_WIDTH * BAD_IMG_HEIGHT);
@@ -2451,8 +2464,8 @@ int Inspect::CheckDefectOverlap(double instRngX, double instRngY)
 //현재 검출한 불량을 최우선으로 할꺼면 nIsPrior=1 아니면 0
 void Inspect::CheckPriorLevel(int nIsPrior)
 {
-	int nLevelC = _DefectData.Info[_DefectData.Count].type / MILLION;
-	int nTypeC = _DefectData.Info[_DefectData.Count].type % CLASSDEV;	//현재불량 TYPE
+	int nLevelC = _DefectData.pInfo[_DefectData.Count].type / MILLION;
+	int nTypeC = _DefectData.pInfo[_DefectData.Count].type % CLASSDEV;	//현재불량 TYPE
 	int nMarkC, nXC, nYC;
 
 	int nLevel, nType, nMark;
@@ -2463,16 +2476,16 @@ void Inspect::CheckPriorLevel(int nIsPrior)
 	if (_DefectData.Count < _pSystem->MaxDefect)					return; //불량갯수가 최대보다 작으면 넘어감.
 
 	nMarkC = _pMark->Marking[nTypeC - 1][nLevelC - 1];
-	nXC = (int)_DefectData.Info[_DefectData.Count].x_pos;
-	nYC = (int)_DefectData.Info[_DefectData.Count].y_pos;
+	nXC = (int)_DefectData.pInfo[_DefectData.Count].x_pos;
+	nYC = (int)_DefectData.pInfo[_DefectData.Count].y_pos;
 
 	if (nMarkC) //현재불량이 마킹하는 불량이면
 	{
 		//마킹안하는 불량중에 Level이 약한 불량 선택
 		for (i = _DefectData.Count - 1; i >= 0; i--)
 		{
-			nLevel = _DefectData.Info[i].type / MILLION;
-			nType = _DefectData.Info[i].type % CLASSDEV;
+			nLevel = _DefectData.pInfo[i].type / MILLION;
+			nType = _DefectData.pInfo[i].type % CLASSDEV;
 			nMark = _pMark->Marking[nType - 1][nLevel - 1];
 
 			if (nMark == 0)
@@ -2489,8 +2502,8 @@ void Inspect::CheckPriorLevel(int nIsPrior)
 		{
 			for (i = _DefectData.Count - 1; i >= 0; i--)
 			{
-				nLevel = _DefectData.Info[i].type / MILLION;
-				nType = _DefectData.Info[i].type % CLASSDEV;
+				nLevel = _DefectData.pInfo[i].type / MILLION;
+				nType = _DefectData.pInfo[i].type % CLASSDEV;
 
 				if (nType == nTypeC && nLevel == nLevelC) continue;	//같은 불량 같은 Level은					 PASS
 				if (nLevel < nLevelC)                   continue;	//일단 Level이 낮으면						 PASS			
@@ -2508,8 +2521,8 @@ void Inspect::CheckPriorLevel(int nIsPrior)
 	{
 		for (i = _DefectData.Count - 1; i >= 0; i--)
 		{
-			nLevel = _DefectData.Info[i].type / MILLION;
-			nType = _DefectData.Info[i].type % CLASSDEV;
+			nLevel = _DefectData.pInfo[i].type / MILLION;
+			nType = _DefectData.pInfo[i].type % CLASSDEV;
 			nMark = _pMark->Marking[nType - 1][nLevel - 1];
 
 			if (nMark == 0) //현재 검출한 불량이 마킹안하는 불량이므로 마킹안하는 불량중에서 고른다.
@@ -2533,24 +2546,24 @@ void Inspect::CheckPriorLevel(int nIsPrior)
 	{
 		N = _DefectData.Count;
 
-		_DefectData.Info[nExistNum].x_pos = _DefectData.Info[N].x_pos;
-		_DefectData.Info[nExistNum].y_pos = _DefectData.Info[N].y_pos;
-		_DefectData.Info[nExistNum].type = _DefectData.Info[N].type;
-		_DefectData.Info[nExistNum].size = _DefectData.Info[N].size;
-		_DefectData.Info[nExistNum].value = _DefectData.Info[N].value;
-		_DefectData.Info[nExistNum].sizeX = _DefectData.Info[N].sizeX;
-		_DefectData.Info[nExistNum].sizeY = _DefectData.Info[N].sizeY;
+		_DefectData.pInfo[nExistNum].x_pos = _DefectData.pInfo[N].x_pos;
+		_DefectData.pInfo[nExistNum].y_pos = _DefectData.pInfo[N].y_pos;
+		_DefectData.pInfo[nExistNum].type =  _DefectData.pInfo[N].type;
+		_DefectData.pInfo[nExistNum].size =  _DefectData.pInfo[N].size;
+		_DefectData.pInfo[nExistNum].value = _DefectData.pInfo[N].value;
+		_DefectData.pInfo[nExistNum].sizeX = _DefectData.pInfo[N].sizeX;
+		_DefectData.pInfo[nExistNum].sizeY = _DefectData.pInfo[N].sizeY;
 		for (i = 0; i < 2; i++)
-			_DefectData.Info[nExistNum].dTemp[i] = _DefectData.Info[N].dTemp[i];
+			_DefectData.pInfo[nExistNum].dTemp[i] = _DefectData.pInfo[N].dTemp[i];
 
 		//파일이름
-		memcpy(_DefectData.Info[nExistNum].filename, _DefectData.Info[N].filename, MAX_BADIMAGE_FILENAME);
+		memcpy(_DefectData.pInfo[nExistNum].filename, _DefectData.pInfo[N].filename, MAX_BADIMAGE_FILENAME);
 
 		//사각형--------------------------------------------------------------
-		_DefectData.Area[nExistNum].left = _DefectData.Area[N].left;
-		_DefectData.Area[nExistNum].top = _DefectData.Area[N].top;
-		_DefectData.Area[nExistNum].right = _DefectData.Area[N].right;
-		_DefectData.Area[nExistNum].bottom = _DefectData.Area[N].bottom;
+		_DefectData.pArea[nExistNum].left =   _DefectData.pArea[N].left;
+		_DefectData.pArea[nExistNum].top =    _DefectData.pArea[N].top;
+		_DefectData.pArea[nExistNum].right =  _DefectData.pArea[N].right;
+		_DefectData.pArea[nExistNum].bottom = _DefectData.pArea[N].bottom;
 
 		//Image--------------------------------------------------------------
 		memcpy(_DefectData.pImage[nExistNum], _DefectData.pImage[N], BAD_IMG_WIDTH * BAD_IMG_HEIGHT);

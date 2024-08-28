@@ -10,9 +10,9 @@ InspectCOS8::~InspectCOS8()
 {
 }
 
-void InspectCOS8::Create(int width, int height)
+void InspectCOS8::Create(int width, int height, bool isInit)
 {
-	Inspect::Create(width, height);
+	Inspect::Create(width, height, isInit);
 }
 
 void InspectCOS8::Release()

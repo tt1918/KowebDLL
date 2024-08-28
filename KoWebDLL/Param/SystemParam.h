@@ -23,7 +23,7 @@ public:
 
 	bool	UseImgFlap;					// 조각 영상 상하 반전
 	bool	UseImgMirror;				// 조각 영상 좌우 반전
-	bool	UseBigDefect;					// 4배 압축한 이미지에서 불량 검출
+	bool	UseBigDefect;				// 4배 압축한 이미지에서 불량 검출
 	// masterKey : IMAGE - E
 	///////////////////////////////////////////////////////////////////
 	
@@ -66,6 +66,9 @@ public:
 
 	int Load(std::wstring mainFolder);
 	void Save(std::wstring mainFolder);
+
+	// 검사 설정 파일을 읽을 수 없어서 강제로 타입 지정해서 사용하도록 변경
+	void SetSystemParamType1(int width, int height, int pitch);
 
 private:
 

@@ -210,6 +210,9 @@
     <ClInclude Include="Param\SystemParam.h">
       <Filter>Param\SysParam</Filter>
     </ClInclude>
+    <ClInclude Include="InstInspector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -346,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="Param\SystemParam.cpp">
       <Filter>Param\SysParam</Filter>
+    </ClCompile>
+    <ClCompile Include="InstInspector.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

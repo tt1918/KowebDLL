@@ -306,7 +306,7 @@ namespace TempParam
 		int			Type;				// 0: 안쪽, 1: 바깥쪽
 		int			Dir;				// 0: 왼쪽, 1: 오른쪽
 		int			X1;					// 검사 시작 영역 (검사 스킵 옵셋 포함한 에지 영역)
-		int			X2;					// 검사 시작 영역	(검사 스킵 옵셋 포함한 에지 영역)
+		int			X2;					// 검사 완료 영역 (검사 스킵 옵셋 포함한 에지 영역)
 		int			EdgeX1;				// 에지 검출 시 순수 에지 영역
 		int			EdgeX2;				// 에지 검출 시 순수 에지 영역
 	}INSP_EDGE_PARAM;
@@ -339,6 +339,36 @@ namespace TempParam
 		double		FPS;					// 초당 Frame 수
 	}CNT_PARAM;
 
+	typedef struct _stCropInfo
+	{
+		int StX;
+		int width;
+
+		int X1;
+		int X2;
+
+		void Set(double x1, double x2, double offsetX1, double offsetX2)
+		{
+			int stX = (int)x1;
+			int edX = (int)x2;
+
+			StX = (int)x1;
+
+			int tmpW = ((edX - stX + 3) / 4) * 4;	// 4바이트 기준으로 폭 데이터 생성
+
+			width = tmpW;
+
+			// 실제 검사 위치 처리.
+			X1 = (int)(x1 + offsetX1);
+			X2 = (int)(x2 - offsetX2);
+		}
+
+		// 크롭 기준 X1/X2 데이터를 전달한다.
+		int GetCropX1() { return X1 - StX; }
+		int GetCropX2() { return X2 - StX; }
+	}CROP_INFO;
+
+
 	// 임시 검사 파라미터 
 	typedef struct _stTempParam
 	{
@@ -367,6 +397,9 @@ namespace TempParam
 
 		// 검사 영역
 		INSP_EDGE_PARAM InspArea;
+
+		// 전체 이미지에서 검사 이미지만 추출
+		CROP_INFO		CropInfo;
 
 		int				FlatSuccess;			// Flat 처리 성공
 		int				MakePyramidDone;		// 피라미드 이미지 생성 완료
@@ -528,6 +561,16 @@ namespace TempParam
 
 		// 핀홀 관련 검사 
 		PINHOLE			Pinhole;
+
+		_stTempParam()
+		{
+
+		}
+
+		~_stTempParam()
+		{
+
+		}
 
 		void Reset()
 		{

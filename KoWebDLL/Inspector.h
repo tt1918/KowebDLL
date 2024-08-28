@@ -62,5 +62,4 @@ public:
 
 	// 검사 처리한다. 
 	void RunWebInspect(int procNum);
-
 };

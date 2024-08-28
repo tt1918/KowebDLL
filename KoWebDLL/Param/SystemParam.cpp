@@ -172,3 +172,49 @@ void SystemParam::Save(std::wstring mainFolder)
 {
 
 }
+
+void SystemParam::SetSystemParamType1(int width, int height, int pitch)
+{
+	ImageW = width;				// 이미지 정보 Width와 Pitch는 항상 같다.
+	ImageH = height;			// 이미지 정보
+	Pitch = pitch;				// 이미지 정보 Width와 Pitch는 항상 같다.
+
+	ImgPart = 1;					// 이미지를 나눠서 촬용하는 경우 한 Frame에 포함되는 SubImage 수
+	ImgPartH = ImageH / ImgPart;	// Sub 이미지 높이
+
+	RefBright=80;				// 기준 Grab 평균 밝기
+	RefBrightBk=80;
+
+	FlatBright = 80;			// 평활화 했을 때 밝기
+	FlatBrightBk = 80;			// 평활화 했을 때 밝기 백업
+
+	UseImgFlap = false;			// 조각 영상 상하 반전
+	UseImgMirror = false;		// 조각 영상 좌우 반전
+	UseBigDefect = 0;			// 4배 압축한 이미지에서 불량 검출
+	
+	
+	CamType = 1;				// 0 : AREA    1: Line Scan  Camera
+	CamAngle = 0;				// 카메라 각도
+	MaxDefect = MAX_DEFECT;		// 한 Frame에서 검출할 최대 불량수
+	MaxCandiDefect = 300;		// 한 Frame에서 후보수
+	UseMark = 1;				// 파라미터에 마킹 정보가 있고 그것을 사용한다면 1
+
+	PerspectiveTR = 0;			// 투영, LR처럼 Perspective Transform 하면 1 안하면 0
+	LUTL = 0;					// Perspective Transform에 사용되는 왼쪽 데이터
+	LUTR = 0;					// Perspective Transform에 사용되는 오른쪽 데이터
+	ApplyLUT2Defect = 0;		// 결과 이미지에 LUT 적용
+	BrightLUT = 220;			// Bright LUT
+	ContrastLUT = 200;			// Contrast LUT
+
+	PeriodLimitX = 3.0;				// 주기 오차 X 거리(+/-) mm
+	PeriodLimitY = 5.0;				// 주기 오차 Y 거리(+/-) mm
+
+	NotInsAreaOffset[0] = 0;		// 차광막 옵셋 처리
+	NotInsAreaOffset[1] = 0;		// 차광막 옵셋 처리
+
+	BDOverkill = 0;					// 경계투과 또는 경계반사의 울렁거리는 과검제거하려면 1
+	CandiRect = 512;					// 후보 격자 크기
+	OverlapX = 5;					// Overlap 확인 용 X 거리
+	OverlapY = 5;					// Overlap 확인 용 Y 거리
+	IsMakePyramid;				// 피라미드 생성 여부
+}

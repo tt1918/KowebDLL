@@ -40,13 +40,13 @@ void Param::SetParam()
 {
 	InitParam();
 
-	Common.useRandomCycle =			_Data[20];
-	Common.useAi =					_Data[21];
+	Common.useRandomCycle =			_Data[20] == 0 ? false : true;
+	Common.useAi =					_Data[21] == 0 ? false : true;
 	Common.useFlatImage =		(bool)_Data[22];
 	HoleSkip.Th =			   (int)_Data[23];
 	HoleSkip.Period =				_Data[24];
 	HoleSkip.Size =					_Data[25];
-	HoleSkip.RemoveTh =				_Data[26];
+	HoleSkip.RemoveTh =				(int)_Data[26];
 	HoleSkip.ErrRatio = 25;
 	HoleSkip.CompactMin = 0.7f;
 	HoleSkip.CompactMax = 0.85f;
@@ -64,11 +64,11 @@ void Param::SetParam()
 
 	Common.NoInspection =		(int)_Data[36];
 	
-	Common.AlgorithmType =			_Data[40];
+	Common.AlgorithmType =		(int)_Data[40];
 
-	Common.NotInspArea =			_Data[42];
-	Common.EdgeTh =					_Data[43];
-	Common.EdgeOffset =				_Data[44];
+	Common.NotInspArea =		(int)_Data[42];
+	Common.EdgeTh =				(int)_Data[43];
+	Common.EdgeOffset =			(int)_Data[44];
 	if (Common.EdgeTh > 0)		Common.AutoEdgeFind = 1;
 	else						Common.AutoEdgeFind = 0;
 
@@ -81,10 +81,10 @@ void Param::SetParam()
 		else if (Common.EdgeOffset < 0)	Common.EdgeDir = 1; // 오른쪽 못 씀
 	}
 
-	Common.BrightMax =				_Data[49];	// 최대 밝기
-	Common.BrightMin =				_Data[50];	// 최소 밝기
+	Common.BrightMax =			(int)_Data[49];	// 최대 밝기
+	Common.BrightMin =			(int)_Data[50];	// 최소 밝기
 
-	Common.TapeToOpticDist =		_Data[51];			// 광학계에서 테입까지 거리
+	Common.TapeToOpticDist =	(int)_Data[51];			// 광학계에서 테입까지 거리
 	
 
 	if (Cam.ScaleX <= 0) Cam.ScaleX = 0.05f;
@@ -142,7 +142,6 @@ bool Param::Load(TempParam::PC_INFO* pcInfo, std::wstring path, SystemParam *pSy
 	str.append(L" - Inspect Parameter");
 
 	int i, j, nOptic;
-	int nTmp;
 	double dParam[220];
 	int nCycle[15];
 	double  dSum = 0;

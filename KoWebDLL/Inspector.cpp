@@ -173,7 +173,7 @@ void Inspector::SetParam(int procNum, std::wstring pcName, std::wstring paramPat
 	_SrcW = _sysParam.ImageW;
 	_SrcH = _sysParam.ImageH;
 	_pSrcImg = new unsigned char[_SrcW * _SrcH];
-	memset(_pSrcImg, 0x00, sizeof(unsigned char)* _SrcW* _SrcH);
+	//memset(_pSrcImg, 0x00, sizeof(unsigned char)* _SrcW* _SrcH);
 
 	//////////////////////////////////////////////////////////////////////////////////
 	// 각 전처리 클래스 및 데이터 클래스를 검사 클래스로 연결	- S

@@ -24,9 +24,9 @@ CChain::CChain(int nMaxChain, long nMaxChainData )
 
 CChain::~CChain()
 {
-    delete m_chain;
-	delete m_chainstart;
-	delete m_chaindata;
+    delete[] m_chain;
+	delete[] m_chainstart;
+	delete[] m_chaindata;
 }
 
 void CChain::SetChainData(int Object, unsigned char* fm, int skipx, int skipy, int minboundary,

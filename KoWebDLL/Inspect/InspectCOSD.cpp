@@ -10,9 +10,9 @@ InspectCOSD::~InspectCOSD()
 {
 }
 
-void InspectCOSD::Create(int width, int height)
+void InspectCOSD::Create(int width, int height, bool isInit)
 {
-	Inspect::Create(width, height);
+	Inspect::Create(width, height, isInit);
 }
 
 void InspectCOSD::Release()

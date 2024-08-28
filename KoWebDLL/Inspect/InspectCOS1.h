@@ -8,7 +8,7 @@ public:
 	InspectCOS1();
 	virtual ~InspectCOS1();
 
-	void Create(int width, int height) override;
+	void Create(int width, int height, bool isInit=false) override;
 	void Release() override;
 
 	void Run() override;
