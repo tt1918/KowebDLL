@@ -229,13 +229,22 @@ void Inspect::FindCandidateParallel(int nStartX, int nWidth, int nGap)
 	if (nPyWidth[0] > nNPitch * nGap)  nNPitch++;
 	//-----------------------------------------------------------------
 
+	// 여기서 배열 초기화를 처리한다. 
+	_CandiW.Init(nNW * nM);
+	_CandiB.Init(nNW * nM);
+	_CandiArea.Init(nNW * nM);
+
 	_CandiW.Reset();
 	_CandiB.Reset();
 	_CandiArea.Reset();
 
-//	Concurrency::parallel_for(0, nM, [&](int n) {
-	for (int n = 0; n < nM; n++)
-	{
+	_CandiW.Count = nNW * nM;
+	_CandiB.Count = nNW * nM;
+	_CandiArea.Count = nNW * nM;
+
+	Concurrency::parallel_for(0, nM, [&](int n) {
+//	for (int n = 0; n < nM; n++)
+//	{
 		int nLimitX1 = _pTmpData->InspArea.X1 / 2;
 		int nLimitX2 = _pTmpData->InspArea.X2 / 2;
 
@@ -348,8 +357,8 @@ void Inspect::FindCandidateParallel(int nStartX, int nWidth, int nGap)
 			_CandiArea.SetData(nID, nMaxDiff, nMaxPosX * nLastGap + nLastGap / 2, nMaxPosY * nLastGap + nLastGap, nFlag);
 			//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		}
-//	});
-	}
+	});
+//	}
 }
 
 int Inspect::FindCandiSorting(int nStartX, int nWidth, int nGap)
@@ -367,7 +376,6 @@ int Inspect::FindCandiSorting(int nStartX, int nWidth, int nGap)
 
 
 	InspParam::CANDI_POINTS candiTemp;
-
 	InspParam::CANDI_POINTS* pCandi;
 
 	if (nWidth > 4096)
@@ -378,34 +386,35 @@ int Inspect::FindCandiSorting(int nStartX, int nWidth, int nGap)
 	nCol = (nWidth - nStartX) / nGap;				if ((nWidth - nStartX) - nCol * nGap)		 nCol++;
 	nRow = _pPyramid->GetImageHeight(0) / nGap;		if (_pPyramid->GetImageHeight(0) - nRow * nGap)	 nRow++;
 	nNPitch = _pPyramid->GetImageWidth(0) / nGap;	if (_pPyramid->GetImageWidth(0) > nNPitch * nGap)  nNPitch++;
-	_CandiW.Count = nCol * nRow;
+
+	/*_CandiW.Count = nCol * nRow;
 	_CandiB.Count = nCol * nRow;
-	_CandiArea.Count = nCol * nRow;
+	_CandiArea.Count = nCol * nRow;*/
 
 	if (_pParam->Cam.ScaleY > 0) nLimitY = (int)(MARKING_Y_OFFSET / _pParam->Cam.ScaleY);
 
 	// 검출 후보 영역 검색
 	// 검출 후보가 최대 후보 영역 갯수 보다 많으면 후보 영역 갯수 제한
 	nMaxLoop = nRow * nCol;
-	if (nMaxLoop > MAX_CANDIDATE_AREA)	nMaxLoop = MAX_CANDIDATE_AREA;
+	//if (nMaxLoop > MAX_CANDIDATE_AREA)	nMaxLoop = MAX_CANDIDATE_AREA;
 
 	for (m = 0; m < 3; m++)
 	{
 		if (m == 0)	// 백점
 		{
-			memcpy(&candiTemp, &_CandiW, sizeof(InspParam::CANDI_POINTS));
+			candiTemp.Copy(_CandiW);
 			_CandiW.Reset();
 			pCandi = &_CandiW;
 		}
 		else if (m == 1)	// 흑점
 		{
-			memcpy(&candiTemp, &_CandiB, sizeof(InspParam::CANDI_POINTS));
+			candiTemp.Copy(_CandiB);
 			_CandiB.Reset();
 			pCandi = &_CandiB;
 		}
 		else if (m == 2)	// 찍힘
 		{
-			memcpy(&candiTemp, &_CandiArea, sizeof(InspParam::CANDI_POINTS));
+			candiTemp.Copy(_CandiArea);
 			_CandiArea.Reset();
 			pCandi = &_CandiArea;
 		}

@@ -30,13 +30,3 @@ void CosEParam::SetAddress()
 {
 
 }
-
-void CosEParam::to_json(json& j, const Param& p)
-{
-
-}
-
-void CosEParam::from_json(json& j, const Param& p)
-{
-
-}

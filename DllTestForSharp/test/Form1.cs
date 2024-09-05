@@ -135,21 +135,24 @@ namespace test
 
 
             _Koweb.RunBasicInsp(grayImg.Data, grayImg.Cols, grayImg.Rows, grayImg.Cols);
-            
-            
-            grayImg.Dispose();
+
+
+            //grayImg.Dispose();
             //return;
 
-            //List<double> refCntX = new List<double>();
-            //refCntX.Add(107.5);
-            //refCntX.Add(190.0);
+            List<double> refCntX = new List<double>();
+            //   refCntX.Add(107.5);
+            refCntX.Add(300.0);
 
-            //KoWebInsp.FIND_EDGE_RESULT[] res = new KoWebInsp.FIND_EDGE_RESULT[2];
-            //res[0] = new KoWebInsp.FIND_EDGE_RESULT();
-            //res[1] = new KoWebInsp.FIND_EDGE_RESULT();
+            KoWebInsp.FIND_EDGE_RESULT[] res = new KoWebInsp.FIND_EDGE_RESULT[2];
+            res[0] = new KoWebInsp.FIND_EDGE_RESULT();
+            res[1] = new KoWebInsp.FIND_EDGE_RESULT();
 
             //_Koweb.FindEdge(grayImg.Data, grayImg.Cols, grayImg.Rows, grayImg.Cols, grayImg.Channels(), 0.05, 0.05, 1, 2, 165.0,
             //    25.0, refCntX.ToArray(), 30, 2, ref res);
+
+            _Koweb.FindEdge(grayImg.Data, grayImg.Cols, grayImg.Rows, grayImg.Cols, grayImg.Channels(), 0.05, 0.05, 1, 1, 165.0,
+                25.0, refCntX.ToArray(), 30, 2, ref res);
 
 
             grayImg.Dispose();

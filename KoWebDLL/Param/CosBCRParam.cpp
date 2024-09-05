@@ -31,13 +31,3 @@ void CBCRParam::SetAddress()
 {
 
 }
-
-void CBCRParam::to_json(json& j, const Param& p)
-{
-
-}
-
-void CBCRParam::from_json(json& j, const Param& p)
-{
-
-}

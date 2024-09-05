@@ -1,5 +1,6 @@
 #pragma once
 #include "../Defines.h"
+#include <string>
 
 typedef struct _stMarkOptic
 {

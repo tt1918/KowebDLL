@@ -7,6 +7,8 @@
 #include "PreProcess/FindEdge.h"
 #include "InstInspector.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Class 구현용 - S
 extern "C" DLL_EXPORT_API void* InitKoWebDll()
 {
 	void *pHandle = nullptr;
@@ -83,9 +85,14 @@ extern "C" DLL_EXPORT_API int RunWebInspect(void* pHandle, int procNum)
 
 	return 0;
 }
+// Class 구현용 - E
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 기본 검사 처리
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 함수 방식 처리 - S
+
+// 검사 기능 테스트용 함수
 extern "C" DLL_EXPORT_API int RunBasicWebInsp_T(int procNum, unsigned char* image, int width, int height, int pitch, double scaleX, double scaleY, double edgeX1, double edgeX2, double edgeOffset,
 	int brightMin, int brightMax, int sizeMethod, int noInsp,
 	bool useLv1, bool useLv2, bool useLv3, bool useLv4, bool useLv5, bool useLv6, bool useLv7, bool useLv8, bool useLv9, bool useLv10,
@@ -210,6 +217,8 @@ extern "C" DLL_EXPORT_API int RunBasicWebInsp_T(int procNum, unsigned char* imag
 	return 0;
 }
 
+// CPP 사용 검사 함수
+// 기본 검사는 COS-2 기준으로 검사 진행함.
 extern "C" DLL_EXPORT_API int RunBasicWebInsp(int procNum, unsigned char* image, int width, int height, int pitch, double scaleX, double scaleY, double edgeX1, double edgeX2, double edgeOffset, 
 							int brightMin, int brightMax, int sizeMethod, int noInsp,
 							bool useLv[], float cycVal[],
@@ -231,6 +240,7 @@ extern "C" DLL_EXPORT_API int RunBasicWebInsp(int procNum, unsigned char* image,
 
 	pCropInfo = Insp.GetCropInfo();
 
+	// 검사 영역 만큼만 이미지 Crop하여 처리함.
 	int cropWidth = pCropInfo->width;
 	int stX = pCropInfo->StX;
 	pCropImg = new unsigned char[(cropWidth * height)];
@@ -307,6 +317,7 @@ extern "C" DLL_EXPORT_API int RunBasicWebInsp(int procNum, unsigned char* image,
 	return 0;
 }
 
+// CPP용 에지 검사 함수
 extern "C" DLL_EXPORT_API bool EdgeFind(unsigned char* image, int width, int height, int pitch, int depth, double scaleX, double scaleY,
 										int inspMethod, int prodCnt, double prodSize, double prodGap, double refCenterX[],
 										int edgeTH, int edgeCnt, FIND_EDGE_RESULT *res)
@@ -327,8 +338,8 @@ extern "C" DLL_EXPORT_API bool EdgeFind(unsigned char* image, int width, int hei
 }
 
 
-// C_Sharp 확인용
-extern "C" DLL_EXPORT_API bool EdgeFind1(unsigned char* image, int width, int height, int pitch, int depth, double scaleX, double scaleY,
+// C_Sharp용 에지 검사 함수 
+extern "C" DLL_EXPORT_API bool EdgeFind_Sharp(unsigned char* image, int width, int height, int pitch, int depth, double scaleX, double scaleY,
 	int inspMethod, int prodCnt, double prodSize, double prodGap, double refCenterX[],
 	int edgeTH, int edgeCnt, FIND_EDGE_RESULT * res, int size, int64_t& dataPtr)
 {
@@ -350,3 +361,5 @@ extern "C" DLL_EXPORT_API bool EdgeFind1(unsigned char* image, int width, int he
 
 	return bRes;
 }
+// 함수 방식 처리 - E
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -160,7 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
-    <ClInclude Include="Component\json.hpp" />
     <ClInclude Include="Defect\DefectData.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Fchain.h" />

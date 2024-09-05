@@ -3,7 +3,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 서버에서 받는 검사 Parameter - s
 
-#define MAX_CNADIDATE_AREA	1280
 namespace InspParam
 {
 	typedef struct _stCommonParam
@@ -589,27 +588,76 @@ namespace InspParam
 
 	typedef struct _stCandiPoints
 	{
-		int Count;
-		int CountX;
-		int CountY;
-		int Value[MAX_CNADIDATE_AREA];
-		int PosX[MAX_CNADIDATE_AREA];
-		int PosY[MAX_CNADIDATE_AREA];
-		int Avg[MAX_CNADIDATE_AREA];
+		int Count = 0;
+		int CountX = 0;
+		int CountY = 0;
+		/*int Value[MAX_CANDIDATE_AREA];
+		int PosX[MAX_CANDIDATE_AREA];
+		int PosY[MAX_CANDIDATE_AREA];
+		int Avg[MAX_CANDIDATE_AREA];*/
+
+		int *Value = nullptr;
+		int *PosX = nullptr;
+		int *PosY = nullptr;
+		int *Avg = nullptr;
+
+		int _ArrSize = 0;
+
+		void Delete()
+		{
+			if (Value != nullptr)	{ delete[] Value; Value = nullptr; }
+			if (PosX != nullptr)	{ delete[] PosX; PosX = nullptr; }
+			if (PosY != nullptr)	{ delete[] PosY; PosY = nullptr; }
+			if (Avg != nullptr)		{ delete[] Avg; Avg = nullptr; }
+		}
+
+		void Init(int size)
+		{
+			if (size == _ArrSize)
+				return;
+
+			Delete();
+
+			_ArrSize = size;
+
+			Value	= new int[_ArrSize];
+			PosX	= new int[_ArrSize];
+			PosY	= new int[_ArrSize];
+			Avg		= new int[_ArrSize];
+		}
+
+		virtual ~_stCandiPoints()	{	Delete();	}
 
 		void Reset()
 		{
 			Count = 0;
 			CountX = 0;
 			CountY = 0;
-			memset(Value, 0x00, sizeof(int) * MAX_CNADIDATE_AREA);
-			memset(PosX, 0x00, sizeof(int) * MAX_CNADIDATE_AREA);
-			memset(PosY, 0x00, sizeof(int) * MAX_CNADIDATE_AREA);
-			memset(Avg, 0x00, sizeof(int) * MAX_CNADIDATE_AREA);
+			memset(Value, 0x00, sizeof(int) * _ArrSize);
+			memset(PosX, 0x00, sizeof(int) * _ArrSize);
+			memset(PosY, 0x00, sizeof(int) * _ArrSize);
+			memset(Avg, 0x00, sizeof(int) * _ArrSize);
+		}
+
+		void Copy(_stCandiPoints& src)
+		{
+			this->Count = src.Count;
+			this->CountX = src.CountX;
+			this->CountY = src.CountY;
+
+			Init(src._ArrSize);
+
+			memcpy(this->Value, src.Value, sizeof(int) * _ArrSize);
+			memcpy(this->PosX, src.PosX, sizeof(int) * _ArrSize);
+			memcpy(this->PosY, src.PosY, sizeof(int) * _ArrSize);
+			memcpy(this->Avg, src.Avg, sizeof(int) * _ArrSize);
 		}
 
 		void SetData(int nId, int val, int x, int y, int avg)
 		{
+			if(nId >= _ArrSize)
+				return;
+			
 			Value[nId] = val;
 			PosX[nId] = x;
 			PosY[nId] = y;
@@ -618,6 +666,8 @@ namespace InspParam
 
 		void AddData(int val, int x, int y, int avg)
 		{
+			if (Count >= _ArrSize)
+				return ;
 			SetData(Count, val, x, y, avg);
 			Count++;
 		}

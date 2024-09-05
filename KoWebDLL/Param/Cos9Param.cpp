@@ -30,13 +30,3 @@ void Cos9Param::SetAddress()
 {
 
 }
-
-void Cos9Param::to_json(json& j, const Param& p)
-{
-
-}
-
-void Cos9Param::from_json(json& j, const Param& p)
-{
-
-}

@@ -764,8 +764,11 @@ bool FindEdge::InspectEdge(unsigned char* src, int width, int height, int pitch,
 	top = 0;
 	bottom = height;
 
-	left = 0; 
-	right = (cntX[0]+nProdSize/2.0+nProdGab)/dScaleX;
+	left = (cntX[0] - (nProdSize + nProdGab) / 2.0) / dScaleX;
+	right = (cntX[0] + (nProdSize + nProdGab) / 2.0) / dScaleX;
+
+	if (left < 0) left = 0;
+	if (right >= width) right = width - 1;
 
 	for (int i = 0; i < maxCnt; i++)
 	{
@@ -783,8 +786,8 @@ bool FindEdge::InspectEdge(unsigned char* src, int width, int height, int pitch,
 		{
 			if (nEdgeL == -1 || nEdgeR == -1)
 			{
-				left = (int)((cntX[i + 1]- nProdSize / 2.0- nProdGab) / dScaleX);
-				right = (int)((cntX[i+1] + nProdSize / 2.0 + nProdGab) / dScaleX);
+				left = (int)((cntX[i + 1]- (nProdSize + nProdGab) / 2.0) / dScaleX);
+				right = (int)((cntX[i + 1] + (nProdSize + nProdGab) / 2.0) / dScaleX);
 			}
 			else
 			{
@@ -795,9 +798,7 @@ bool FindEdge::InspectEdge(unsigned char* src, int width, int height, int pitch,
 			CString strTemp;
 			strTemp.Format(_T("Edge Search Range : R_%d, L_%d\n"), left, right);
 			OutputDebugString(strTemp);
-
 		}
-
 	}
 
 	return true;

@@ -213,7 +213,7 @@ void SystemParam::SetSystemParamType1(int width, int height, int pitch)
 	NotInsAreaOffset[1] = 0;		// 차광막 옵셋 처리
 
 	BDOverkill = 0;					// 경계투과 또는 경계반사의 울렁거리는 과검제거하려면 1
-	CandiRect = 512;					// 후보 격자 크기
+	CandiRect = 256;				// 후보 격자 크기
 	OverlapX = 5;					// Overlap 확인 용 X 거리
 	OverlapY = 5;					// Overlap 확인 용 Y 거리
 	IsMakePyramid;				// 피라미드 생성 여부

@@ -25,9 +25,6 @@
     <Filter Include="PreProcess">
       <UniqueIdentifier>{e7badc78-36bf-4649-8af7-ebf375c395d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component">
-      <UniqueIdentifier>{a9fd1b8f-c911-4670-b9a7-e234d38bca64}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Defect">
       <UniqueIdentifier>{505f85ea-2e8e-47c5-8dc4-41bcb29ccbb5}</UniqueIdentifier>
     </Filter>
@@ -149,9 +146,6 @@
     </ClInclude>
     <ClInclude Include="Param\DefectType.h">
       <Filter>Defect</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\json.hpp">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Param\CosParam.h">
       <Filter>Param</Filter>

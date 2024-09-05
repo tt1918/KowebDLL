@@ -95,8 +95,8 @@ void Cos2Param::SetInstParam(InspParam::COMMON_PARAM *pCommon,
 	memcpy(&Common, pCommon, sizeof(InspParam::COMMON_PARAM));
 	memcpy(&Cam, pCam, sizeof(InspParam::COMMON_PARAM));
 	memcpy(&HoleSkip, pHoleSkip, sizeof(InspParam::HOLE_SKIP_PARAM));
-	memcpy(&_UseLv, pUseLv, sizeof(bool));
-	memcpy(&_Cycle, pCycle, sizeof(float));
+	memcpy(&_UseLv, pUseLv, sizeof(bool)*MAX_LEVEL);
+	memcpy(&_Cycle, pCycle, sizeof(float) * MAX_LEVEL);
 
 	if (pLvUp != nullptr)	memcpy(&_LvUp, pLvUp, sizeof(InspParam::SPOT_PARAM));
 	else					_LvUp.Init(); 
@@ -139,14 +139,4 @@ void Cos2Param::SetAddress()
 	_pCunic = &_Cunic;
 
 	_pSC = &_SC;
-}
-
-void Cos2Param::to_json(json& j, const Param& p)
-{
-
-}
-
-void Cos2Param::from_json(json& j, const Param& p)
-{
-
 }

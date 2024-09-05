@@ -3,11 +3,8 @@
 #include "TempParam.h"
 #include "InspParam.h"
 #include "../Defines.h"
-#include "../Component/json/nlohmann/json.hpp"
 #include "TempParam.h"
 #include "SystemParam.h"
-
-using json = nlohmann::json;
 
 class Param
 {
@@ -86,9 +83,6 @@ public:
 
 	// Algorithm »Æ¿Œ
 	static eParamType::eType GetParamType(std::wstring path, std::wstring section);
-
-	void to_json(json& j, const Param& p);
-	void from_json(json& j, const Param& p);
 
 public:
 

@@ -74,8 +74,8 @@ namespace test
         public void RunBasicInsp(IntPtr buf, int width, int height, int pitch)
         {
             //for(int i=0; i<1; i++)
-            
-            RunBasicWebInsp_T(0, buf, width, height, pitch, 0.05, 0.05, 498, 3800, 50, 30, 230, 0, 0,
+
+            RunBasicWebInsp_T(0, buf, width, height, pitch, 0.05, 0.05, 498, 3800, 5, 30, 230, 0, 0,
                         true, true, false, false, false, false, false, false, false, false,
                         0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
                         23, 35, 30, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -87,17 +87,17 @@ namespace test
                         0.5, 0.3, 0, 0, 0, 0, 0, 0, 0, 0,
                         2000, 1500, 0, 0, 0, 0, 0, 0, 0, 0);
 
-            RunBasicWebInsp_T(0, buf, width, height, pitch, 0.05, 0.05, 4298, 7600, 50, 30, 230, 0, 0,
-                        true, true, false, false, false, false, false, false, false, false,
-                        0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-                        23, 35, 30, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0.3, 0.25, 0, 0, 0, 0, 0, 0, 0, 0,
-                        20, 30, 25, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0.3, 0.25, 0, 0, 0, 0, 0, 0, 0, 0,
-                        32, 500, 1500, 2000, 0, 0, 0, 0, 0, 0, 0, 0,
-                        25, 23, 22, 20, 45, 30, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0.5, 0.3, 0, 0, 0, 0, 0, 0, 0, 0,
-                        2000, 1500, 0, 0, 0, 0, 0, 0, 0, 0);
+            //RunBasicWebInsp_T(1, buf, width, height, pitch, 0.05, 0.05, 4298, 7600, 50, 30, 230, 0, 0,
+            //            true, true, false, false, false, false, false, false, false, false,
+            //            0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            //            23, 35, 30, 0, 0, 0, 0, 0, 0, 0, 0,
+            //            0.3, 0.25, 0, 0, 0, 0, 0, 0, 0, 0,
+            //            20, 30, 25, 0, 0, 0, 0, 0, 0, 0, 0,
+            //            0.3, 0.25, 0, 0, 0, 0, 0, 0, 0, 0,
+            //            32, 500, 1500, 2000, 0, 0, 0, 0, 0, 0, 0, 0,
+            //            25, 23, 22, 20, 45, 30, 0, 0, 0, 0, 0, 0, 0, 0,
+            //            0.5, 0.3, 0, 0, 0, 0, 0, 0, 0, 0,
+            //            2000, 1500, 0, 0, 0, 0, 0, 0, 0, 0);
         }
 
     }

@@ -1,6 +1,6 @@
 #include "Param.h"
 #include "../stdafx.h"
-
+#include <string>
 
 Param::Param()
 {
@@ -249,14 +249,4 @@ eParamType::eType Param::GetParamType(std::wstring path, std::wstring section)
 	wchar_t data[256];
 	GetPrivateProfileString(section.c_str(), L"param41", L"1", data, 256, path.c_str());
 	return (eParamType::eType) ((int)_wtof(data));
-}
-
-void Param::to_json(json& j, const Param& p)
-{
-
-}
-
-void Param::from_json(json& j, const Param& p)
-{
-
 }
