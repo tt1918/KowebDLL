@@ -137,8 +137,8 @@ namespace test
             _Koweb.RunBasicInsp(grayImg.Data, grayImg.Cols, grayImg.Rows, grayImg.Cols);
 
 
-            //grayImg.Dispose();
-            //return;
+            grayImg.Dispose();
+            return;
 
             List<double> refCntX = new List<double>();
             //   refCntX.Add(107.5);

@@ -50,14 +50,8 @@ bool PyramidImage::MakeImage(unsigned char* buf, int width, int height)
 	int pitchD, pitchS;
 	int nW;
 
-	CString strTemp;
-	clock_t time1 = clock();
 	// 대용량 이미지의 경우 데이터 쓰기 속도로 인하여 원본 _Image[0]은 사용하지 않고 데이터를 처리한다. 
 	//memcpy(_Image[0], buf, sizeof(unsigned char) * width * height);
-
-	clock_t time2 = clock();
-	strTemp.Format(L"PyramidImage Elapsed Time 1 : %0.3f", double(time2 - time1) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
 	
 #ifdef USE_OPENCV
 	cv::Mat matFlat = cv::Mat(height, width, CV_8UC1);
@@ -65,25 +59,14 @@ bool PyramidImage::MakeImage(unsigned char* buf, int width, int height)
 
 	memcpy(matFlat.data, buf, sizeof(unsigned char) * height * width);
 
-
-	clock_t time21 = clock();
-	strTemp.Format(L"PyramidImage Elapsed Time 1____ : %0.3f", double(time21 - time2) * 1000.0 / CLOCKS_PER_SEC);
-	
-	OutputDebugString(strTemp);
-
-
 	for (int i = 1; i < 5; i++)
 	{
-		clock_t time3 = clock();
 		fmD = _Image[i];
 		cv::pyrDown(matFlat, matPyr, cv::Size(_Width[i], _Height[i]));
 
 		memcpy(fmD, matPyr.data, sizeof(unsigned char) * _Width[i] * _Height[i]);
 		matFlat.release();
 		matFlat = matPyr.clone();
-		clock_t time4 = clock();
-		strTemp.Format(L"PyramidImage Elapsed Time 1-%d : %0.3f", i, double(time4 - time3) * 1000.0 / CLOCKS_PER_SEC);
-		OutputDebugString(strTemp);
 	}
 	matFlat.release();
 #else
@@ -133,10 +116,6 @@ bool PyramidImage::MakeImage(unsigned char* buf, int width, int height)
 				*(fmD + pitchD * i + j) = (*(fmS + pitchS * nI + nJ) + *(fmS + pitchS * nI + nJ + 1) + *(fmS + pitchS * (nI + 1) + nJ) + *(fmS + pitchS * (nI + 1) + nJ + 1)) / 4;
 			}
 		};*/
-
-		clock_t time4 = clock();
-		strTemp.Format(L"PyramidImage Elapsed Time 1-%d : %0.3f", k, double(time4 - time3) * 1000.0 / CLOCKS_PER_SEC);
-		OutputDebugString(strTemp);
 	}
 #endif
 	_IsFinish = true;

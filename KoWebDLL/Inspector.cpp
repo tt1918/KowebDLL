@@ -289,20 +289,14 @@ void Inspector::RunWebInspect(int procNum)
 	clock_t time1 = clock();
 	_pProfile->MakeProfileData(_pSrcImg, _SrcW, _SrcH, _SrcW);
 	clock_t time2 = clock();
-	strTemp.Format(L"Elapsed Time 1 : %0.3f", double(time2 - time1) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
 
 	_pEdgeFinder->GetEdge(&_tempParam[procNum].InspArea, _pSrcImg, _SrcW, _SrcH, pParam->Cam.ScaleX, pParam->Common.EdgeTh, pParam->Common.AlgorithmType, pParam->Common.EdgeOffset, pParam->Common.EdgeDir, pParam->Common.NotInspArea);
 
 	clock_t time3 = clock();
-	strTemp.Format(L"Elapsed Time 2 : %0.3f", double(time3 - time2) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
 
 	int nAvgBright = _pProfile->CalcAvgBright(_pEdgeFinder->m_nInspX1, _pEdgeFinder->m_nInspX2, _sysParam.FlatBright);
 
 	clock_t time4 = clock();
-	strTemp.Format(L"Elapsed Time 3 : %0.3f", double(time4 - time3) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
 	
 	if (pParam->Common.useFlatImage)
 	{
@@ -314,100 +308,22 @@ void Inspector::RunWebInspect(int procNum)
 		pSrc = _pSrcImg;
 
 	clock_t time5 = clock();
-	strTemp.Format(L"Elapsed Time 4 : %0.3f", double(time5 - time4) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
 
 	// 피라미드 영상을 생성
 	if (_pPyramid->IsFinish() == false)
 		_pPyramid->MakeImage(pSrc, _SrcW, _SrcH);
 
 	clock_t time6 = clock();
-	strTemp.Format(L"Elapsed Time 5 : %0.3f", double(time6 - time5) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
 
 	// 스크래치 검사의 경우에는 원본 영상을 사용한다.
 	// 평활화 하면서 수직 스크래치 정보가 손실될 수 있음.
 	if (pParam->_pSC != nullptr)
 		_pPyramidSc->MakeImage(_pSrcImg, _SrcW, _SrcH);
 
-
-	
-	
-
-	//CImage tmpImage;
-	//RGBQUAD   bmiColors[256];
-	//for (int i = 0; i < 256; i++)
-	//{
-	//	bmiColors[i].rgbRed = bmiColors[i].rgbGreen = bmiColors[i].rgbBlue = (BYTE)i;
-	//	bmiColors[i].rgbReserved = 0;
-	//}
-
-	//for (int i = 0; i < 5; i++)
-	//{
-	//	tmpImage.Create(_pPyramid->GetImageWidth(i), _pPyramid->GetImageHeight(i), 8);
-	//	tmpImage.SetColorTable(0, 256, bmiColors);
-
-
-	//	LPBYTE dst = (LPBYTE)tmpImage.GetBits();
-
-	//	LPBYTE src = _pPyramid->GetImagePt(i);
-	//	int y, pitch1 = tmpImage.GetPitch();
-	//	for (y = 0; y < _pPyramid->GetImageHeight(i); y++, src += _pPyramid->GetImageWidth(i), dst += pitch1)
-	//		CopyMemory(dst, src, _pPyramid->GetImageWidth(i));
-
-	//	std::wstring fileName;
-	//	fileName.append(L"d:\\test_");
-	//	fileName.append(std::to_wstring(i));
-	//	fileName.append(L".bmp");
-	//	tmpImage.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
-
-	//	tmpImage.Destroy();
-	//}
-	
-
 	// 검사 진행
 	_pInspect[procNum]->ResetDefectData();
 	_pInspect[procNum]->Run();
 
 	clock_t time7 = clock();
-	strTemp.Format(L"Elapsed Time 6 : %0.3f", double(time7 - time6) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
-
-	strTemp.Format(L"Elapsed Time  : %0.3f", double(time7 - time1) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
-
 	// 검사 결과 처리
-
-
-	DEFECTDATA* pData = _pInspect[procNum]->GetDefectData();
-
-	CImage tmpImage;
-	RGBQUAD   bmiColors[256];
-	for (int i = 0; i < 256; i++)
-	{
-		bmiColors[i].rgbRed = bmiColors[i].rgbGreen = bmiColors[i].rgbBlue = (BYTE)i;
-		bmiColors[i].rgbReserved = 0;
-	}
-
-	tmpImage.Create(BAD_IMG_WIDTH, BAD_IMG_HEIGHT, 8);
-	tmpImage.SetColorTable(0, 256, bmiColors);
-
-
-	for (int i = 0; i < pData->Count; i++)
-	{
-		LPBYTE dst = (LPBYTE)tmpImage.GetBits();
-
-		LPBYTE src = pData->pImage[i];
-		int y, pitch1 = tmpImage.GetPitch();
-		for (y = 0; y < BAD_IMG_HEIGHT; y++, src += BAD_IMG_WIDTH, dst += pitch1)
-			CopyMemory(dst, src, BAD_IMG_WIDTH);
-
-		std::wstring fileName;
-		fileName.append(L"c:\\COSS\\LOTDATA\\TEST\\test_");
-		fileName.append(std::to_wstring(i));
-		fileName.append(L".bmp");
-		tmpImage.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
-	}
-
-	tmpImage.Destroy();
 }

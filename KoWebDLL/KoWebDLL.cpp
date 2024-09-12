@@ -6,6 +6,7 @@
 #include "Inspector.h"
 #include "PreProcess/FindEdge.h"
 #include "InstInspector.h"
+#include "atlimage.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Class ±¸Çö¿ë - S
@@ -210,6 +211,18 @@ extern "C" DLL_EXPORT_API int RunBasicWebInsp_T(int procNum, unsigned char* imag
 
 	Insp.Run();
 
+	CString strTemp;
+	DEFECTDATA* pSrcDefect = Insp.GetDefectInfo();
+	
+	strTemp.Format(_T("Defect Count = %d\n"), pSrcDefect->Count);
+
+	OutputDebugString(strTemp);
+
+	for (int i = 0; i < pSrcDefect->Count; i++)
+	{
+		strTemp.Format(_T("PosX = %0.3f, posY = %0.3f\n"), pSrcDefect->pInfo[i].x_pos, pSrcDefect->pInfo[i].y_pos);
+		OutputDebugString(strTemp);
+	}
 
 	if (pCropImg != nullptr)
 		delete[] pCropImg;

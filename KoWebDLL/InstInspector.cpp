@@ -271,7 +271,6 @@ void InstInspector::Run()
 	unsigned char* pSrc;
 
 	Param* pParam = _pParam;
-	CString strTemp;
 
 	clock_t start = clock();
 
@@ -281,20 +280,9 @@ void InstInspector::Run()
 
 	clock_t time1 = clock();
 	_pProfile->MakeProfileData(_ImgInfo.pImg, _ImgInfo.width, _ImgInfo.height, _ImgInfo.pitch);
-	clock_t time2 = clock();
-	strTemp.Format(L"Elapsed Time 1 : %0.3f", double(time2 - time1) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
-
-	clock_t time3 = clock();
-	strTemp.Format(L"Elapsed Time 2 : %0.3f", double(time3 - time2) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
-
 	
 	int nAvgBright = _pProfile->CalcAvgBright(_pTempParam->InspArea.X1, _pTempParam->InspArea.X2, _pSysParam->FlatBright);
 
-	clock_t time4 = clock();
-	strTemp.Format(L"Elapsed Time 3 : %0.3f", double(time4 - time3) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
 
 	if (pParam->Common.useFlatImage)
 	{
@@ -306,17 +294,9 @@ void InstInspector::Run()
 	else	// Pyramid 영상 생성에 사용할 Src Img 선택
 		pSrc = _ImgInfo.pImg;
 
-	clock_t time5 = clock();
-	strTemp.Format(L"Elapsed Time 4 : %0.3f", double(time5 - time4) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
-
 	// 피라미드 영상을 생성
 	if (_pPyramid->IsFinish() == false)
 		_pPyramid->MakeImage(pSrc, _ImgInfo.width, _ImgInfo.height);
-
-	clock_t time6 = clock();
-	strTemp.Format(L"Elapsed Time 5 : %0.3f", double(time6 - time5) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
 
 	// 스크래치 검사의 경우에는 원본 영상을 사용한다.
 	// 평활화 하면서 수직 스크래치 정보가 손실될 수 있음.
@@ -327,30 +307,17 @@ void InstInspector::Run()
 	_pInspect->ResetDefectData();
 	_pInspect->Run();
 
-	clock_t time7 = clock();
-	strTemp.Format(L"Elapsed Time 6 : %0.3f", double(time7 - time6) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
-
-	strTemp.Format(L"Elapsed Time  : %0.3f", double(time7 - time1) * 1000.0 / CLOCKS_PER_SEC);
-	OutputDebugString(strTemp);
 
 	// 검사 결과 처리
 	DEFECTDATA* pData = _pInspect->GetDefectData();
-
-	strTemp.Format(L"Process Num : %d", _ProcIdx);
-	OutputDebugString(strTemp);
-
-	strTemp.Format(L"Defect Count : %d", pData->Count);
-	OutputDebugString(strTemp);
+	DEFECT* pDefect=nullptr;
 
 	for (int i = 0; i < pData->Count; i++)
 	{
-		DEFECT* pDefect = &pData->pInfo[i];
+		pDefect = &pData->pInfo[i];
 
 		// X-offset 발생한 거리만큼 실제 거리 보정하여 처리함. 
 		pDefect->x_pos += _pTempParam->CropInfo.StX;
-		strTemp.Format(L"DefectInfo_%d : %0.1f, %0.1f, %0.1f, %0.1f, %0.1f, %d", i, pDefect->x_pos, pDefect->y_pos, pDefect->sizeX, pDefect->sizeY, pDefect->size, pDefect->type);
-		OutputDebugString(strTemp);
 	}
 }
 

@@ -216,5 +216,5 @@ void SystemParam::SetSystemParamType1(int width, int height, int pitch)
 	CandiRect = 256;				// 후보 격자 크기
 	OverlapX = 5;					// Overlap 확인 용 X 거리
 	OverlapY = 5;					// Overlap 확인 용 Y 거리
-	IsMakePyramid;				// 피라미드 생성 여부
+	IsMakePyramid = 1;				// 피라미드 생성 여부
 }

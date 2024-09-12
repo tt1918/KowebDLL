@@ -1,5 +1,6 @@
 #include "Inspect.h"
 #include <ppl.h>
+#include "atlimage.h"
 
 Inspect::Inspect()
 {
@@ -702,9 +703,8 @@ void Inspect::ScInspect()
 		nMulti = 2;
 	}
 
-
 	if (_pSystem->CamType)
-		nScratch = FindScratch(fm, nInspectX1, 0, nInspectX2, nHeight, nPitch, 1, 35, 0, 32, 16, 10, nScratchThres, nScratchThres, nMulti, NULL, posx, posy, value, &AverageScratch, &MaxScratch);
+		nScratch = FindScratch(fm, nInspectX1, 0, nInspectX2, nHeight, nPitch, 1, 15, 0, 32, 16, 10, nScratchThres, nScratchThres, nMulti, NULL, posx, posy, value, &AverageScratch, &MaxScratch);
 	else
 		nScratch = FindScratch(fm, nInspectX1, 0, nInspectX2, nHeight, nPitch, 1, 15, 0, 32, 16, 10, nScratchThres, nScratchThres, nMulti, NULL, posx, posy, value, &AverageScratch, &MaxScratch);
 
@@ -792,6 +792,7 @@ int Inspect::FindScratch(LPBYTE fm, int left, int top, int right, int bottom, in
 
 	nRowNum = bottom / nJumpY;  if (bottom % nJumpY)  nRowNum++;
 	nColNum = right / 128;      if (right % 128)      nColNum++;
+
 	if (nRowNum > 256 || nColNum > 64) goto done; //배열 잡은 게 [256][64] 임.
 
 	if (nThUp < 200) nThUp = 200;				//200이하는 노이즈
@@ -799,7 +800,9 @@ int Inspect::FindScratch(LPBYTE fm, int left, int top, int right, int bottom, in
 	if (nErode < 2) nErode = 2;					 //1 이면  3   
 	else if (nErode > 20)  nErode = 20;			 //10이면  21   
 
-	if (nJumpY < 16)  nJumpY = 16;								//최소 JUMP 값은 16이다 		
+	if (nJumpY < 16)  nJumpY = 16;								//최소 JUMP 값은 16이다 	
+
+
 	if ((bottom - top) <= nInspY || right - left <= 20) goto done;
 	memset(_nMax, 0, nRowNum * 64 * sizeof(int));
 	memset(_nMaxPos, 0, nRowNum * 64 * sizeof(int));
@@ -837,7 +840,6 @@ int Inspect::FindScratch(LPBYTE fm, int left, int top, int right, int bottom, in
 	//전체 평균밝기 구해서 전체 평균밝기가 기준값보다 크면 그 만큼 결과를 작게한다.------------
 	for (j = left; j < right; j++)
 		nAveValue += *(_pKProj + j);
-
 
 	nAveValue /= (right - left);
 	if (nAveValue > nBASE_VALUE)
@@ -1150,7 +1152,6 @@ int Inspect::FindScratch(LPBYTE fm, int left, int top, int right, int bottom, in
 		}
 	}
 	//------------------------------------------------------------
-
 done:
 
 	return nScratchCount;
